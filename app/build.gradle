@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 24
@@ -29,6 +30,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    compile 'com.google.android.gms:play-services-auth:9.0.0'
+//    compile group: 'com.google.api-client', name: 'google-api-client-android', version: '1.22.0'
+//    classpath 'com.google.gms:google-services:2.1.2'
+//    compile group: 'com.google.apis', name: 'google-api-services-oauth2', version: 'v2-rev112-1.22.0'
+
 }
 repositories {
     mavenCentral()

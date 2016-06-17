@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "716435782959",
+    "project_id": "proud-outpost-124618"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716435782959:android:d34410508ee70826",
+        "android_client_info": {
+          "package_name": "com.herolynx.elepantry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716435782959-ucv9e5q8sqa4bsaqvf3uj5h37l5bvv6o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.herolynx.elepantry",
+            "certificate_hash": "F7C3B26790945D9BD08B2DA1460F677860845DC2"
+          }
+        },
+        {
+          "client_id": "716435782959-cc8t93acicns9qhj0at3a4o8e6cplgvr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrTmBMRRO3NOv_y-m0asmpkW4kCt1lu8c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
