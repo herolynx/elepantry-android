@@ -38,13 +38,19 @@ class SignInActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
         // [START configure_signin]
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestScopes(Scope(Scopes.DRIVE_APPFOLDER)).requestEmail().build()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestScopes(Scope(Scopes.DRIVE_APPFOLDER))
+                .requestEmail()
+                .build()
         // [END configure_signin]
 
         // [START build_client]
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
-        mGoogleApiClient = GoogleApiClient.Builder(this).enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build()
         // [END build_client]
 
         // [START customize_button]
@@ -97,7 +103,8 @@ class SignInActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     // [START handleSignInResult]
     private fun handleSignInResult(result: GoogleSignInResult) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess)
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess + ", status: " + result.status)
+
         if (result.isSuccess) {
             // Signed in successfully, show authenticated UI.
             val acct = result.signInAccount
@@ -105,7 +112,8 @@ class SignInActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             updateUI(true)
         } else {
             // Signed out, show unauthenticated UI.
-            updateUI(false)
+            signOut()
+//            updateUI(false)
         }
     }
     // [END handleSignInResult]
