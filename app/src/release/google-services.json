@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1053699111162",
-    "project_id": "elepantry-debug"
+    "project_number": "716435782959",
+    "project_id": "proud-outpost-124618"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1053699111162:android:d34410508ee70826",
+        "mobilesdk_app_id": "1:716435782959:android:d34410508ee70826",
         "android_client_info": {
           "package_name": "com.herolynx.elepantry"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1053699111162-gukknor8v6sa6g2l423vkb5ps2hpbkn3.apps.googleusercontent.com",
+          "client_id": "716435782959-kfr6mubgunpvgliipvvia97l1duurd56.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.herolynx.elepantry",
-            "certificate_hash": "305239E26683381C49A22543D9A33C902EF95D22"
+            "certificate_hash": "9480D3124FFCECAB3A346F8D1F8706D601E17936"
           }
         },
         {
-          "client_id": "1053699111162-v3rdpfrh0ckl3mdoojt74juslhfls4o6.apps.googleusercontent.com",
+          "client_id": "716435782959-cc8t93acicns9qhj0at3a4o8e6cplgvr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyApzaOTEb2JNvNVzDU83AqNuJ0bl3TGVlg"
+          "current_key": "AIzaSyDa6k3Vj0AI_FGou9zW8WpyjmYNWdjPI5s"
         }
       ],
       "services": {
