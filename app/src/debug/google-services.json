@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1053699111162",
+    "project_id": "elepantry-debug"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053699111162:android:d34410508ee70826",
+        "android_client_info": {
+          "package_name": "com.herolynx.elepantry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053699111162-gukknor8v6sa6g2l423vkb5ps2hpbkn3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.herolynx.elepantry",
+            "certificate_hash": "305239E26683381C49A22543D9A33C902EF95D22"
+          }
+        },
+        {
+          "client_id": "1053699111162-v3rdpfrh0ckl3mdoojt74juslhfls4o6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApzaOTEb2JNvNVzDU83AqNuJ0bl3TGVlg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
