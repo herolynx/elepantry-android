@@ -1,4 +1,4 @@
-# elepantry-android
+# elepantry-android [![CircleCI](https://circleci.com/gh/herolynx/elepantry-android.svg?style=svg)](https://circleci.com/gh/herolynx/elepantry-android)
 
 Resource manager for unifying cloud storage like google-drive, dropbox etc.
 
