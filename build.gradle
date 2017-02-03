@@ -1,24 +1,23 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.0.2-1'
+    ext.kotlin_version = '1.0.6'
     repositories {
-        mavenLocal()
         jcenter()
+        mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:3.0.0'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
-        mavenLocal()
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
+        mavenLocal()
     }
 }
 
