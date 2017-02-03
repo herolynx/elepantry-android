@@ -1,8 +1,9 @@
 package com.herolynx.elepantry.google.auth
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -10,14 +11,24 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.Scope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.R
-import com.herolynx.elepantry.core.BaseActivity
+import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.view.WithProgressDialog
 
-class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+class GoogleSignInActivity : AppCompatActivity(),
+        WithProgressDialog,
+        GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener {
+
+    override var mProgressDialog: ProgressDialog? = null
 
     private var mAuth: FirebaseAuth? = null
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
@@ -39,38 +50,30 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
         findViewById(R.id.sign_out_button).setOnClickListener(this)
         findViewById(R.id.disconnect_button).setOnClickListener(this)
 
-        // [START config_signin]
-        // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(Scope(Scopes.DRIVE_APPFOLDER))
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-        // [END config_signin]
 
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build()
 
-        // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance()
-        // [END initialize_auth]
 
-        // [START auth_state_listener]
         mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user != null) {
                 // User is signed in
-                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.uid)
+                debug("[Firebase] Logged in user - id: %s", user.uid)
             } else {
                 // User is signed out
-                Log.d(TAG, "onAuthStateChanged:signed_out")
+                debug("[Firebase] Logged out")
             }
-            // [START_EXCLUDE]
             updateUI(user)
-            // [END_EXCLUDE]
         }
-        // [END auth_state_listener]
     }
 
     public override fun onStart() {
@@ -80,6 +83,7 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
 
     override fun onStop() {
         super.onStop()
+        hideProgressDialog()
         if (mAuthListener != null) {
             mAuth!!.removeAuthStateListener(mAuthListener!!)
         }
@@ -89,7 +93,7 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
         super.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == Intents.GOOGLE_SIGN_IN) {
             val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if (result.isSuccess) {
                 // Google Sign In was successful, authenticate with Firebase
@@ -105,21 +109,21 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
+        debug("firebaseAuthWithGoogle: %s", acct.id!!)
         // [START_EXCLUDE silent]
-        showProgressDialog()
+        showProgressDialog(this)
         // [END_EXCLUDE]
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         mAuth!!.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
-                    Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful)
+                    debug("signInWithCredential:onComplete: %s", task.isSuccessful)
 
                     // If sign in fails, display a message to the user. If sign in succeeds
                     // the auth state listener will be notified and logic to handle the
                     // signed in user can be handled in the listener.
                     if (!task.isSuccessful) {
-                        Log.w(TAG, "signInWithCredential", task.exception)
+                        error("signInWithCredential", task.exception)
                         Toast.makeText(this@GoogleSignInActivity, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show()
                     }
@@ -131,7 +135,7 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
 
     private fun signIn() {
         val signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(signInIntent, Intents.GOOGLE_SIGN_IN)
     }
 
     private fun signOut() {
@@ -168,9 +172,7 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
     }
 
     override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult)
+        error("onConnectionFailed: %s", connectionResult)
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show()
     }
 
@@ -185,9 +187,4 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
         }
     }
 
-    companion object {
-
-        private val TAG = "GoogleActivity"
-        private val RC_SIGN_IN = 9001
-    }
 }

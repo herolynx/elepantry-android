@@ -4,5 +4,4 @@ import android.app.Application
 
 class ElepantryApp : Application() {
 
-
 }
