@@ -18,23 +18,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CustomAuthActivity"
-            android:label="@string/label_custom_auth" />
-        <activity
             android:name=".GoogleSignInActivity"
             android:label="@string/label_google_sign_in" />
-
-        <activity
-            android:name=".EmailPasswordActivity"
-            android:label="@string/label_emailpassword"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".AnonymousAuthActivity"
-            android:label="@string/label_anonymous_auth" />
-        <activity
-            android:name=".TwitterLoginActivity"
-            android:label="@string/label_twitter_login" />
-
     </application>
 
 </manifest>
