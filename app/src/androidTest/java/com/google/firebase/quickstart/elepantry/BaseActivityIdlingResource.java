@@ -24,7 +24,7 @@ public class BaseActivityIdlingResource implements IdlingResource {
 
     @Override
     public boolean isIdleNow() {
-        ProgressDialog dialog = mActivity.mProgressDialog;
+        ProgressDialog dialog = mActivity.getMProgressDialog();
         boolean idle = (dialog == null || !dialog.isShowing());
 
         if (mCallback != null && idle) {
