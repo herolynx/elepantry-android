@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "120889780799",
+    "firebase_url": "https://elepantry-b2521.firebaseio.com",
+    "project_id": "elepantry-b2521",
+    "storage_bucket": "elepantry-b2521.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120889780799:android:d34410508ee70826",
+        "android_client_info": {
+          "package_name": "com.herolynx.elepantry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120889780799-uueuunvhnkmopblvh6g7588u3jtq33or.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJvQ0DBEhGy4XZY8-GMpTIFfES5cxYr7U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120889780799-uueuunvhnkmopblvh6g7588u3jtq33or.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
