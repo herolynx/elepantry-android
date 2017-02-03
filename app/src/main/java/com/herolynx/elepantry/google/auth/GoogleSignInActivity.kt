@@ -1,4 +1,4 @@
-package com.herolynx.elepantry
+package com.herolynx.elepantry.google.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,16 +14,13 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.BaseActivity
 
 class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
-    // [START declare_auth]
     private var mAuth: FirebaseAuth? = null
-    // [END declare_auth]
-
-    // [START declare_auth_listener]
     private var mAuthListener: FirebaseAuth.AuthStateListener? = null
-    // [END declare_auth_listener]
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mStatusTextView: TextView? = null
@@ -76,23 +73,18 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
         // [END auth_state_listener]
     }
 
-    // [START on_start_add_listener]
     public override fun onStart() {
         super.onStart()
         mAuth!!.addAuthStateListener(mAuthListener!!)
     }
-    // [END on_start_add_listener]
 
-    // [START on_stop_remove_listener]
     override fun onStop() {
         super.onStop()
         if (mAuthListener != null) {
             mAuth!!.removeAuthStateListener(mAuthListener!!)
         }
     }
-    // [END on_stop_remove_listener]
 
-    // [START onactivityresult]
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -111,9 +103,7 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
             }
         }
     }
-    // [END onactivityresult]
 
-    // [START auth_with_google]
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
         // [START_EXCLUDE silent]
@@ -138,14 +128,11 @@ class GoogleSignInActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedL
                     // [END_EXCLUDE]
                 }
     }
-    // [END auth_with_google]
 
-    // [START signin]
     private fun signIn() {
         val signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
-    // [END signin]
 
     private fun signOut() {
         // Firebase sign out
