@@ -43,6 +43,7 @@ dependencies {
 
     //Core - Android
     compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.1.0'
 
     //RX
     compile 'io.reactivex:rxkotlin:0.60.0'
