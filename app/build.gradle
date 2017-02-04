@@ -39,13 +39,14 @@ configurations.all {
 dependencies {
     //Core
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile "org.funktionale:funktionale:1.0.0-beta"
+    compile files('libs/funktionale-all-1.0.0-beta.jar')
 
     //Core - Android
     compile 'com.android.support:appcompat-v7:25.0.1'
 
     //RX
     compile 'io.reactivex:rxkotlin:0.60.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
 
     //Google
     compile 'com.google.firebase:firebase-auth:10.0.1'
