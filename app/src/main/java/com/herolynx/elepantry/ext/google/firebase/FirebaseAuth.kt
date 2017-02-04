@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.google.firebase
+package com.herolynx.elepantry.ext.google.firebase
 
 import android.os.SystemClock
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount

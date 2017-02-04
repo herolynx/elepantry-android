@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.google.auth.view
+package com.herolynx.elepantry.auth
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -16,11 +16,11 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.view.WithProgressDialog
 import com.herolynx.elepantry.core.view.toast
-import com.herolynx.elepantry.google.auth.GoogleAuth
+import com.herolynx.elepantry.ext.google.auth.GoogleAuth
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
-class GoogleSignInActivity : AppCompatActivity(), WithProgressDialog {
+class SignInActivity : AppCompatActivity(), WithProgressDialog {
 
     override var mProgressDialog: ProgressDialog? = null
 
@@ -59,7 +59,7 @@ class GoogleSignInActivity : AppCompatActivity(), WithProgressDialog {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_google)
+        setContentView(R.layout.activity_sign_in)
         bindView()
         initViewListeners()
         initFirebase()
@@ -95,7 +95,7 @@ class GoogleSignInActivity : AppCompatActivity(), WithProgressDialog {
                     .onSuccess { account ->
                         debug("[Firebase] Logging in - account id: %s", account.id)
                         showProgressDialog(this)
-                        com.herolynx.elepantry.google.firebase.FirebaseAuth.logIn(account)
+                        com.herolynx.elepantry.ext.google.firebase.FirebaseAuth.logIn(account)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe { auth ->

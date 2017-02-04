@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.google.auth
+package com.herolynx.elepantry.ext.google.auth
 
 import android.content.Context
 import android.content.Intent
