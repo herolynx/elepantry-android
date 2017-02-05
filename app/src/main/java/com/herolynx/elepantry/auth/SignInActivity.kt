@@ -5,12 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.herolynx.elepantry.Intents
-import com.herolynx.elepantry.MainActivity
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.info
-import com.herolynx.elepantry.core.navigation.navigateTo
 import com.herolynx.elepantry.core.view.WithProgressDialog
 import com.herolynx.elepantry.core.view.toast
 import com.herolynx.elepantry.ext.google.auth.GoogleAuth
@@ -30,7 +28,7 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
         FirebaseAuth.getCurrentUser()
                 .onSuccess { u ->
                     info("User already logged in - id: %s", u.uid)
-                    navigateTo(MainActivity::class.java)
+//                    navigateTo(MainActivity::class.java)
                 }
     }
 
@@ -39,6 +37,18 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
         setContentView(R.layout.activity_sign_in)
         initViewListeners()
         redirectLoggedInUser()
+//        val api = GoogleAuth.build(this, { connectionResult -> error("[GoogleApi] Connection failed: %s", connectionResult) })
+
+        GoogleAuth.silentLogIn(this, { connectionResult -> error("[GoogleApi][SilentSignIn] Connection failed: %s", connectionResult) })
+                .filter { r -> r.isDefined() }
+                .map { r -> r.get() }
+                .map { account ->
+                    debug("[Google][SilentSignIn] Account: %s", account.idToken)
+                }
+
+//        debug("[Google] IsConnected: %s", api.isConnected)
+//        GoogleDrive(api)
+//                .search()
     }
 
     override fun onRestart() {
@@ -68,7 +78,7 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
                                 .subscribe(
                                         { auth ->
                                             hideProgressDialog()
-                                            navigateTo(MainActivity::class.java)
+//                                            navigateTo(MainActivity::class.java)
                                         },
                                         { ex ->
                                             error("[Firebase] Couldn't log in user", ex)

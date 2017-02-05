@@ -11,7 +11,10 @@ import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Scope
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.ext.google.generic.toObservable
+import org.funktionale.option.Option
 import org.funktionale.tries.Try
+import rx.Observable
 
 object GoogleAuth {
 
@@ -28,6 +31,16 @@ object GoogleAuth {
         } else {
             return Try.Failure(RuntimeException("Google sign in error - status: " + result.status))
         }
+    }
+
+    fun silentLogIn(fragmentActivity: FragmentActivity, handler: (ConnectionResult) -> Unit): Observable<Option<GoogleSignInAccount>> {
+        val api = build(fragmentActivity, handler)
+        return Auth.GoogleSignInApi.silentSignIn(api).
+                toObservable()
+                .map { result ->
+                    result.filter { r -> r.isSuccess }
+                            .map { r -> r.signInAccount!! }
+                }
     }
 
     fun logIn(fragmentActivity: FragmentActivity, handler: (ConnectionResult) -> Unit): Intent {

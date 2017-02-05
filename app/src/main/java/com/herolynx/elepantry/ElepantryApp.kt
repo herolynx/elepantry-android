@@ -4,4 +4,8 @@ import android.app.Application
 
 class ElepantryApp : Application() {
 
+    override fun onCreate() {
+        super.onCreate()
+    }
+
 }
