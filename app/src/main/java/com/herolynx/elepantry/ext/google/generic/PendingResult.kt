@@ -10,7 +10,7 @@ import rx.Observable
 
 fun <T : Result> OptionalPendingResult<T>.toObservable(delayMs: Long = 100): Observable<Option<T>> {
     return Observable.defer {
-        while (!isCanceled() && !isDone()) {
+        while (!isCanceled() || !isDone()) {
             SystemClock.sleep(delayMs)
         }
         val result = get().toOption()
