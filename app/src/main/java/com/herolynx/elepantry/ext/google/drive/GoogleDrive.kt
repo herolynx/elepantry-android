@@ -1,50 +1,40 @@
 package com.herolynx.elepantry.ext.google.drive
 
-//import com.google.android.gms.drive.Drive
-//import com.google.android.gms.drive.query.Filters
-//import com.google.android.gms.drive.query.Query
-//import com.google.android.gms.drive.query.SearchableField
-import com.google.android.gms.common.api.GoogleApiClient
+import android.content.Context
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.api.services.drive.Drive
 import com.herolynx.elepantry.core.log.debug
+import java.util.*
 
 
-class GoogleDrive(private val api: GoogleApiClient) {
+class GoogleDrive(private val service: Drive) {
 
     fun search(text: String = "") {
         debug("[GDrive] Searching: %s", text)
 
-//        val dir = Drive.DriveApi.getAppFolder(api)
-//        debug("[GDrive] Dir: %s", dir.driveId)
-//        val query = Query.Builder()
-//                .addFilter(Filters.contains(SearchableField.TITLE, text))
-////                .setPageToken(mNextPageToken)
-//                .build()
-//        Drive.DriveApi
-//                .query(api, query)
-//                .setResultCallback { result ->
-//                    debug("[GDrive] Result: %s", result.status)
-//                    if (result.status.isSuccess) {
-//                        result.metadataBuffer.forEach { item ->
-//                            debug("[GDrive] File: %s", item.title)
-//                        }
-//                    }
-//                }
+        service.files().list().execute().files.forEach { f ->
+            debug("[GoogleDrive] File: " + f.name)
+        }
+
     }
 
-//    companion object Factory {
-//
-//        fun create(c: Context): GoogleDrive {
-//            val mGoogleApiClient = GoogleApiClient.Builder(c)
-//                    .addApi(Drive.API)
-//                    .addScope(Drive.SCOPE_FILE)
-//                    .addOnConnectionFailedListener { r ->
-//                        error("[GDrive] Couldn't connect to Google Drive - code: " + r.errorCode + ", msg: " + r.errorMessage)
-//                    }
-//                    .build()
-//            mGoogleApiClient.connect()
-//            return GoogleDrive(mGoogleApiClient)
-//        }
-//
-//    }
+    companion object Factory {
+
+        private val HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport()
+        private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
+
+        fun create(account: GoogleSignInAccount, c: Context): GoogleDrive {
+            val credential = GoogleAccountCredential.usingOAuth2(
+                    c,
+                    Collections.singleton("https://www.googleapis.com/auth/drive.readonly")
+            )
+            credential.setSelectedAccount(account.account)
+            return GoogleDrive(Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).build())
+        }
+
+    }
 
 }

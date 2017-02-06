@@ -15,8 +15,6 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.herolynx.elepantry.auth.SignInActivity
 import com.herolynx.elepantry.core.navigation.navigateTo
-import com.herolynx.elepantry.ext.google.auth.GoogleAuth
-import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 
 class MainActivity : AppCompatActivity() {
 
@@ -70,9 +68,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         initViewHandlers()
         initToolbar(toolbar)
-        val api = GoogleAuth.connect(this, { })
-        GoogleDrive(api)
-                .search()
     }
 
     override fun onBackPressed() {
