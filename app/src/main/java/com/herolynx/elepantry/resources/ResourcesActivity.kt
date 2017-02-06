@@ -1,4 +1,4 @@
-package com.herolynx.elepantry
+package com.herolynx.elepantry.resources
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -13,16 +13,18 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
+import com.herolynx.elepantry.R
 import com.herolynx.elepantry.auth.SignInActivity
 import com.herolynx.elepantry.core.func.toObservable
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.navigation.navigateTo
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
+import com.herolynx.elepantry.getAppContext
 import org.funktionale.option.toOption
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
-class MainActivity : AppCompatActivity() {
+class ResourcesActivity : AppCompatActivity() {
 
     private fun initViewHandlers() {
         val fab = findViewById(R.id.fab) as FloatingActionButton
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.resources_view)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         initViewHandlers()
@@ -97,7 +99,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.top_menu, menu)
         return true
     }
 
