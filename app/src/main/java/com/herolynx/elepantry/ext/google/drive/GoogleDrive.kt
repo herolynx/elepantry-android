@@ -8,6 +8,7 @@ import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.model.File
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.ext.google.GoogleConfig
 import rx.Observable
 import java.util.*
 
@@ -28,7 +29,7 @@ class GoogleDrive(private val service: Drive) {
         fun create(account: GoogleSignInAccount, c: Context): GoogleDrive {
             val credential = GoogleAccountCredential.usingOAuth2(
                     c,
-                    Collections.singleton("https://www.googleapis.com/auth/drive.readonly")
+                    Collections.singleton(GoogleConfig.DRIVE_READONLY_API_URL)
             )
             credential.setSelectedAccount(account.account)
             return GoogleDrive(Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).build())

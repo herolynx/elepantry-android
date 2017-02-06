@@ -8,8 +8,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.Scope
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.ext.google.GoogleConfig
 import org.funktionale.tries.Try
 
 object GoogleAuth {
@@ -43,7 +43,7 @@ object GoogleAuth {
 
     private fun getSignInOptions(c: Context): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(Scope("https://www.googleapis.com/auth/drive.readonly"))
+                .requestScopes(GoogleConfig.DRIVE_READONLY_API)
                 .requestIdToken(c.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
