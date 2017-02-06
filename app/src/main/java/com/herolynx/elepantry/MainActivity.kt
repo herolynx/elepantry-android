@@ -12,29 +12,78 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.google.firebase.auth.FirebaseAuth
+import com.herolynx.elepantry.auth.SignInActivity
+import com.herolynx.elepantry.core.func.toObservable
+import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.navigation.navigateTo
+import com.herolynx.elepantry.ext.google.drive.GoogleDrive
+import org.funktionale.option.toOption
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() {
+
+    private fun initViewHandlers() {
+        val fab = findViewById(R.id.fab) as FloatingActionButton
+        fab.setOnClickListener(View.OnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+        })
+        initLeftMenuHandlers()
+    }
+
+    private fun initLeftMenuHandlers() {
+        val navigationView = findViewById(R.id.nav_view) as NavigationView
+        navigationView
+                .setNavigationItemSelectedListener { item ->
+                    val id = item.itemId
+
+                    if (id == R.id.nav_camera) {
+                        // Handle the camera action
+                    } else if (id == R.id.nav_gallery) {
+
+                    } else if (id == R.id.nav_slideshow) {
+
+                    } else if (id == R.id.nav_manage) {
+
+                    } else if (id == R.id.nav_share) {
+
+                    } else if (id == R.id.nav_send) {
+
+                    }
+
+                    val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+                    drawer.closeDrawer(GravityCompat.START)
+                    true
+                }
+    }
+
+    private fun initToolbar(toolbar: Toolbar) {
+        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val toggle = ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        drawer.setDrawerListener(toggle)
+        toggle.syncState()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener(View.OnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        })
-
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
-        val toggle = ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer.setDrawerListener(toggle)
-        toggle.syncState()
-
-        val navigationView = findViewById(R.id.nav_view) as NavigationView
-        navigationView.setNavigationItemSelectedListener(this)
+        initViewHandlers()
+        initToolbar(toolbar)
+        getAppContext()
+                .flatMap { a -> a.getMainAccount().toOption() }
+                .map { acc -> GoogleDrive.create(acc, this) }
+                .toObservable()
+                .flatMap { gDrive -> gDrive.search() }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { f ->
+                    debug("[File] Name: " + f.name)
+                }
     }
 
     override fun onBackPressed() {
@@ -60,32 +109,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         if (id == R.id.action_settings) {
+            FirebaseAuth.getInstance().signOut()
+//            GoogleAuth.logout(GoogleAuth.build(this, {}))
+            navigateTo(SignInActivity::class.java)
             return true
         }
 
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        val id = item.itemId
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
-        drawer.closeDrawer(GravityCompat.START)
-        return true
-    }
 }

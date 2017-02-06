@@ -7,19 +7,12 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.Scope
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.ext.google.GoogleConfig
 import org.funktionale.tries.Try
 
 object GoogleAuth {
-
-    fun connect(fragmentActivity: FragmentActivity, handler: (ConnectionResult) -> Unit): GoogleApiClient {
-        val api = build(fragmentActivity, handler)
-        api.connect()
-        return api
-    }
 
     fun onLogInResult(data: Intent): Try<GoogleSignInAccount> {
         val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
@@ -45,14 +38,12 @@ object GoogleAuth {
         return GoogleApiClient.Builder(fragmentActivity)
                 .enableAutoManage(fragmentActivity, onFailedHandler)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, getSignInOptions(fragmentActivity))
-//                .addApi(Drive.API)
                 .build()
     }
 
     private fun getSignInOptions(c: Context): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(Scope(Scopes.DRIVE_FILE))
-                .requestScopes(Scope(Scopes.DRIVE_APPFOLDER))
+                .requestScopes(GoogleConfig.DRIVE_READONLY_API)
                 .requestIdToken(c.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
