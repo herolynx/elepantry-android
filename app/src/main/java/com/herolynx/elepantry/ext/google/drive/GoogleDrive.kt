@@ -18,8 +18,6 @@ class GoogleDrive(private val service: Drive) {
         return Observable.defer {
             Observable.from(service.files().list().execute().files.asIterable())
         }
-                .filter { f -> f != null }
-                .map { f -> f!! }
     }
 
     companion object Factory {

@@ -14,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.herolynx.elepantry.auth.SignInActivity
+import com.herolynx.elepantry.core.func.toObservable
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.navigation.navigateTo
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
@@ -76,13 +77,12 @@ class MainActivity : AppCompatActivity() {
         getAppContext()
                 .flatMap { a -> a.getMainAccount().toOption() }
                 .map { acc -> GoogleDrive.create(acc, this) }
-                .map { gDrive ->
-                    gDrive.search()
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { f ->
-                                debug("[File] Name: " + f.name)
-                            }
+                .toObservable()
+                .flatMap { gDrive -> gDrive.search() }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { f ->
+                    debug("[File] Name: " + f.name)
                 }
     }
 
