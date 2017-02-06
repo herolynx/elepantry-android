@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.herolynx.elepantry.Intents
-import com.herolynx.elepantry.MainActivity
+import com.herolynx.elepantry.resources.ResourcesActivity
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.func.toObservable
 import com.herolynx.elepantry.core.log.debug
@@ -36,7 +36,7 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        setContentView(R.layout.sign_in_view)
         initViewListeners()
         redirectLoggedInUser()
         signIn()
@@ -72,7 +72,7 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
                     .subscribe(
                             { auth ->
                                 hideProgressDialog()
-                                navigateTo(MainActivity::class.java)
+                                navigateTo(ResourcesActivity::class.java)
                             },
                             { ex ->
                                 hideProgressDialog()
