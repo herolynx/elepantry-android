@@ -6,19 +6,20 @@ import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
+import com.google.api.services.drive.model.File
 import com.herolynx.elepantry.core.log.debug
+import rx.Observable
 import java.util.*
-
 
 class GoogleDrive(private val service: Drive) {
 
-    fun search(text: String = "") {
-        debug("[GDrive] Searching: %s", text)
-
-        service.files().list().execute().files.forEach { f ->
-            debug("[GoogleDrive] File: " + f.name)
+    fun search(text: String = ""): Observable<File> {
+        debug("[GoogleDrive] Searching: %s", text)
+        return Observable.defer {
+            Observable.from(service.files().list().execute().files.asIterable())
         }
-
+                .filter { f -> f != null }
+                .map { f -> f!! }
     }
 
     companion object Factory {

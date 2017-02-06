@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.MainActivity
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.func.toObservable
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.navigation.navigateTo
@@ -14,6 +15,7 @@ import com.herolynx.elepantry.core.view.WithProgressDialog
 import com.herolynx.elepantry.core.view.toast
 import com.herolynx.elepantry.ext.google.auth.GoogleAuth
 import com.herolynx.elepantry.ext.google.firebase.FirebaseAuth
+import com.herolynx.elepantry.getAppContext
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -26,10 +28,10 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
     }
 
     private fun redirectLoggedInUser() {
-        FirebaseAuth.getCurrentUser()
-                .onSuccess { u ->
-                    navigateTo(MainActivity::class.java)
-                }
+//        FirebaseAuth.getCurrentUser()
+//                .onSuccess { u ->
+//                    navigateTo(MainActivity::class.java)
+//                }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +39,7 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
         setContentView(R.layout.activity_sign_in)
         initViewListeners()
         redirectLoggedInUser()
+        signIn()
     }
 
     override fun onRestart() {
@@ -52,29 +55,31 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Intents.GOOGLE_SIGN_IN) {
+            showProgressDialog(this)
             GoogleAuth.onLogInResult(data)
                     .onFailure { ex ->
                         error("[Google] Couldn't log in user", ex)
                         toast(R.string.auth_failed, "Google Account")
                     }
-                    .onSuccess { account ->
+                    .toObservable()
+                    .map { account ->
                         debug("[Firebase] Logging in - account id: %s", account.id)
-                        showProgressDialog(this)
+                        getAppContext().map { c -> c.setMainAccount(account) }
                         FirebaseAuth.logIn(account)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(
-                                        { auth ->
-                                            hideProgressDialog()
-                                            navigateTo(MainActivity::class.java)
-                                        },
-                                        { ex ->
-                                            hideProgressDialog()
-                                            error("[Firebase] Couldn't log in user", ex)
-                                            toast(R.string.auth_failed, "Firebase")
-                                        }
-                                )
                     }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            { auth ->
+                                hideProgressDialog()
+                                navigateTo(MainActivity::class.java)
+                            },
+                            { ex ->
+                                hideProgressDialog()
+                                error("[Firebase] Couldn't log in user", ex)
+                                toast(R.string.auth_failed, "Firebase")
+                            }
+                    )
         }
     }
 

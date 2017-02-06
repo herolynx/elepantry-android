@@ -14,7 +14,12 @@ import android.view.MenuItem
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.herolynx.elepantry.auth.SignInActivity
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.navigation.navigateTo
+import com.herolynx.elepantry.ext.google.drive.GoogleDrive
+import org.funktionale.option.toOption
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,6 +73,17 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         initViewHandlers()
         initToolbar(toolbar)
+        getAppContext()
+                .flatMap { a -> a.getMainAccount().toOption() }
+                .map { acc -> GoogleDrive.create(acc, this) }
+                .map { gDrive ->
+                    gDrive.search()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe { f ->
+                                debug("[File] Name: " + f.name)
+                            }
+                }
     }
 
     override fun onBackPressed() {
