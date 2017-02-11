@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -16,6 +18,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveUseCases
 import com.herolynx.elepantry.getAppContext
+import com.herolynx.elepantry.resources.view.ResourceList
 
 class ResourcesActivity : AppCompatActivity() {
 
@@ -75,6 +78,21 @@ class ResourcesActivity : AppCompatActivity() {
                         getAppContext(),
                         { account -> GoogleDrive.create(account, this) }
                 )
+                .subscribe { r ->
+
+                }
+        val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
+        val listAdapter = ResourceList.adapter()
+        listView.adapter = listAdapter
+        listView.layoutManager = LinearLayoutManager(this)
+        listAdapter.add(Resource("rx.txt"))
+        listAdapter.notifyDataSetChanged()
+
+//        listView.scrollEvents()
+//                .map { event ->
+//                    info("!!! Scroll event")
+//
+//                }
     }
 
     override fun onBackPressed() {
