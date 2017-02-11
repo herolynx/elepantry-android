@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.Resource
-import com.herolynx.elepantry.ui.ListAdapter
 
 object ResourceList {
 

@@ -15,6 +15,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.log.info
+import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveUseCases
 import com.herolynx.elepantry.getAppContext
@@ -72,7 +74,25 @@ class ResourcesActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         initViewHandlers()
         initToolbar(toolbar)
-        //TODO sample logic - remove it
+
+        val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
+        val listAdapter = ResourceList.adapter()
+        listView.adapter = listAdapter
+        val linearLayoutManager = LinearLayoutManager(this)
+        listView.layoutManager = linearLayoutManager
+        listView.onInfiniteLoading(linearLayoutManager)
+                .subscribe { page ->
+                    info("[LazyLoading] NextPage: " + page)
+                    (1 until 20).forEach { i ->
+                        listAdapter.add(Resource("" + page + "-" + i + ".txt"))
+                    }
+                    listAdapter.notifyDataSetChanged()
+                }
+        (1 until 20).forEach { i ->
+            listAdapter.add(Resource("1-" + i + ".txt"))
+        }
+        listAdapter.notifyDataSetChanged()
+
         GoogleDriveUseCases
                 .search(
                         getAppContext(),
@@ -81,18 +101,6 @@ class ResourcesActivity : AppCompatActivity() {
                 .subscribe { r ->
 
                 }
-        val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
-        val listAdapter = ResourceList.adapter()
-        listView.adapter = listAdapter
-        listView.layoutManager = LinearLayoutManager(this)
-        listAdapter.add(Resource("rx.txt"))
-        listAdapter.notifyDataSetChanged()
-
-//        listView.scrollEvents()
-//                .map { event ->
-//                    info("!!! Scroll event")
-//
-//                }
     }
 
     override fun onBackPressed() {
