@@ -21,6 +21,8 @@ import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveUseCases
 import com.herolynx.elepantry.getAppContext
 import com.herolynx.elepantry.resources.view.ResourceList
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class ResourcesActivity : AppCompatActivity() {
 
@@ -80,18 +82,22 @@ class ResourcesActivity : AppCompatActivity() {
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         listView.layoutManager = linearLayoutManager
+
+        val generateItems: (Int) -> Unit = { page ->
+            (1 until 20).forEach { i ->
+                listAdapter.add(Resource("" + page + "-" + i + ".txt"))
+            }
+            listAdapter.notifyDataSetChanged()
+        }
+
         listView.onInfiniteLoading(linearLayoutManager)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { page ->
                     info("[LazyLoading] NextPage: " + page)
-                    (1 until 20).forEach { i ->
-                        listAdapter.add(Resource("" + page + "-" + i + ".txt"))
-                    }
-                    listAdapter.notifyDataSetChanged()
+                    generateItems(page)
                 }
-        (1 until 20).forEach { i ->
-            listAdapter.add(Resource("1-" + i + ".txt"))
-        }
-        listAdapter.notifyDataSetChanged()
+        generateItems(0)
 
         GoogleDriveUseCases
                 .search(
