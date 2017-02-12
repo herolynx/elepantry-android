@@ -25,8 +25,13 @@ android {
     lintOptions {
         abortOnError false
     }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    dataBinding {
+        enabled = true
     }
 
 
@@ -45,15 +50,18 @@ dependencies {
     //Core - Android
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
 
     //RX
     compile 'io.reactivex:rxkotlin:0.60.0'
     compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.jakewharton.rxbinding:rxbinding-kotlin:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7-kotlin:1.0.0'
 
     //Google
     compile 'com.google.firebase:firebase-auth:10.0.1'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
-//    compile 'com.google.android.gms:play-services-drive:10.0.1'
     compile 'com.google.api-client:google-api-client:1.22.0'
     compile 'com.google.api-client:google-api-client-android:1.22.0'
     compile 'com.google.apis:google-api-services-drive:v3-rev56-1.22.0'

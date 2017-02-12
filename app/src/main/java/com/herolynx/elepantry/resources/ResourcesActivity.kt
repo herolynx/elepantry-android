@@ -8,20 +8,32 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
+import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
-import com.herolynx.elepantry.ext.google.drive.GoogleDriveUseCases
-import com.herolynx.elepantry.getAppContext
+import com.herolynx.elepantry.ext.google.drive.GoogleDriveSearch
+import com.herolynx.elepantry.resources.view.ResourceItemView
+import com.herolynx.elepantry.resources.view.ResourceList
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class ResourcesActivity : AppCompatActivity() {
 
+    private var googleDrive: GoogleDrive? = null
+    private var googleSearch: GoogleDriveSearch? = null
+    private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
+
     private fun initViewHandlers() {
         val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener(View.OnClickListener { view ->
+        fab.setOnClickListener({ view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         })
@@ -69,12 +81,37 @@ class ResourcesActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         initViewHandlers()
         initToolbar(toolbar)
-        //TODO sample logic - remove it
-        GoogleDriveUseCases
-                .search(
-                        getAppContext(),
-                        { account -> GoogleDrive.create(account, this) }
-                )
+        initResourceView()
+        googleDrive = GoogleDrive.create(this).get()
+        googleSearch = googleDrive?.search()
+        loadNextResults()
+    }
+
+    private fun initResourceView() {
+        val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
+        listAdapter = ResourceList.adapter()
+        listView.adapter = listAdapter
+        val linearLayoutManager = LinearLayoutManager(this)
+        listView.layoutManager = linearLayoutManager
+
+        listView.onInfiniteLoading(linearLayoutManager)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { page ->
+                    debug("[LazyLoading] NextPage: " + page)
+                    loadNextResults()
+                }
+    }
+
+    private fun loadNextResults() {
+        (googleSearch?.next() ?: Observable.empty())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { result ->
+                    result.files.map { r -> listAdapter?.add(r) }
+                    listAdapter?.notifyDataSetChanged()
+                    googleSearch = result
+                }
     }
 
     override fun onBackPressed() {

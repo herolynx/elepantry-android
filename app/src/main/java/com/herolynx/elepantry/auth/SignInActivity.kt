@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.google.android.gms.common.SignInButton
 import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.view.WithProgressDialog
@@ -20,7 +21,12 @@ class SignInActivity : AppCompatActivity(), WithProgressDialog {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign_in_view)
         initViewListeners()
-        AuthUseCases.startLogIn(this)
+        initActionHandlers()
+    }
+
+    private fun initActionHandlers() {
+        val signIn = findViewById(R.id.sign_in_button) as SignInButton
+        signIn.setOnClickListener { AuthUseCases.startLogIn(this) }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
