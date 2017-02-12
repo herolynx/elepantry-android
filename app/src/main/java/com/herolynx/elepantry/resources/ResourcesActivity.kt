@@ -13,22 +13,27 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.herolynx.elepantry.R
-import com.herolynx.elepantry.core.log.info
+import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
-import com.herolynx.elepantry.ext.google.drive.GoogleDriveUseCases
-import com.herolynx.elepantry.getAppContext
+import com.herolynx.elepantry.ext.google.drive.GoogleDriveSearch
+import com.herolynx.elepantry.resources.view.ResourceItemView
 import com.herolynx.elepantry.resources.view.ResourceList
+import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 class ResourcesActivity : AppCompatActivity() {
 
+    private var googleDrive: GoogleDrive? = null
+    private var googleSearch: GoogleDriveSearch? = null
+    private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
+
     private fun initViewHandlers() {
         val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener(View.OnClickListener { view ->
+        fab.setOnClickListener({ view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         })
@@ -76,36 +81,36 @@ class ResourcesActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         initViewHandlers()
         initToolbar(toolbar)
+        initResourceView()
+        googleDrive = GoogleDrive.create(this).get()
+        googleSearch = googleDrive?.search()
+        loadNextResults()
+    }
 
+    private fun initResourceView() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
-        val listAdapter = ResourceList.adapter()
+        listAdapter = ResourceList.adapter()
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         listView.layoutManager = linearLayoutManager
-
-        val generateItems: (Int) -> Unit = { page ->
-            (1 until 20).forEach { i ->
-                listAdapter.add(Resource("" + page + "-" + i + ".txt"))
-            }
-            listAdapter.notifyDataSetChanged()
-        }
 
         listView.onInfiniteLoading(linearLayoutManager)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { page ->
-                    info("[LazyLoading] NextPage: " + page)
-                    generateItems(page)
+                    debug("[LazyLoading] NextPage: " + page)
+                    loadNextResults()
                 }
-        generateItems(0)
+    }
 
-        GoogleDriveUseCases
-                .search(
-                        getAppContext(),
-                        { account -> GoogleDrive.create(account, this) }
-                )
-                .subscribe { r ->
-
+    private fun loadNextResults() {
+        (googleSearch?.next() ?: Observable.empty())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { result ->
+                    result.files.map { r -> listAdapter?.add(r) }
+                    listAdapter?.notifyDataSetChanged()
+                    googleSearch = result
                 }
     }
 
