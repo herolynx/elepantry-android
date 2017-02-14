@@ -19,6 +19,7 @@ import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveSearch
+import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.view.ResourceItemView
 import com.herolynx.elepantry.resources.view.ResourceList
 import rx.Observable
