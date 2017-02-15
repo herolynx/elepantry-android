@@ -1,6 +1,7 @@
 package com.herolynx.elepantry.resources
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -15,11 +16,16 @@ import android.view.Menu
 import android.view.MenuItem
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.log.info
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveSearch
+import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.resources.model.Resource
+import com.herolynx.elepantry.resources.model.UserId
+import com.herolynx.elepantry.resources.model.UserViews
+import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.view.ResourceItemView
 import com.herolynx.elepantry.resources.view.ResourceList
 import rx.Observable
@@ -85,7 +91,18 @@ class ResourcesActivity : AppCompatActivity() {
         initResourceView()
         googleDrive = GoogleDrive.create(this).get()
         googleSearch = googleDrive?.search()
-        loadNextResults()
+//        loadNextResults()
+        FirebaseDb.userViews.read()
+                .subscribe { uv -> info("[111] User views: %s", uv) }
+        1.until(5).forEach { i ->
+            FirebaseDb.userViews.save(
+                    UserViews(userId = UserId("aa"), views = listOf(
+                            View(name = "v" + i),
+                            View(name = "v22")
+                    ))
+            )
+            SystemClock.sleep(500)
+        }
     }
 
     private fun initResourceView() {
