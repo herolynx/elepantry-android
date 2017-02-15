@@ -15,4 +15,8 @@
     <string name="auth_failed">Authentication failed: %s</string>
     <string name="google_title_text">Google Sign In</string>
 
+    <!-- VIEWS -->
+    <string name="google_drive">Google Drive</string>
+    <string name="user_views">Your views</string>
+
 </resources>

@@ -1,7 +1,6 @@
 package com.herolynx.elepantry.resources
 
 import android.os.Bundle
-import android.os.SystemClock
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -16,16 +15,12 @@ import android.view.Menu
 import android.view.MenuItem
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
-import com.herolynx.elepantry.core.log.info
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveSearch
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.model.UserId
-import com.herolynx.elepantry.resources.model.UserViews
-import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.view.ResourceItemView
 import com.herolynx.elepantry.resources.view.ResourceList
 import rx.Observable
@@ -49,26 +44,10 @@ class ResourcesActivity : AppCompatActivity() {
 
     private fun initLeftMenuHandlers() {
         val navigationView = findViewById(R.id.nav_view) as NavigationView
+        initUserViews(navigationView.menu)
         navigationView
                 .setNavigationItemSelectedListener { item ->
-                    val id = item.itemId
-
-                    if (id == R.id.nav_camera) {
-                        // Handle the camera action
-                    } else if (id == R.id.nav_gallery) {
-
-                    } else if (id == R.id.nav_slideshow) {
-
-                    } else if (id == R.id.nav_manage) {
-
-                    } else if (id == R.id.nav_share) {
-
-                    } else if (id == R.id.nav_send) {
-
-                    }
-
-                    val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
-                    drawer.closeDrawer(GravityCompat.START)
+                    debug("[LeftMenu] Item selected: %s", item.title)
                     true
                 }
     }
@@ -91,18 +70,22 @@ class ResourcesActivity : AppCompatActivity() {
         initResourceView()
         googleDrive = GoogleDrive.create(this).get()
         googleSearch = googleDrive?.search()
-//        loadNextResults()
+        loadNextResults()
+    }
+
+    private fun initUserViews(menu: Menu) {
+        debug("[initUserViews] Creating...")
         FirebaseDb.userViews.read()
-                .subscribe { uv -> info("[111] User views: %s", uv) }
-        1.until(5).forEach { i ->
-            FirebaseDb.userViews.save(
-                    UserViews(userId = UserId("aa"), views = listOf(
-                            View(name = "v" + i),
-                            View(name = "v22")
-                    ))
-            )
-            SystemClock.sleep(500)
-        }
+                .subscribe { uv ->
+                    var i = Menu.FIRST
+                    menu.clear()
+                    menu.add(0, i++, Menu.NONE, getString(R.string.google_drive)).setIcon(R.drawable.ic_menu_gallery)
+                    val menuUserViews = menu.addSubMenu(0, i++, Menu.NONE, getString(R.string.user_views))
+                    uv.views.map { v ->
+                        debug("[initUserViews] Adding view: %s", v.name)
+                        menuUserViews.add(i, i++, Menu.NONE, v.name).setIcon(R.drawable.ic_menu_share)
+                    }
+                }
     }
 
     private fun initResourceView() {
@@ -142,12 +125,12 @@ class ResourcesActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.top_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        debug("[TopMenu] Item selected: %s", item.title)
         val id = item.itemId
 
         if (id == R.id.action_settings) {
