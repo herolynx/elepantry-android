@@ -13,23 +13,52 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
+import com.herolynx.elepantry.core.view.download
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveSearch
+import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
+import com.herolynx.elepantry.getAppContext
+import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.view.ResourceItemView
 import com.herolynx.elepantry.resources.view.ResourceList
+import org.funktionale.option.toOption
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+
 
 class ResourcesActivity : AppCompatActivity() {
 
     private var googleDrive: GoogleDrive? = null
     private var googleSearch: GoogleDriveSearch? = null
     private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
+
+    private fun initUserBadge(v: ViewGroup) {
+        getAppContext().map { c -> c.googleAccount!! }
+                .map { user ->
+                    debug("[UserBadge] Displaying user info: %s", user)
+                    val userName = v.findViewById(R.id.menu_user_name) as TextView
+                    userName.text = user.displayName
+                    user.photoUrl.toOption()
+                            .map { url ->
+                                url
+                                        .download()
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe { bitmap ->
+                                            val userImage = v.findViewById(R.id.menu_user_picture) as ImageView
+                                            userImage.setImageBitmap(bitmap)
+                                        }
+                            }
+                }
+    }
 
     private fun initViewHandlers() {
         val fab = findViewById(R.id.fab) as FloatingActionButton
@@ -42,26 +71,11 @@ class ResourcesActivity : AppCompatActivity() {
 
     private fun initLeftMenuHandlers() {
         val navigationView = findViewById(R.id.nav_view) as NavigationView
+        initUserViews(navigationView.menu)
+        initUserBadge(navigationView.getHeaderView(0) as ViewGroup)
         navigationView
                 .setNavigationItemSelectedListener { item ->
-                    val id = item.itemId
-
-                    if (id == R.id.nav_camera) {
-                        // Handle the camera action
-                    } else if (id == R.id.nav_gallery) {
-
-                    } else if (id == R.id.nav_slideshow) {
-
-                    } else if (id == R.id.nav_manage) {
-
-                    } else if (id == R.id.nav_share) {
-
-                    } else if (id == R.id.nav_send) {
-
-                    }
-
-                    val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
-                    drawer.closeDrawer(GravityCompat.START)
+                    debug("[LeftMenu] Item selected: %s", item.title)
                     true
                 }
     }
@@ -85,6 +99,21 @@ class ResourcesActivity : AppCompatActivity() {
         googleDrive = GoogleDrive.create(this).get()
         googleSearch = googleDrive?.search()
         loadNextResults()
+    }
+
+    private fun initUserViews(menu: Menu) {
+        debug("[initUserViews] Creating...")
+        FirebaseDb.userViews.read()
+                .subscribe { uv ->
+                    var i = Menu.FIRST
+                    menu.clear()
+                    menu.add(0, i++, Menu.NONE, getString(R.string.google_drive)).setIcon(R.drawable.ic_menu_gallery)
+                    val menuUserViews = menu.addSubMenu(0, i++, Menu.NONE, getString(R.string.user_views))
+                    uv.views.map { v ->
+                        debug("[initUserViews] Adding view: %s", v.name)
+                        menuUserViews.add(i, i++, Menu.NONE, v.name).setIcon(R.drawable.ic_menu_share)
+                    }
+                }
     }
 
     private fun initResourceView() {
@@ -124,12 +153,12 @@ class ResourcesActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.top_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        debug("[TopMenu] Item selected: %s", item.title)
         val id = item.itemId
 
         if (id == R.id.action_settings) {

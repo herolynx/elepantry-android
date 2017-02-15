@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.ext.google.firebase
+package com.herolynx.elepantry.ext.google.firebase.auth
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.AuthResult
@@ -14,7 +14,7 @@ import rx.Observable
 object FirebaseAuth {
 
     fun getCurrentUser(): Try<FirebaseUser> {
-        return FirebaseAuth.getInstance()
+        return com.google.firebase.auth.FirebaseAuth.getInstance()
                 .currentUser
                 .toOption()
                 .map { u -> Try.Success(u) }
@@ -24,7 +24,7 @@ object FirebaseAuth {
     fun logIn(account: GoogleSignInAccount): Observable<AuthResult> {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
-        return FirebaseAuth.getInstance()
+        return com.google.firebase.auth.FirebaseAuth.getInstance()
                 .signInWithCredential(credential)
                 .toObservable()
     }

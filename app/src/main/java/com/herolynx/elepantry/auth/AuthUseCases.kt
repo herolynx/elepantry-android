@@ -14,7 +14,7 @@ import com.herolynx.elepantry.core.navigation.navigateTo
 import com.herolynx.elepantry.core.view.WithProgressDialog
 import com.herolynx.elepantry.core.view.toast
 import com.herolynx.elepantry.ext.google.auth.GoogleAuth
-import com.herolynx.elepantry.ext.google.firebase.FirebaseAuth
+import com.herolynx.elepantry.ext.google.firebase.auth.FirebaseAuth
 import com.herolynx.elepantry.getAppContext
 import com.herolynx.elepantry.resources.ResourcesActivity
 import org.funktionale.tries.Try

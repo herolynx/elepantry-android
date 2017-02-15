@@ -1,7 +1,8 @@
 package com.herolynx.elepantry.ext.google.drive
 
 import com.google.api.services.drive.Drive
-import com.herolynx.elepantry.resources.Resource
+import com.herolynx.elepantry.resources.model.Resource
+import com.herolynx.elepantry.resources.model.ResourceType
 import rx.Observable
 
 class GoogleDriveSearch(
@@ -21,7 +22,12 @@ class GoogleDriveSearch(
                     list,
                     false,
                     req.nextPageToken,
-                    req.files.map { f -> Resource(f.name) }
+                    req.files.map { f ->
+                        Resource(
+                                name = f.name,
+                                type = ResourceType.GOOGLE
+                        )
+                    }
             ))
         }
     }
