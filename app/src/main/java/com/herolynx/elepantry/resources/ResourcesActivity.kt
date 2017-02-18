@@ -11,8 +11,8 @@ import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveSearch
 import com.herolynx.elepantry.menu.LeftMenu
 import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.view.ResourceItemView
-import com.herolynx.elepantry.resources.view.ResourceList
+import com.herolynx.elepantry.resources.ui.ResourceItemView
+import com.herolynx.elepantry.resources.ui.ResourceList
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -40,7 +40,10 @@ class ResourcesActivity : LeftMenu() {
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         listView.layoutManager = linearLayoutManager
+        initListHandlers(listView, linearLayoutManager)
+    }
 
+    private fun initListHandlers(listView: RecyclerView, linearLayoutManager: LinearLayoutManager) {
         listView.onInfiniteLoading(linearLayoutManager)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
