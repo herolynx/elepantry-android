@@ -1,8 +1,8 @@
 package com.herolynx.elepantry.menu
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
@@ -11,12 +11,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
+import com.herolynx.elepantry.getAppContext
 
-abstract class LeftMenu : AppCompatActivity(), LeftMenuItems {
-
-    override val activity: Activity? = this
+abstract class LeftMenu : AppCompatActivity() {
 
     abstract val layoutWithMenuId: Int
 
@@ -37,6 +38,33 @@ abstract class LeftMenu : AppCompatActivity(), LeftMenuItems {
         })
         initLeftMenuHandlers()
     }
+
+    fun initLeftMenuHandlers() {
+        val navigationView = findViewById(R.id.nav_view) as NavigationView
+        initUserViews(navigationView.menu)
+        getAppContext().map { c -> UserBadge(navigationView.getHeaderView(0) as ViewGroup).display(c.user!!) }
+        navigationView
+                .setNavigationItemSelectedListener { item ->
+                    debug("[LeftMenu] Item selected: %s", item.title)
+                    true
+                }
+    }
+
+    private fun initUserViews(menu: Menu) {
+        debug("[initUserViews] Creating...")
+        FirebaseDb.userViews.read()
+                .subscribe { uv ->
+                    var i = Menu.FIRST
+                    menu.clear()
+                    menu.add(0, i++, Menu.NONE, getString(R.string.google_drive)).setIcon(R.drawable.ic_menu_gallery)
+                    val menuUserViews = menu.addSubMenu(0, i++, Menu.NONE, getString(R.string.user_views))
+                    uv.views.map { v ->
+                        debug("[initUserViews] Adding view: %s", v.name)
+                        menuUserViews.add(i, i++, Menu.NONE, v.name).setIcon(R.drawable.ic_menu_share)
+                    }
+                }
+    }
+
 
     private fun initToolbar(toolbar: Toolbar) {
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
