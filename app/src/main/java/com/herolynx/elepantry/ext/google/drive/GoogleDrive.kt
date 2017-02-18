@@ -40,7 +40,7 @@ class GoogleDrive(private val service: Drive) {
 
         fun create(activity: Activity): Option<GoogleDrive> {
             return activity.getAppContext()
-                    .flatMap { a -> a.getMainAccount().toOption() }
+                    .flatMap { a -> a.googleAccount.toOption() }
                     .map { acc -> create(acc, activity) }
         }
 

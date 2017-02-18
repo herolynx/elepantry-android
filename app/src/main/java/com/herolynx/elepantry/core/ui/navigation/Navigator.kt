@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.core.navigation
+package com.herolynx.elepantry.core.ui.navigation
 
 import android.app.Activity
 import android.content.Intent

@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.core.view
+package com.herolynx.elepantry.core.net
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

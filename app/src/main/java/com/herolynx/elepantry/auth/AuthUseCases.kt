@@ -10,9 +10,9 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.func.toObservable
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
-import com.herolynx.elepantry.core.navigation.navigateTo
-import com.herolynx.elepantry.core.view.WithProgressDialog
-import com.herolynx.elepantry.core.view.toast
+import com.herolynx.elepantry.core.ui.navigation.navigateTo
+import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
+import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.google.auth.GoogleAuth
 import com.herolynx.elepantry.ext.google.firebase.auth.FirebaseAuth
 import com.herolynx.elepantry.getAppContext
