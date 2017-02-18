@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.core.view
+package com.herolynx.elepantry.core.ui.notification
 
 import android.app.Activity
 import android.support.annotation.IdRes

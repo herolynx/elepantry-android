@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.common.SignInButton
 import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.R
-import com.herolynx.elepantry.core.view.WithProgressDialog
+import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 
 class SignInActivity : AppCompatActivity(), WithProgressDialog {
 

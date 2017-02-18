@@ -20,7 +20,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
-import com.herolynx.elepantry.core.view.download
+import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveSearch
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
