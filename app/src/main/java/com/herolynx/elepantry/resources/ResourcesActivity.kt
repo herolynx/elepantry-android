@@ -58,7 +58,11 @@ class ResourcesActivity : LeftMenu() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { result ->
-                    result.files.map { r -> listAdapter?.add(r) }
+                    result.files.map { r ->
+                        listAdapter?.add(r)
+                        //TODO remove it
+//                        FirebaseDb.userResources.save(r)
+                    }
                     listAdapter?.notifyDataSetChanged()
                     googleSearch = result
                 }

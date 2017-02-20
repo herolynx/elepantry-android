@@ -52,16 +52,14 @@ abstract class LeftMenu : AppCompatActivity() {
 
     private fun initUserViews(menu: Menu) {
         debug("[initUserViews] Creating...")
+        var i = Menu.FIRST
+        menu.clear()
+        menu.add(0, i++, Menu.NONE, getString(R.string.google_drive)).setIcon(R.drawable.ic_menu_gallery)
+        val menuUserViews = menu.addSubMenu(0, i++, Menu.NONE, getString(R.string.user_views))
         FirebaseDb.userViews.read()
-                .subscribe { uv ->
-                    var i = Menu.FIRST
-                    menu.clear()
-                    menu.add(0, i++, Menu.NONE, getString(R.string.google_drive)).setIcon(R.drawable.ic_menu_gallery)
-                    val menuUserViews = menu.addSubMenu(0, i++, Menu.NONE, getString(R.string.user_views))
-                    uv.views.map { v ->
-                        debug("[initUserViews] Adding view: %s", v.name)
-                        menuUserViews.add(i, i++, Menu.NONE, v.name).setIcon(R.drawable.ic_menu_share)
-                    }
+                .subscribe { v ->
+                    debug("[initUserViews] Adding view: %s", v.name)
+                    menuUserViews.add(i, i++, Menu.NONE, v.name).setIcon(R.drawable.ic_menu_share)
                 }
     }
 
