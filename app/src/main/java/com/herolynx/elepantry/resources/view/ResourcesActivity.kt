@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.rx.observe
+import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
@@ -17,8 +19,6 @@ import com.herolynx.elepantry.resources.view.ui.ResourceItemView
 import com.herolynx.elepantry.resources.view.ui.ResourceList
 import org.funktionale.tries.Try
 import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 
 
 class ResourcesActivity : LeftMenu() {
@@ -46,31 +46,43 @@ class ResourcesActivity : LeftMenu() {
 
     private fun initDataLoading(listView: RecyclerView, linearLayoutManager: LinearLayoutManager) {
         Observable.merge(
+                //initiate loading of first page
                 Observable.just(0),
+                //receive events about next needed pages to load
                 listView.onInfiniteLoading(linearLayoutManager)
         )
-                .map { pageNr ->
+                .flatMap { pageNr ->
                     debug("[PageRequest] Loading next page - number: %s", pageNr)
-                    resourcePage = if (resourcePage == null) resourceView?.search() else resourcePage!!.get().next()
-                    resourcePage!!
-                            .onSuccess { r -> debug("[PageRequest] Page loaded successfully - number: %s", pageNr) }
-                            .onFailure { ex -> error("[PageRequest] Loading error", ex) }
+                    loadNextPage()
                 }
                 .filter { p -> p.isSuccess() }
-                .map { p -> p.get() }
-                .map { p -> p.resources() }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { resources ->
-                    resources.subscribe(
-                            { r -> listAdapter?.add(r) },
-                            { ex -> error("[PageRequest] Page result error", ex) },
-                            {
-                                debug("[PageRequest] Page loaded")
-                                listAdapter?.notifyDataSetChanged()
-                            }
-                    )
-                }
+                .map { p -> p.get().resources() }
+                .schedule()
+                .observe()
+                .subscribe(
+                        { pageResources -> displayPage(pageResources) },
+                        { ex -> error("[PageRequest] Loading error", ex) }
+                )
     }
+
+    private fun displayPage(pageResources: Observable<Resource>) {
+        pageResources.subscribe(
+                { r -> listAdapter?.add(r) },
+                { ex -> error("[PageRequest] Page result error", ex) },
+                {
+                    debug("[PageRequest] Page loaded")
+                    listAdapter?.notifyDataSetChanged()
+                }
+        )
+    }
+
+    private fun loadNextPage() = Observable.defer {
+        resourcePage = if (resourcePage == null) resourceView?.search()
+        else if (resourcePage!!.isFailure()) resourcePage
+        else resourcePage!!.get().next()
+        Observable.just(resourcePage!!)
+    }
+            .schedule()
+
 
 }
