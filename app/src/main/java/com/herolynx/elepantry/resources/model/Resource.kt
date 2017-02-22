@@ -1,12 +1,10 @@
 package com.herolynx.elepantry.resources.model
 
 import com.herolynx.elepantry.user.model.UserId
-import java.util.*
 
 data class UserViews(val userId: UserId, val views: List<View> = listOf()) {
     constructor() : this(UserId(""))
 }
-
 
 data class Tag(val id: String = newId(), val name: String) {
     constructor() : this(name = "")
@@ -25,8 +23,8 @@ data class Resource(
         val type: ResourceType,
         val name: String,
         val tags: List<Tag> = listOf(),
-        val createdTime: Date? = null,
-        val lastModifiedDate: Date? = null,
+        val createdTime: String? = null,
+        val lastModifiedDate: String? = null,
         val downloadLink: String? = null,
         val extension: String? = null
 ) {

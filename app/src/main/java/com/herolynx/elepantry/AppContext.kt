@@ -21,6 +21,8 @@ interface AppContext {
                 googleAccount?.displayName!!,
                 googleAccount?.photoUrl!!
         )
+        //TODO remove after tests
+//        SampleData.initViews()
     }
 
 }

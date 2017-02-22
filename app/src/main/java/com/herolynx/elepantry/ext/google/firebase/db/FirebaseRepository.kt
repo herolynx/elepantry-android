@@ -12,15 +12,18 @@ import rx.Subscriber
 class FirebaseRepository<T>(
         private val rootRef: DatabaseReference,
         private val entityClass: Class<T>,
+        private val idGetter: (T) -> String,
         private val subscribers: MutableList<Subscriber<in T>> = mutableListOf()
 ) {
 
     private val valueListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            val t = dataSnapshot.getValue(entityClass)
-            if (t != null) {
-                debug("[Firebase][ValueEventListener][onDataChange] Value: %s", t)
-                subscribers.map { s -> s.onNext(t) }
+            debug("[Firebase][ValueEventListener][onDataChange] Value: %s", dataSnapshot)
+            dataSnapshot.children.map { child ->
+                val t = child.getValue(entityClass)
+                if (t != null) {
+                    subscribers.map { s -> s.onNext(t) }
+                }
             }
         }
 
@@ -36,9 +39,9 @@ class FirebaseRepository<T>(
 
     fun read(): Observable<T> = Observable.create({ p -> subscribers.add(p) })
 
-    fun delete(): Observable<Boolean> {
+    fun delete(t: T): Observable<Boolean> {
         val ws: MutableList<Subscriber<in Boolean>> = mutableListOf()
-        rootRef.removeValue({ err, ref ->
+        rootRef.child(idGetter(t)).removeValue({ err, ref ->
             if (err != null) {
                 error("[Firebase][CompletionListener] Delete error", err.toException())
                 ws.map { s -> s.onError(err.toException()) }
@@ -51,7 +54,7 @@ class FirebaseRepository<T>(
 
     fun save(t: T): Observable<T> {
         val ws: MutableList<Subscriber<in T>> = mutableListOf()
-        rootRef.setValue(t, null, { err, ref ->
+        rootRef.child(idGetter(t)).setValue(t, null, { err, ref ->
             if (err != null) {
                 error("[Firebase][CompletionListener] Save error", err.toException())
                 ws.map { s -> s.onError(err.toException()) }
