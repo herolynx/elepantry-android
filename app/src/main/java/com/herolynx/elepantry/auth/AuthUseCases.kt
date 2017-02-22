@@ -16,7 +16,7 @@ import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.google.auth.GoogleAuth
 import com.herolynx.elepantry.ext.google.firebase.auth.FirebaseAuth
 import com.herolynx.elepantry.getAppContext
-import com.herolynx.elepantry.resources.ResourcesActivity
+import com.herolynx.elepantry.resources.view.ResourcesActivity
 import org.funktionale.tries.Try
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers

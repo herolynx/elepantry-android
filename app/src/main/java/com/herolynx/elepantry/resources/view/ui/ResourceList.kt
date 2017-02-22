@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.resources.ui
+package com.herolynx.elepantry.resources.view.ui
 
 import android.content.Context
 import android.view.LayoutInflater

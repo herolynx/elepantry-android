@@ -1,6 +1,7 @@
 package com.herolynx.elepantry.resources.model
 
 import com.herolynx.elepantry.user.model.UserId
+import org.funktionale.option.toOption
 
 data class UserViews(val userId: UserId, val views: List<View> = listOf()) {
     constructor() : this(UserId(""))
@@ -29,4 +30,6 @@ data class Resource(
         val extension: String? = null
 ) {
     constructor() : this(name = "", type = ResourceType.GOOGLE)
+
+    fun <C : Collection<String>> containsAny(names: C) = tags.find { t -> names.contains(t.name) }.toOption().isDefined()
 }
