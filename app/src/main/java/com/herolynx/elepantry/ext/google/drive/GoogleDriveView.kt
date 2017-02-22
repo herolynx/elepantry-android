@@ -9,19 +9,21 @@ import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
 import com.herolynx.elepantry.ext.google.GoogleConfig
 import com.herolynx.elepantry.getAppContext
+import com.herolynx.elepantry.resources.ResourceView
+import com.herolynx.elepantry.resources.model.SearchCriteria
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
 import java.util.*
 
-class GoogleDrive(private val service: Drive) {
+class GoogleDriveView(private val service: Drive) : ResourceView {
 
-    fun search(text: String = "", pageSize: Int = 30) = GoogleDriveSearch({ nextPageToken ->
+    override fun search(c: SearchCriteria) = GoogleDrivePage.create { nextPageToken ->
         service.files()
                 .list()
-                .setQ(String.format(QUERY_BY_NAME, text))
-                .setPageSize(pageSize)
+                .setQ(String.format(QUERY_BY_NAME, c.text))
+                .setPageSize(c.pageSize)
                 .setPageToken(nextPageToken)
-    }, true)
+    }
 
     companion object Factory {
 
@@ -29,16 +31,16 @@ class GoogleDrive(private val service: Drive) {
         private val HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport()
         private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
 
-        fun create(account: GoogleSignInAccount, c: Context): GoogleDrive {
+        fun create(account: GoogleSignInAccount, c: Context): GoogleDriveView {
             val credential = GoogleAccountCredential.usingOAuth2(
                     c,
                     Collections.singleton(GoogleConfig.DRIVE_READONLY_API_URL)
             )
             credential.setSelectedAccount(account.account)
-            return GoogleDrive(Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).build())
+            return GoogleDriveView(Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).build())
         }
 
-        fun create(activity: Activity): Option<GoogleDrive> {
+        fun create(activity: Activity): Option<GoogleDriveView> {
             return activity.getAppContext()
                     .flatMap { a -> a.googleAccount.toOption() }
                     .map { acc -> create(acc, activity) }
