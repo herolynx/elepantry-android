@@ -32,7 +32,7 @@
             android:id="@+id/sign_in_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Google account"
+            android:text="@string/sign_in"
             android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"
             android:paddingRight="10dp"

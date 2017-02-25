@@ -4,9 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
-import android.support.v7.app.AppCompatActivity
 import android.widget.Button
-import com.google.android.gms.common.SignInButton
 import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
