@@ -15,7 +15,7 @@ class GoogleDrivePage(
 ) : ResourcePage {
 
 
-    override fun resources(f: (Resource) -> Boolean) = Observable.from(files)
+    override fun resources() = Observable.from(files)
 
     override fun next(): Try<GoogleDrivePage> {
         if (!first && nextPageToken == null) {

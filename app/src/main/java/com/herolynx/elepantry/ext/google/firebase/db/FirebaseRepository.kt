@@ -16,12 +16,16 @@ class FirebaseRepository<T>(
         private val subscribers: MutableList<Subscriber<in T>> = mutableListOf()
 ) {
 
+    private val loadedData: MutableList<T> = mutableListOf()
+
     private val valueListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             debug("[Firebase][ValueEventListener][onDataChange] Value: %s", dataSnapshot)
+            loadedData.clear()
             dataSnapshot.children.map { child ->
                 val t = child.getValue(entityClass)
                 if (t != null) {
+                    loadedData.add(t)
                     subscribers.map { s -> s.onNext(t) }
                 }
             }
@@ -36,8 +40,11 @@ class FirebaseRepository<T>(
     init {
         rootRef.addValueEventListener(valueListener)
     }
-
-    fun read(): Observable<T> = Observable.create({ p -> subscribers.add(p) })
+    
+    fun read(): Observable<T> = Observable.merge(
+            Observable.from(loadedData),
+            Observable.create({ p -> subscribers.add(p) })
+    )
 
     fun delete(t: T): Observable<Boolean> {
         val ws: MutableList<Subscriber<in Boolean>> = mutableListOf()

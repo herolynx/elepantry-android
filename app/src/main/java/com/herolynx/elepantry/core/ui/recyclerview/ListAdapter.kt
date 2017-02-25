@@ -30,4 +30,6 @@ class ListAdapter<T, TU : View>(
         items.add(t)
     }
 
+    fun clear() = items.clear()
+
 }
