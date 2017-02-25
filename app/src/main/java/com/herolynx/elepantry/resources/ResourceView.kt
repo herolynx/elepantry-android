@@ -13,7 +13,7 @@ interface ResourceView {
 
 interface ResourcePage {
 
-    fun resources(f: (Resource) -> Boolean = { r -> true }): Observable<Resource>
+    fun resources(): Observable<Resource>
 
     fun next(): Try<out ResourcePage>
 

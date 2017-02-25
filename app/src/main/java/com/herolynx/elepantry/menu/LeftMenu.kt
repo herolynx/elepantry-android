@@ -14,12 +14,18 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.getAppContext
+import com.herolynx.elepantry.resources.ResourceView
+import com.herolynx.elepantry.resources.dynamic.DynamicResourceView
 
 abstract class LeftMenu : AppCompatActivity() {
 
     abstract val layoutWithMenuId: Int
+
+    protected var loadDefaultItem: () -> Unit = {}
+    protected var closeMenu: () -> Unit = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,20 +60,43 @@ abstract class LeftMenu : AppCompatActivity() {
         debug("[initUserViews] Creating...")
         var i = Menu.FIRST
         menu.clear()
-        menu.add(0, i++, Menu.NONE, getString(R.string.google_drive)).setIcon(R.drawable.ic_menu_gallery)
+        initGoogleDriveView(menu, i++)
         val menuUserViews = menu.addSubMenu(0, i++, Menu.NONE, getString(R.string.user_views))
         FirebaseDb.userViews.read()
                 .subscribe { v ->
                     debug("[initUserViews] Adding view: %s", v.name)
                     menuUserViews.add(i, i++, Menu.NONE, v.name).setIcon(R.drawable.ic_menu_share)
+                            .setOnMenuItemClickListener {
+                                onViewChange(
+                                        v,
+                                        DynamicResourceView(v, { FirebaseDb.userResources.read() })
+                                )
+                            }
                 }
     }
 
+    private fun initGoogleDriveView(menu: Menu, idx: Int) {
+        debug("[initUserViews] Creating Google Drive view")
+        val name = getString(R.string.google_drive)
+        val v = com.herolynx.elepantry.resources.model.View(name = name)
+        val rv = GoogleDriveView.create(this).get()
+        menu.add(0, idx, Menu.NONE, name).setIcon(R.drawable.ic_menu_gallery)
+                .setOnMenuItemClickListener {
+                    onViewChange(v, rv)
+                }
+        loadDefaultItem = { onViewChange(v, rv) }
+    }
+
+    protected abstract fun onViewChange(
+            v: com.herolynx.elepantry.resources.model.View,
+            rv: ResourceView
+    ): Boolean
 
     private fun initToolbar(toolbar: Toolbar) {
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle = ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        closeMenu = { drawer.closeDrawer(GravityCompat.START) }
         drawer.setDrawerListener(toggle)
         toggle.syncState()
     }
