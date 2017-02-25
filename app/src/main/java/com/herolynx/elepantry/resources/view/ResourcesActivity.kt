@@ -10,11 +10,11 @@ import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
-import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.menu.LeftMenu
 import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.Resource
+import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.view.ui.ResourceItemView
 import com.herolynx.elepantry.resources.view.ui.ResourceList
 import org.funktionale.tries.Try
@@ -26,12 +26,12 @@ class ResourcesActivity : LeftMenu() {
     private var resourceView: ResourceView? = null
     private var resourcePage: Try<out ResourcePage>? = null
     private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
+    private var loadData: () -> Unit = {}
 
     override val layoutWithMenuId: Int = R.layout.resources_view
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        resourceView = GoogleDriveView.create(this).get()
         initResourceView()
     }
 
@@ -41,10 +41,12 @@ class ResourcesActivity : LeftMenu() {
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         listView.layoutManager = linearLayoutManager
-        initDataLoading(listView, linearLayoutManager)
+        loadData = { initDataLoading(listView, linearLayoutManager) }
+        loadDefaultItem()
     }
 
     private fun initDataLoading(listView: RecyclerView, linearLayoutManager: LinearLayoutManager) {
+        listView.clearOnScrollListeners()
         Observable.merge(
                 //initiate loading of first page
                 Observable.just(0),
@@ -67,7 +69,10 @@ class ResourcesActivity : LeftMenu() {
 
     private fun displayPage(pageResources: Observable<Resource>) {
         pageResources.subscribe(
-                { r -> listAdapter?.add(r) },
+                { r ->
+                    debug("[PageRequest] Resource loaded: %s", r)
+                    listAdapter?.add(r)
+                },
                 { ex -> error("[PageRequest] Page result error", ex) },
                 {
                     debug("[PageRequest] Page loaded")
@@ -84,5 +89,15 @@ class ResourcesActivity : LeftMenu() {
     }
             .schedule()
 
-
+    override fun onViewChange(v: View, rv: ResourceView): Boolean {
+        debug("[onViewChange] View selected: %s", v)
+        closeMenu()
+        title = v.name
+        resourceView = rv
+        resourcePage = null
+        listAdapter?.clear()
+        listAdapter?.notifyDataSetChanged()
+        loadData()
+        return true
+    }
 }
