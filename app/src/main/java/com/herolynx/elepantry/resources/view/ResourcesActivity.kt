@@ -70,8 +70,8 @@ class ResourcesActivity : LeftMenu() {
     private fun displayPage(pageResources: Observable<Resource>) {
         pageResources.subscribe(
                 { r ->
-                    debug("[PageRequest] Resource loaded: %s", r)
                     listAdapter?.add(r)
+                    listAdapter?.notifyDataSetChanged()
                 },
                 { ex -> error("[PageRequest] Page result error", ex) },
                 {
