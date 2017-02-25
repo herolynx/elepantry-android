@@ -3,48 +3,74 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_100"
+    android:background="@color/blue_1"
     android:orientation="vertical"
-    android:weightSum="4">
+    android:weightSum="2">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="1.9"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <ImageView
-            style="@style/ThemeOverlay.FirebaseIcon"
             android:id="@+id/google_icon"
-            android:src="@drawable/firebase_lockup_400"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:src="@drawable/login_logo_2"
+            android:layout_width="45mm"
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/title_bottom_margin"
-            android:text="@string/google_title_text"
-            android:theme="@style/ThemeOverlay.MyTitleText" />
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:text="welcome"/>
 
+        <Button
+            android:id="@+id/sign_in_button"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Google account"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/login_google_button"
+            android:drawableLeft="@drawable/ic_login_google"
+            android:layout_marginTop="10dp"
+            />
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/grey_300">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:layout_gravity="center"
+        android:gravity="center|bottom">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/blue_2"
+            android:id="@+id/view">
+        </View>
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/regulation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="visible"
-            tools:visibility="gone" />
-
+            android:text="regulations and terms"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="normal"
+            android:textAllCaps="false"
+            android:background="@android:color/transparent"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_below="@+id/view"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
 </LinearLayout>

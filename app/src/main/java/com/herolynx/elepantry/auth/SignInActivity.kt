@@ -4,6 +4,8 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AppCompatActivity
+import android.widget.Button
 import com.google.android.gms.common.SignInButton
 import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.R
@@ -25,7 +27,7 @@ class SignInActivity : FragmentActivity(), WithProgressDialog {
     }
 
     private fun initActionHandlers() {
-        val signIn = findViewById(R.id.sign_in_button) as SignInButton
+        val signIn = findViewById(R.id.sign_in_button) as Button
         signIn.setOnClickListener { AuthUseCases.startLogIn(this) }
     }
 
