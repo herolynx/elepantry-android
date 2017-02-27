@@ -11,9 +11,9 @@
     <string name="action_settings">Settings</string>
 
     <!-- AUTH -->
-    <string name="sign_in">Sign in using Google Account</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign out</string>
     <string name="auth_failed">Authentication failed: %s</string>
-    <string name="google_title_text">Google Sign In</string>
 
     <!-- VIEWS -->
     <string name="google_drive">Google Drive</string>

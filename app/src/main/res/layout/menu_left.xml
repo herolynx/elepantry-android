@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 
-    <!-- Cloud -->
+    <!-- Cloud drives -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Google account"
+                android:text="@string/google_drive"
                 android:gravity="left|center"
                 android:paddingLeft="@dimen/margin_10"
                 android:background="@drawable/left_menu_item"
@@ -41,7 +41,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Tags -->
+    <!-- Views -->
 
     <LinearLayout
         android:layout_width="match_parent"
