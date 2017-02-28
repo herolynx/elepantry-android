@@ -10,18 +10,18 @@ import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
-import com.herolynx.elepantry.menu.LeftMenu
 import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.view.ui.ResourceItemView
 import com.herolynx.elepantry.resources.view.ui.ResourceList
+import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import org.funktionale.tries.Try
 import rx.Observable
 
 
-class ResourcesActivity : LeftMenu() {
+class ResourcesActivity : UserViewsMenu() {
 
     private var resourceView: ResourceView? = null
     private var resourcePage: Try<out ResourcePage>? = null

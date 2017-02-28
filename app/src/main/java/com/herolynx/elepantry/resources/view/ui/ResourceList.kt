@@ -25,7 +25,7 @@ object ResourceList {
 class ResourceItemView(ctx: Context) : LinearLayout(ctx) {
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.resource_list_item, this)
+        LayoutInflater.from(context).inflate(R.layout.resources_list_item, this)
     }
 
     val name = findViewById(R.id.resource_item_name) as TextView

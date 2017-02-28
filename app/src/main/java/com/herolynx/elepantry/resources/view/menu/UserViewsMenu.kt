@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.menu
+package com.herolynx.elepantry.resources.view.menu
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -19,9 +19,11 @@ import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.dynamic.DynamicResourceView
+import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.user.menu.UserBadge
 
 
-abstract class LeftMenu : AppCompatActivity() {
+abstract class UserViewsMenu : AppCompatActivity() {
 
     abstract val layoutWithMenuId: Int
 
@@ -83,14 +85,14 @@ abstract class LeftMenu : AppCompatActivity() {
     private fun initGoogleDriveView(b: Button) {
         debug("[initUserViews] Creating Google Drive view")
         val name = getString(R.string.google_drive)
-        val v = com.herolynx.elepantry.resources.model.View(name = name)
+        val v = View(name = name)
         val rv = GoogleDriveView.create(this).get()
         b.setOnClickListener { onViewChange(v, rv) }
         loadDefaultItem = { onViewChange(v, rv) }
     }
 
     protected abstract fun onViewChange(
-            v: com.herolynx.elepantry.resources.model.View,
+            v: View,
             rv: ResourceView
     ): Boolean
 

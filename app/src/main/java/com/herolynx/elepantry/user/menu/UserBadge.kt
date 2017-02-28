@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.menu
+package com.herolynx.elepantry.user.menu
 
 import android.app.Activity
 import android.view.ViewGroup
