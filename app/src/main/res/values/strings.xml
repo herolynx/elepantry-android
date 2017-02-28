@@ -11,7 +11,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- AUTH -->
-    <string name="sign_in">Sign in</string>
+    <string name="sign_in_google">Google account</string>
     <string name="sign_out">Sign out</string>
     <string name="auth_failed">Authentication failed: %s</string>
 

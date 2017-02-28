@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <Button
         android:id="@+id/user_view_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/left_menu_item"
-        android:gravity="left|center"/>
+        android:background="@android:color/transparent"
+        android:gravity="left|center"
+        android:textAllCaps="false" />
 
 </LinearLayout>
