@@ -8,15 +8,16 @@ import com.herolynx.elepantry.user.model.UserId
 
 object FirebaseDb {
 
-    private val userId = UserId(FirebaseAuth.getCurrentUser().get().uid)
     private val database = FirebaseDatabase.getInstance()
 
-    val userViews = userRepo("views", View::class.java, View::id)
+    private fun userId() = UserId(FirebaseAuth.getCurrentUser().get().uid)
 
-    val userResources = userRepo("resources", Resource::class.java, Resource::id)
+    fun userViews() = userRepo("views", View::class.java, View::id)
+
+    fun userResources() = userRepo("resources", Resource::class.java, Resource::id)
 
     private fun <T> userRepo(name: String, entityClass: Class<T>, idGetter: (T) -> String) = FirebaseRepository(
-            database.getReference(name).child(userId.uid),
+            database.getReference(name).child(userId().uid),
             entityClass,
             idGetter
     )

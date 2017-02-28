@@ -14,7 +14,7 @@ import rx.Observable
 object FirebaseAuth {
 
     fun getCurrentUser(): Try<FirebaseUser> {
-        return com.google.firebase.auth.FirebaseAuth.getInstance()
+        return FirebaseAuth.getInstance()
                 .currentUser
                 .toOption()
                 .map { u -> Try.Success(u) }
@@ -23,10 +23,12 @@ object FirebaseAuth {
 
     fun logIn(account: GoogleSignInAccount): Observable<AuthResult> {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
-        return com.google.firebase.auth.FirebaseAuth.getInstance()
-                .signInWithCredential(credential)
+        return FirebaseAuth.getInstance().signInWithCredential(credential)
                 .toObservable()
+    }
+
+    fun logOut() {
+        FirebaseAuth.getInstance().signOut()
     }
 
 }

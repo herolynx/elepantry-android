@@ -33,14 +33,18 @@ class FirebaseRepository<T>(
 
         override fun onCancelled(databaseError: DatabaseError) {
             error("[Firebase][ValueEventListener][onCancelled] Error", databaseError.toException())
-            subscribers.map { s -> s.onError(databaseError.toException()) }
+            try {
+                subscribers.map { s -> s.onError(databaseError.toException()) }
+            } catch(e: Exception) {
+                error("[Firebase][ValueEventListener][onCancelled] Error while sending exception to subscribers", e)
+            }
         }
     }
 
     init {
         rootRef.addValueEventListener(valueListener)
     }
-    
+
     fun read(): Observable<T> = Observable.merge(
             Observable.from(loadedData),
             Observable.create({ p -> subscribers.add(p) })
