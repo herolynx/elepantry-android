@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -60,29 +62,29 @@ abstract class UserViewsMenu : AppCompatActivity() {
         val menuLeft = layoutInflater.inflate(R.layout.menu_user_views, navigationView, false)
         menuLayout.addView(menuLeft)
         initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button)
-        initUserViews(menuLeft.findViewById(R.id.user_views) as LinearLayout)
+        initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView)
         (menuLeft.findViewById(R.id.sign_out) as Button).setOnClickListener {
             SignInUseCase.logOut(this)
         }
     }
 
-    private fun initUserViews(layout: LinearLayout) {
+    private fun initUserViews(layout: RecyclerView) {
         debug("[initUserViews] Creating...")
-        layout.removeAllViews()
+        val listAdapter = UserViewsList.adapter({ v ->
+            onViewChange(
+                    v,
+                    DynamicResourceView(v, { FirebaseDb.userResources().read() })
+            )
+        })
+        layout.adapter = listAdapter
+        val linearLayoutManager = LinearLayoutManager(this)
+        layout.layoutManager = linearLayoutManager
 
         FirebaseDb.userViews().read()
                 .subscribe { v ->
                     debug("[initUserViews] Adding view: %s", v.name)
-                    val userViewLayout = layoutInflater.inflate(R.layout.menu_user_views_item, layout, false)
-                    layout.addView(userViewLayout)
-                    val b = userViewLayout.findViewById(R.id.user_view_button) as Button
-                    b.text = v.name
-                    b.setOnClickListener {
-                        onViewChange(
-                                v,
-                                DynamicResourceView(v, { FirebaseDb.userResources().read() })
-                        )
-                    }
+                    listAdapter.add(v)
+                    listAdapter.notifyDataSetChanged()
                 }
     }
 

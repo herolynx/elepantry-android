@@ -14,9 +14,9 @@ import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import com.herolynx.elepantry.resources.view.ui.ResourceItemView
 import com.herolynx.elepantry.resources.view.ui.ResourceList
-import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import org.funktionale.tries.Try
 import rx.Observable
 
