@@ -11,14 +11,15 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
-import com.herolynx.elepantry.getAppContext
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.dynamic.DynamicResourceView
+
 
 abstract class LeftMenu : AppCompatActivity() {
 
@@ -32,6 +33,7 @@ abstract class LeftMenu : AppCompatActivity() {
         setContentView(layoutWithMenuId)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
+        initView()
         initViewHandlers()
         initToolbar(toolbar)
     }
@@ -42,48 +44,48 @@ abstract class LeftMenu : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         })
-        initLeftMenuHandlers()
     }
 
-    fun initLeftMenuHandlers() {
+    fun initView() {
         val navigationView = findViewById(R.id.nav_view) as NavigationView
-        initUserViews(navigationView.menu)
-        getAppContext().map { c -> UserBadge(navigationView.getHeaderView(0) as ViewGroup).display(c.user!!) }
-        navigationView
-                .setNavigationItemSelectedListener { item ->
-                    debug("[LeftMenu] Item selected: %s", item.title)
-                    true
-                }
+        val menuLayout = findViewById(R.id.left_menu_layout) as LinearLayout
+
+        val userBadge = UserBadge.create(this, navigationView)
+        menuLayout.addView(userBadge.layout)
+        userBadge.display(this)
+
+        val menuLeft = layoutInflater.inflate(R.layout.menu_user_views, navigationView, false)
+        menuLayout.addView(menuLeft)
+        initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button)
+        initUserViews(menuLeft.findViewById(R.id.user_views) as LinearLayout)
     }
 
-    private fun initUserViews(menu: Menu) {
+    private fun initUserViews(layout: LinearLayout) {
         debug("[initUserViews] Creating...")
-        var i = Menu.FIRST
-        menu.clear()
-        initGoogleDriveView(menu, i++)
-        val menuUserViews = menu.addSubMenu(0, i++, Menu.NONE, getString(R.string.user_views))
+        layout.removeAllViews()
+
         FirebaseDb.userViews.read()
                 .subscribe { v ->
                     debug("[initUserViews] Adding view: %s", v.name)
-                    menuUserViews.add(i, i++, Menu.NONE, v.name).setIcon(R.drawable.ic_menu_share)
-                            .setOnMenuItemClickListener {
-                                onViewChange(
-                                        v,
-                                        DynamicResourceView(v, { FirebaseDb.userResources.read() })
-                                )
-                            }
+                    val userViewLayout = layoutInflater.inflate(R.layout.menu_user_views_item, layout, false)
+                    layout.addView(userViewLayout)
+                    val b = userViewLayout.findViewById(R.id.user_view_button) as Button
+                    b.text = v.name
+                    b.setOnClickListener {
+                        onViewChange(
+                                v,
+                                DynamicResourceView(v, { FirebaseDb.userResources.read() })
+                        )
+                    }
                 }
     }
 
-    private fun initGoogleDriveView(menu: Menu, idx: Int) {
+    private fun initGoogleDriveView(b: Button) {
         debug("[initUserViews] Creating Google Drive view")
         val name = getString(R.string.google_drive)
         val v = com.herolynx.elepantry.resources.model.View(name = name)
         val rv = GoogleDriveView.create(this).get()
-        menu.add(0, idx, Menu.NONE, name).setIcon(R.drawable.ic_menu_gallery)
-                .setOnMenuItemClickListener {
-                    onViewChange(v, rv)
-                }
+        b.setOnClickListener { onViewChange(v, rv) }
         loadDefaultItem = { onViewChange(v, rv) }
     }
 
