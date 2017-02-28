@@ -11,66 +11,85 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.9"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/google_icon"
-            android:src="@drawable/login_logo_2"
-            android:layout_width="45mm"
-            android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:text="welcome"/>
+            android:layout_gravity="center"
+            android:gravity="center">
 
-        <Button
-            android:id="@+id/sign_in_button"
-            android:layout_width="200dp"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="281dp"
+                android:layout_height="90dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_login_elepantry" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sign_in"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:background="@drawable/login_google_button"
-            android:drawableLeft="@drawable/ic_login_google"
-            android:layout_marginTop="10dp"
-            />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_20"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Welcome"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+
+            <Button
+                android:id="@+id/sign_in_button"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/login_google_button"
+                android:drawableLeft="@drawable/ic_login_google"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/sign_in_google"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.1"
         android:layout_gravity="center"
+        android:layout_weight="0.1"
         android:gravity="center|bottom">
+
         <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/blue_2"
-            android:id="@+id/view">
-        </View>
+            android:background="@color/blue_2"></View>
 
         <Button
             android:id="@+id/regulation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="regulations and terms"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textStyle="normal"
-            android:textAllCaps="false"
-            android:background="@android:color/transparent"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/view"
-            android:layout_alignParentStart="true" />
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="regulations and terms"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="normal" />
     </RelativeLayout>
 
 </LinearLayout>

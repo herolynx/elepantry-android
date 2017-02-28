@@ -11,6 +11,8 @@
 
     <color name="backgroundPage">#f4f4f4</color>
 
+    <color name="menu_left_item">#484848</color>
+
     <color name="white">#FFFFFF</color>
     <color name="dark_1">#464646</color>
 

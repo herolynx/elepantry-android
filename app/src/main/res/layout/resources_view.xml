@@ -26,9 +26,8 @@
             android:id="@+id/left_menu_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_marginTop="@dimen/margin_15"
-            />
+            android:orientation="vertical" />
 
     </android.support.design.widget.NavigationView>
 
