@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
@@ -67,7 +68,7 @@ class ResourcesActivity : UserViewsMenu() {
                 )
     }
 
-    private fun displayPage(pageResources: Observable<Resource>) {
+    private fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
         pageResources.subscribe(
                 { r ->
                     listAdapter?.add(r)

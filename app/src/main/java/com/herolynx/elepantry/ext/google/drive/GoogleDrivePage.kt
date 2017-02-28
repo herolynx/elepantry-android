@@ -2,6 +2,7 @@ package com.herolynx.elepantry.ext.google.drive
 
 import com.google.api.services.drive.Drive
 import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.model.Resource
 import org.funktionale.tries.Try
@@ -14,8 +15,7 @@ class GoogleDrivePage(
         private val files: List<Resource> = listOf()
 ) : ResourcePage {
 
-
-    override fun resources() = Observable.from(files)
+    override fun resources() = Observable.from(files.map { f -> DataEvent(f) })
 
     override fun next(): Try<GoogleDrivePage> {
         if (!first && nextPageToken == null) {

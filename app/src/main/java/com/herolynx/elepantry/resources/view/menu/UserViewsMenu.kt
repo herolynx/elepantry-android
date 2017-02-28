@@ -73,16 +73,16 @@ abstract class UserViewsMenu : AppCompatActivity() {
         val listAdapter = UserViewsList.adapter({ v ->
             onViewChange(
                     v,
-                    DynamicResourceView(v, { FirebaseDb.userResources().read() })
+                    DynamicResourceView(v, { FirebaseDb.userResources().observe() })
             )
         })
         layout.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         layout.layoutManager = linearLayoutManager
 
-        FirebaseDb.userViews().read()
+        FirebaseDb.userViews().observe()
                 .subscribe { v ->
-                    debug("[initUserViews] Adding view: %s", v.name)
+                    debug("[initUserViews] Adding view: %s", v)
                     listAdapter.add(v)
                     listAdapter.notifyDataSetChanged()
                 }
