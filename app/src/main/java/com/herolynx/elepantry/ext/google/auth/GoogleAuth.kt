@@ -1,53 +1,80 @@
 package com.herolynx.elepantry.ext.google.auth
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
-import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
+import com.google.firebase.auth.AuthResult
+import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.R
-import com.herolynx.elepantry.ext.google.GoogleConfig
+import com.herolynx.elepantry.core.func.toObservable
+import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.ui.navigation.navigateTo
+import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
+import com.herolynx.elepantry.core.ui.notification.toast
+import com.herolynx.elepantry.ext.google.firebase.auth.FirebaseAuth
+import com.herolynx.elepantry.getAuthContext
+import com.herolynx.elepantry.resources.view.ResourcesActivity
 import org.funktionale.tries.Try
+import rx.Observable
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 object GoogleAuth {
 
-    fun onLogInResult(data: Intent): Try<GoogleSignInAccount> {
-        val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-        if (result.isSuccess) {
-            return Try.Success(result.signInAccount!!)
-        } else {
-            return Try.Failure(RuntimeException("Google sign in error - status: " + result.status))
-        }
+    /**
+     * Start Google OAuth procedure
+     * @param activity current activity
+     */
+    fun startLogIn(activity: FragmentActivity) {
+        val signInIntent = GoogleSignIn.logIn(activity, { connectionResult ->
+            error("[Google] Connection failed: %s", connectionResult)
+            activity.toast(R.string.auth_failed, "Google Account")
+        })
+        activity.startActivityForResult(signInIntent, Intents.GOOGLE_SIGN_IN)
     }
 
-    fun logIn(fragmentActivity: FragmentActivity, handler: (ConnectionResult) -> Unit): Intent {
-        val api = build(fragmentActivity, handler)
-        return Auth.GoogleSignInApi.getSignInIntent(api)
-    }
-
-    fun logout(api: GoogleApiClient) {
-        Auth.GoogleSignInApi
-                .signOut(api)
-                .setResultCallback { }
-    }
-
-    fun build(fragmentActivity: FragmentActivity, onFailedHandler: (ConnectionResult) -> Unit): GoogleApiClient {
-        return GoogleApiClient.Builder(fragmentActivity)
-                .enableAutoManage(fragmentActivity, onFailedHandler)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, getSignInOptions(fragmentActivity))
-                .build()
-    }
-
-    private fun getSignInOptions(c: Context): GoogleSignInOptions {
-        return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(GoogleConfig.DRIVE_READONLY_API)
-                .requestIdToken(c.getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-
+    /**
+     * Log in user to the app
+     * @param activity current activity
+     * @param progress progress indicator
+     * @param data data intent from google intent
+     * @param googleAuth google OAuth response handler
+     * @param firebaseAuth firebase OAuth handler
+     */
+    fun logIn(
+            activity: Activity,
+            progress: WithProgressDialog,
+            data: Intent,
+            googleAuth: (Intent) -> Try<GoogleSignInAccount> = { data -> GoogleSignIn.onLogInResult(data) },
+            firebaseAuth: (GoogleSignInAccount) -> Observable<AuthResult> = { account -> FirebaseAuth.logIn(account) }
+    ) {
+        progress.showProgressDialog(activity)
+        googleAuth(data)
+                .onFailure { ex ->
+                    error("[Google] Couldn't log in user", ex)
+                    activity.toast(R.string.auth_failed, "Google Account")
+                }
+                .toObservable()
+                .map { account ->
+                    debug("[Firebase] Logging in - account id: %s", account.id)
+                    activity.getAuthContext().map { c -> c.setMainAccount(account) }
+                    firebaseAuth(account)
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { auth ->
+                            progress.hideProgressDialog()
+                            activity.navigateTo(ResourcesActivity::class.java)
+                        },
+                        { ex ->
+                            progress.hideProgressDialog()
+                            error("[Firebase] Couldn't log in user", ex)
+                            activity.toast(R.string.auth_failed, "Firebase")
+                        }
+                )
     }
 
 }

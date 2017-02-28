@@ -10,7 +10,7 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
-import com.herolynx.elepantry.getAppContext
+import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.user.model.User
 
 class UserBadge(val layout: LinearLayout) {
@@ -19,7 +19,7 @@ class UserBadge(val layout: LinearLayout) {
     val userImage = layout.findViewById(R.id.menu_user_picture) as ImageView
 
     fun display(activity: Activity) {
-        activity.getAppContext().map { c -> display(c.user!!) }
+        activity.getAuthContext().map { c -> display(c.user!!) }
     }
 
     fun display(user: User) {

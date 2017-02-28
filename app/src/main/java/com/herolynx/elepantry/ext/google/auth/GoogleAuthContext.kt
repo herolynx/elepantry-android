@@ -1,14 +1,11 @@
-package com.herolynx.elepantry
+package com.herolynx.elepantry.ext.google.auth
 
-import android.app.Activity
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.herolynx.elepantry.core.log.info
 import com.herolynx.elepantry.user.model.User
 import com.herolynx.elepantry.user.model.UserId
-import org.funktionale.option.Option
-import org.funktionale.option.toOption
 
-interface AppContext {
+interface GoogleAuthContext {
 
     var googleAccount: GoogleSignInAccount?
     var user: User?
@@ -21,13 +18,6 @@ interface AppContext {
                 googleAccount?.displayName!!,
                 googleAccount?.photoUrl!!
         )
-        //TODO remove after tests
-//        SampleData.initViews()
     }
 
-}
-
-fun Activity.getAppContext(): Option<AppContext> {
-    return application.toOption()
-            .map { a -> a as AppContext }
 }

@@ -8,7 +8,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.drive.Drive
 import com.herolynx.elepantry.ext.google.GoogleConfig
-import com.herolynx.elepantry.getAppContext
+import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.SearchCriteria
 import org.funktionale.option.Option
@@ -41,7 +41,7 @@ class GoogleDriveView(private val service: Drive) : ResourceView {
         }
 
         fun create(activity: Activity): Option<GoogleDriveView> {
-            return activity.getAppContext()
+            return activity.getAuthContext()
                     .flatMap { a -> a.googleAccount.toOption() }
                     .map { acc -> create(acc, activity) }
         }
