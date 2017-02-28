@@ -27,7 +27,8 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical">
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="-15dp">
 
                     <ImageView
                         android:id="@+id/menu_user_picture"
@@ -71,8 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right"
                 android:layout_marginTop="@dimen/margin_10"
-                android:gravity="right"
-                android:paddingRight="@dimen/margin_10">
+                android:gravity="right">
 
                 <Button
                     android:id="@+id/settings"
@@ -89,8 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-15dp"
             android:gravity="right|center"
-            android:orientation="horizontal"
-            android:paddingRight="10dp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/add_new_view"
@@ -105,11 +104,4 @@
                 android:textStyle="normal" />
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>
-
-
-
-
-
