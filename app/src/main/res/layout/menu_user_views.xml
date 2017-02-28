@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 
-    <!-- Cloud -->
+    <!-- Cloud drives -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,28 +20,20 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/drive_google"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Google account"
+                android:text="@string/google_drive"
                 android:gravity="left|center"
                 android:paddingLeft="@dimen/margin_10"
                 android:background="@drawable/left_menu_item"
                 android:drawableLeft="@drawable/ic_login_google"
                 android:layout_gravity="center_horizontal"/>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dropbox"
-                android:gravity="left|center"
-                android:paddingLeft="@dimen/margin_10"
-                android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/ic_login_google"
-                android:background="@drawable/left_menu_item"/>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Tags -->
+    <!-- Views -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,25 +42,11 @@
         android:layout_marginTop="@dimen/margin_15">
 
         <LinearLayout
+            android:id="@+id/user_views"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left|center"
-                android:text="Tag 2"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/left_menu_item"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left|center"
-                android:text="Tag 2"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/left_menu_item"/>
         </LinearLayout>
     </LinearLayout>
 
