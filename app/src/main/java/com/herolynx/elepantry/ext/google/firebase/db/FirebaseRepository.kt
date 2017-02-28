@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.rx.DataEvent
 import rx.Observable
 import rx.Subscriber
 
@@ -13,22 +14,22 @@ class FirebaseRepository<T>(
         private val rootRef: DatabaseReference,
         private val entityClass: Class<T>,
         private val idGetter: (T) -> String,
-        private val subscribers: MutableList<Subscriber<in T>> = mutableListOf()
+        private val subscribers: MutableList<Subscriber<in DataEvent<T>>> = mutableListOf()
 ) {
 
-    private val loadedData: MutableList<T> = mutableListOf()
+    private val loadedData: MutableList<DataEvent<T>> = mutableListOf()
 
     private val valueListener = object : ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             debug("[Firebase][ValueEventListener][onDataChange] Value: %s", dataSnapshot)
-            loadedData.clear()
+            val snapshot: MutableList<DataEvent<T>> = mutableListOf()
             dataSnapshot.children.map { child ->
                 val t = child.getValue(entityClass)
                 if (t != null) {
-                    loadedData.add(t)
-                    subscribers.map { s -> s.onNext(t) }
+                    snapshot.add(DataEvent(t))
                 }
             }
+            dispatchDelta(snapshot)
         }
 
         override fun onCancelled(databaseError: DatabaseError) {
@@ -41,11 +42,27 @@ class FirebaseRepository<T>(
         }
     }
 
+    private fun dispatchDelta(snapshot: List<DataEvent<T>>) {
+        //handle deleted data
+        loadedData.removeAll(snapshot)
+        loadedData.map { e -> subscribers.map { s -> s.onNext(e.copy(deleted = true)) } }
+        //handle added data
+        snapshot.map { e -> subscribers.map { s -> s.onNext(e) } }
+        //save state
+        loadedData.clear()
+        loadedData.addAll(snapshot)
+    }
+
     init {
         rootRef.addValueEventListener(valueListener)
     }
 
-    fun read(): Observable<T> = Observable.merge(
+    /**
+     * Create stream and observe changes on data source
+     *
+     * @return new stream
+     */
+    fun observe(): Observable<DataEvent<T>> = Observable.merge(
             Observable.from(loadedData),
             Observable.create({ p -> subscribers.add(p) })
     )

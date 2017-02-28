@@ -17,7 +17,7 @@ object FirebaseDb {
     fun userResources() = userRepo("resources", Resource::class.java, Resource::id)
 
     private fun <T> userRepo(name: String, entityClass: Class<T>, idGetter: (T) -> String) = FirebaseRepository(
-            database.getReference(name).child(userId().uid),
+            database.getReference(name).child(userId().uid).orderByValue().ref,
             entityClass,
             idGetter
     )

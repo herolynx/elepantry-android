@@ -1,5 +1,6 @@
 package com.herolynx.elepantry.resources
 
+import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.model.SearchCriteria
 import org.funktionale.tries.Try
@@ -13,7 +14,7 @@ interface ResourceView {
 
 interface ResourcePage {
 
-    fun resources(): Observable<Resource>
+    fun resources(): Observable<DataEvent<Resource>>
 
     fun next(): Try<out ResourcePage>
 

@@ -1,5 +1,6 @@
 package com.herolynx.elepantry.resources.dynamic
 
+import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.Resource
@@ -10,7 +11,7 @@ import rx.Observable
 
 class DynamicResourceView(
         v: View,
-        private val resources: () -> Observable<Resource>
+        private val resources: () -> Observable<DataEvent<Resource>>
 ) : ResourceView {
 
     private val tagNames = v.tags.map { t -> t.name }.toCollection(mutableSetOf()).toSet()
@@ -18,13 +19,13 @@ class DynamicResourceView(
     override fun search(c: SearchCriteria) = Try {
         DynamicResourcePage(
                 resources()
-                        .filter { r -> r.containsAny(tagNames) }
+                        .filter { r -> r.data.containsAny(tagNames) }
         )
     }
 }
 
 class DynamicResourcePage(
-        private val resources: Observable<Resource>
+        private val resources: Observable<DataEvent<Resource>>
 ) : ResourcePage {
 
     override fun resources() = resources
