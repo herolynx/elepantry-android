@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.ext.google.auth.SignInUseCase
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.resources.ResourceView
@@ -60,13 +61,16 @@ abstract class UserViewsMenu : AppCompatActivity() {
         menuLayout.addView(menuLeft)
         initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button)
         initUserViews(menuLeft.findViewById(R.id.user_views) as LinearLayout)
+        (menuLeft.findViewById(R.id.sign_out) as Button).setOnClickListener {
+            SignInUseCase.logOut(this)
+        }
     }
 
     private fun initUserViews(layout: LinearLayout) {
         debug("[initUserViews] Creating...")
         layout.removeAllViews()
 
-        FirebaseDb.userViews.read()
+        FirebaseDb.userViews().read()
                 .subscribe { v ->
                     debug("[initUserViews] Adding view: %s", v.name)
                     val userViewLayout = layoutInflater.inflate(R.layout.menu_user_views_item, layout, false)
@@ -76,7 +80,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
                     b.setOnClickListener {
                         onViewChange(
                                 v,
-                                DynamicResourceView(v, { FirebaseDb.userResources.read() })
+                                DynamicResourceView(v, { FirebaseDb.userResources().read() })
                         )
                     }
                 }
