@@ -1,19 +1,24 @@
 package com.herolynx.elepantry.resources.view.menu
 
+import android.content.Context
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.LinearLayout
+import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
-import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.view.ui.ResourceItemView
+import com.herolynx.elepantry.resources.model.View
 
-object UserViewAdapter {
+object UserViewsList {
 
-    fun adapter(): ListAdapter<Resource, ResourceItemView> =
-            ListAdapter<Resource, ResourceItemView>(
-                    { ctx -> ResourceItemView(ctx) },
-                    { r, h -> display(r, h) }
+    fun adapter(clickHandler: (View) -> Unit): ListAdapter<View, UserViewItem> =
+            ListAdapter<View, UserViewItem>(
+                    { ctx -> UserViewItem(ctx) },
+                    { r, h -> display(r, h, clickHandler) }
             )
 
-    fun display(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>) {
-        h.view.name.text = r?.name
+    fun display(v: View?, h: ListAdapter.ViewHolder<UserViewItem>, clickHandler: (View) -> Unit) {
+        h.view.viewButton.text = v?.name
+        h.view.viewButton.setOnClickListener { if (v != null) clickHandler(v) }
     }
 
 }
@@ -21,9 +26,9 @@ object UserViewAdapter {
 class UserViewItem(ctx: Context) : LinearLayout(ctx) {
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.resources_list_item, this)
+        LayoutInflater.from(context).inflate(R.layout.menu_user_views_item, this)
     }
 
-    val name = findViewById(R.id.resource_item_name) as TextView
+    val viewButton = findViewById(R.id.user_view_button) as Button
 
 }

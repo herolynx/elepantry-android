@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <!-- Cloud drives -->
 
@@ -16,19 +16,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/drive_google"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/google_drive"
-                android:gravity="left|center"
-                android:paddingLeft="@dimen/margin_10"
+                android:layout_gravity="center_horizontal"
                 android:background="@drawable/left_menu_item"
                 android:drawableLeft="@drawable/ic_login_google"
-                android:layout_gravity="center_horizontal"/>
+                android:gravity="left|center"
+                android:paddingLeft="@dimen/margin_10"
+                android:text="@string/google_drive" />
 
         </LinearLayout>
     </LinearLayout>
@@ -38,19 +38,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/margin_15">
+        android:layout_marginTop="@dimen/margin_15"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/user_views"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
             android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:scrollbars="none" />
 
-        </LinearLayout>
     </LinearLayout>
 
-    <!-- Options -->
+    <!-- OPTIONS -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,19 +60,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/sign_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sign_out"
-                android:gravity="left|center"
-                android:paddingLeft="@dimen/margin_10"
+                android:layout_gravity="center_horizontal"
                 android:background="@drawable/left_menu_item"
                 android:drawableLeft="@drawable/ic_login_google"
-                android:layout_gravity="center_horizontal"/>
+                android:gravity="left|center"
+                android:paddingLeft="@dimen/margin_10"
+                android:text="@string/sign_out" />
 
         </LinearLayout>
     </LinearLayout>
