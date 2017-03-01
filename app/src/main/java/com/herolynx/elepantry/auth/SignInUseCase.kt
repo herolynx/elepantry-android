@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.ext.google.auth
+package com.herolynx.elepantry.auth
 
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
@@ -11,6 +11,7 @@ import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.core.func.toObservable
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.ext.google.auth.GoogleAuth
 import com.herolynx.elepantry.ext.google.firebase.auth.FirebaseAuth
 import org.funktionale.tries.Try
 import rx.Observable

@@ -1,11 +1,11 @@
-package com.herolynx.elepantry.ext.google.auth
+package com.herolynx.elepantry.auth
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.herolynx.elepantry.core.log.info
 import com.herolynx.elepantry.user.model.User
 import com.herolynx.elepantry.user.model.UserId
 
-interface GoogleAuthContext {
+interface AuthContext {
 
     var googleAccount: GoogleSignInAccount?
     var user: User?

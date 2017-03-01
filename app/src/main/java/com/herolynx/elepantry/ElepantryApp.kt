@@ -3,12 +3,12 @@ package com.herolynx.elepantry
 import android.app.Activity
 import android.app.Application
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.herolynx.elepantry.ext.google.auth.GoogleAuthContext
+import com.herolynx.elepantry.auth.AuthContext
 import com.herolynx.elepantry.user.model.User
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
 
-class ElepantryApp : Application(), GoogleAuthContext {
+class ElepantryApp : Application(), AuthContext {
 
     override var googleAccount: GoogleSignInAccount? = null
     override var user: User? = null
@@ -19,7 +19,7 @@ class ElepantryApp : Application(), GoogleAuthContext {
 
 }
 
-fun Activity.getAuthContext(): Option<GoogleAuthContext> {
+fun Activity.getAuthContext(): Option<AuthContext> {
     return application.toOption()
-            .map { a -> a as GoogleAuthContext }
+            .map { a -> a as AuthContext }
 }

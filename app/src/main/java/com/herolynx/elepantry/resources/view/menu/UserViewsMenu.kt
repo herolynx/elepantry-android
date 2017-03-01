@@ -17,24 +17,16 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
-import com.herolynx.elepantry.core.ui.navigation.navigateTo
-import com.herolynx.elepantry.ext.google.GoogleApi
-import com.herolynx.elepantry.ext.google.asyncConnect
-import com.herolynx.elepantry.ext.google.auth.SignInActivity
-import com.herolynx.elepantry.ext.google.auth.SignInUseCase
-import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
-import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.resources.ResourceView
-import com.herolynx.elepantry.resources.dynamic.DynamicResourceView
 import com.herolynx.elepantry.resources.model.View
-import com.herolynx.elepantry.user.menu.UserBadge
+import com.herolynx.elepantry.user.view.menu.UserBadge
 
 
 abstract class UserViewsMenu : AppCompatActivity() {
 
     abstract val layoutWithMenuId: Int
+
+    private var menuCtrl: UserViewsMenuCtrl? = null
 
     protected var loadDefaultItem: () -> Unit = {}
     protected var closeMenu: () -> Unit = {}
@@ -43,8 +35,9 @@ abstract class UserViewsMenu : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(layoutWithMenuId)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
+        menuCtrl = UserViewsMenuCtrl(this)
         setSupportActionBar(toolbar)
-        initView()
+        initView(menuCtrl!!)
         initViewHandlers()
         initToolbar(toolbar)
     }
@@ -57,7 +50,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
         })
     }
 
-    fun initView() {
+    private fun initView(menuCtrl: UserViewsMenuCtrl) {
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         val menuLayout = findViewById(R.id.left_menu_layout) as LinearLayout
 
@@ -67,34 +60,26 @@ abstract class UserViewsMenu : AppCompatActivity() {
 
         val menuLeft = layoutInflater.inflate(R.layout.menu_user_views, navigationView, false)
         menuLayout.addView(menuLeft)
-        initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button)
-        initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView)
-        (menuLeft.findViewById(R.id.sign_out) as Button).setOnClickListener {
-            val api = GoogleApi.build(this)
-            api.asyncConnect()
-                    .flatMap { api -> SignInUseCase.logOut(api) }
-                    .observe()
-                    .schedule()
-                    .subscribe { s ->
-                        api.disconnect()
-                        navigateTo(SignInActivity::class.java)
-                    }
-        }
+
+        initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button, menuCtrl)
+        initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView, menuCtrl)
+
+        (menuLeft.findViewById(R.id.sign_out) as Button).setOnClickListener { menuCtrl.logOut() }
     }
 
-    private fun initUserViews(layout: RecyclerView) {
+    private fun initUserViews(layout: RecyclerView, menuCtrl: UserViewsMenuCtrl) {
         debug("[initUserViews] Creating...")
         val listAdapter = UserViewsList.adapter({ v ->
             onViewChange(
                     v,
-                    DynamicResourceView(v, { FirebaseDb.userResources().observe() })
+                    menuCtrl.getView(v)
             )
         })
         layout.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         layout.layoutManager = linearLayoutManager
 
-        FirebaseDb.userViews().observe()
+        menuCtrl.getUserViews()
                 .subscribe { v ->
                     debug("[initUserViews] Adding view: %s", v)
                     listAdapter.add(v)
@@ -102,11 +87,11 @@ abstract class UserViewsMenu : AppCompatActivity() {
                 }
     }
 
-    private fun initGoogleDriveView(b: Button) {
+    private fun initGoogleDriveView(b: Button, menuCtrl: UserViewsMenuCtrl) {
         debug("[initUserViews] Creating Google Drive view")
         val name = getString(R.string.google_drive)
         val v = View(name = name)
-        val rv = GoogleDriveView.create(this).get()
+        val rv = menuCtrl.getGoogleDriveView()
         b.setOnClickListener { onViewChange(v, rv) }
         loadDefaultItem = { onViewChange(v, rv) }
     }
