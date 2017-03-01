@@ -1,0 +1,238 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="0"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Name file:"
+                android:textSize="10dp"
+                android:textColor="@color/blue_1"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_height="wrap_content"
+                android:gravity="left|center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="mojepliki.zip"
+                android:textSize="18dp"
+                android:layout_marginTop="-10dp"
+                android:layout_height="wrap_content"
+                android:gravity="left|center" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Size file:"
+                    android:textSize="10dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="300 kb"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@color/blue_1"
+            android:padding="10dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Add new tag to file:"
+                    android:textSize="16dp"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.8"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:text="#"
+                        android:textColor="@color/white"
+                        android:padding="10dp"
+                        android:ems="10"
+                        android:background="@drawable/view_file_input_add_tag"
+                        android:id="@+id/editText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/some_id"
+                        android:drawableLeft="@drawable/ic_view_file_plus"
+                        android:textColor="#FFFFFF"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:stateListAnimator="@null"
+                        android:background="@drawable/view_file_btn_add_tag"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_10"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <!-- tag -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.9"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="#tralalal"
+                            android:textSize="14dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.1"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/some_id3_1"
+                            android:drawableLeft="@drawable/ic_view_delete_file"
+                            android:textColor="#FFFFFF"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@android:color/transparent"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- tag -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.9"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:text="#tralalal"
+                            android:textSize="14dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.1"
+                        android:layout_gravity="right"
+                        android:gravity="right"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/some_id33_1"
+                            android:drawableLeft="@drawable/ic_view_delete_file"
+                            android:textColor="#FFFFFF"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:background="@android:color/transparent"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
