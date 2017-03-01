@@ -17,6 +17,12 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.rx.observe
+import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.ui.navigation.navigateTo
+import com.herolynx.elepantry.ext.google.GoogleApi
+import com.herolynx.elepantry.ext.google.asyncConnect
+import com.herolynx.elepantry.ext.google.auth.SignInActivity
 import com.herolynx.elepantry.ext.google.auth.SignInUseCase
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
@@ -64,7 +70,15 @@ abstract class UserViewsMenu : AppCompatActivity() {
         initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button)
         initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView)
         (menuLeft.findViewById(R.id.sign_out) as Button).setOnClickListener {
-            SignInUseCase.logOut(this)
+            val api = GoogleApi.build(this)
+            api.asyncConnect()
+                    .flatMap { api -> SignInUseCase.logOut(api) }
+                    .observe()
+                    .schedule()
+                    .subscribe { s ->
+                        api.disconnect()
+                        navigateTo(SignInActivity::class.java)
+                    }
         }
     }
 
