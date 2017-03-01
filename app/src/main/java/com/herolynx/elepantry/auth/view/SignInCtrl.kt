@@ -18,7 +18,7 @@ import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.view.ResourcesActivity
 import rx.Observable
 
-class SignInCtrl(
+internal class SignInCtrl(
         private val view: SignInActivity,
         private var api: GoogleApiClient = GoogleApi.build(view)
 ) {
