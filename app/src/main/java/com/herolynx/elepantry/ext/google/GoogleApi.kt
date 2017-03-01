@@ -11,18 +11,15 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import rx.Observable
-import java.util.*
 
 object GoogleApi {
-
-    private val RAN = Random()
-
+    
     fun build(
             fragmentActivity: FragmentActivity,
             onFailedHandler: (ConnectionResult) -> Unit = { cr -> error("[GoogleApi] Connection result error: %s", cr) }
     ): GoogleApiClient {
         return GoogleApiClient.Builder(fragmentActivity)
-                .enableAutoManage(fragmentActivity, RAN.nextInt(1000), onFailedHandler)
+                .enableAutoManage(fragmentActivity, onFailedHandler)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, getSignInOptions(fragmentActivity))
                 .build()
     }
