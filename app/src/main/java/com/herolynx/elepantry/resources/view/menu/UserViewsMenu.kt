@@ -56,7 +56,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
 
         val userBadge = UserBadge.create(this, navigationView)
         menuLayout.addView(userBadge.layout)
-        userBadge.display(this)
+        userBadge.display()
 
         val menuLeft = layoutInflater.inflate(R.layout.menu_user_views, navigationView, false)
         menuLayout.addView(menuLeft)
