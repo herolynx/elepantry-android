@@ -1,13 +1,16 @@
 package com.herolynx.elepantry.ext.google
 
 import android.content.Context
+import android.os.SystemClock
 import android.support.v4.app.FragmentActivity
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
+import rx.Observable
 import java.util.*
 
 object GoogleApi {
@@ -33,4 +36,15 @@ object GoogleApi {
 
     }
 
+}
+
+fun GoogleApiClient.asyncConnect(delayMs: Long = 100): Observable<GoogleApiClient> {
+    return Observable.defer {
+        connect()
+        debug("[GoogleApiClient] Async connect - connected: $isConnected, connecting: $isConnecting")
+        while (!isConnected && isConnecting) {
+            SystemClock.sleep(delayMs)
+        }
+        Observable.just(this)
+    }
 }
