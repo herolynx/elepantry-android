@@ -22,14 +22,14 @@ import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.ext.google.GoogleApi
 import com.herolynx.elepantry.ext.google.asyncConnect
-import com.herolynx.elepantry.ext.google.auth.SignInActivity
-import com.herolynx.elepantry.ext.google.auth.SignInUseCase
+import com.herolynx.elepantry.auth.view.SignInActivity
+import com.herolynx.elepantry.auth.SignInUseCase
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.dynamic.DynamicResourceView
 import com.herolynx.elepantry.resources.model.View
-import com.herolynx.elepantry.user.menu.UserBadge
+import com.herolynx.elepantry.user.view.menu.UserBadge
 
 
 abstract class UserViewsMenu : AppCompatActivity() {

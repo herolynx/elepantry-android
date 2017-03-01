@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.ext.google.auth
+package com.herolynx.elepantry.auth.view
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -10,6 +10,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseUser
 import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.auth.SignInUseCase
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.rx.observe

@@ -9,7 +9,7 @@ import com.herolynx.elepantry.ext.google.generic.toObservable
 import org.funktionale.tries.Try
 import rx.Observable
 
-internal object GoogleAuth {
+object GoogleAuth {
 
     fun onLogInResult(data: Intent): Try<GoogleSignInAccount> {
         val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
