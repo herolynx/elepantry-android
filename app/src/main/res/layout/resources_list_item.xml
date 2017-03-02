@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/margin_5"
-                android:background="@drawable/file_type_border"
+                android:background="@drawable/resource_type_border"
                 android:gravity="center"
                 android:state_enabled="false"
                 android:text="zip"
@@ -69,7 +69,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_list_file_google"
+                android:drawableRight="@drawable/ic_list_resource_google"
                 android:state_enabled="false" />
         </LinearLayout>
     </LinearLayout>

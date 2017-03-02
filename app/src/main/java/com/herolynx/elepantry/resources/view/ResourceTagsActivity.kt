@@ -8,7 +8,7 @@ import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 
 class ResourceTagsActivity : UserViewsMenu() {
 
-    override val layoutWithMenuId = R.layout.resource_tags_view
+    override val layoutId = R.layout.resource_tags
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

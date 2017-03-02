@@ -29,7 +29,7 @@ class ResourcesActivity : UserViewsMenu() {
     private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
     private var loadData: () -> Unit = {}
 
-    override val layoutWithMenuId: Int = R.layout.resources_view
+    override val layoutId: Int = R.layout.resources_list
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

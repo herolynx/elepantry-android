@@ -103,7 +103,7 @@
                         android:textColor="@color/white"
                         android:padding="10dp"
                         android:ems="10"
-                        android:background="@drawable/view_file_input_add_tag"
+                        android:background="@drawable/resource_input_add_tag"
                         android:id="@+id/editText" />
                 </LinearLayout>
 
@@ -116,12 +116,12 @@
 
                     <Button
                         android:id="@+id/some_id"
-                        android:drawableLeft="@drawable/ic_view_file_plus"
+                        android:drawableLeft="@drawable/ic_view_resource_plus"
                         android:textColor="#FFFFFF"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:stateListAnimator="@null"
-                        android:background="@drawable/view_file_btn_add_tag"/>
+                        android:background="@drawable/resource_btn_add_tag"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -177,7 +177,7 @@
 
                         <Button
                             android:id="@+id/some_id3_1"
-                            android:drawableLeft="@drawable/ic_view_delete_file"
+                            android:drawableLeft="@drawable/ic_view_resource_delete"
                             android:textColor="#FFFFFF"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
@@ -216,7 +216,7 @@
 
                         <Button
                             android:id="@+id/some_id33_1"
-                            android:drawableLeft="@drawable/ic_view_delete_file"
+                            android:drawableLeft="@drawable/ic_view_resource_delete"
                             android:textColor="#FFFFFF"
                             android:layout_width="20dp"
                             android:layout_height="20dp"

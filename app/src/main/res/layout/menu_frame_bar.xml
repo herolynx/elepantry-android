@@ -21,7 +21,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/file_view_details" />
+    <LinearLayout
+        android:id="@+id/layout_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
