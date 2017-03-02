@@ -21,6 +21,11 @@ class SignInActivity : FragmentActivity(), WithProgressDialog {
         ctrl?.autoLogIn()
     }
 
+    override fun onResume() {
+        super.onResume()
+        ctrl?.autoLogIn()
+    }
+
     private fun initActionHandlers(ctrl: SignInCtrl) {
         val buttonSignIn = findViewById(R.id.sign_in_button) as Button
         buttonSignIn.setOnClickListener { ctrl.logIn() }
