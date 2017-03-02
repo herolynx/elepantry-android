@@ -24,7 +24,7 @@ import com.herolynx.elepantry.user.view.menu.UserBadge
 
 abstract class UserViewsMenu : AppCompatActivity() {
 
-    abstract val layoutWithMenuId: Int
+    abstract val layoutId: Int
 
     private var menuCtrl: UserViewsMenuCtrl? = null
 
@@ -33,16 +33,23 @@ abstract class UserViewsMenu : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutWithMenuId)
+        setContentView(R.layout.menu_frame)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         menuCtrl = UserViewsMenuCtrl(this)
         setSupportActionBar(toolbar)
-        initView(menuCtrl!!)
-        initViewHandlers()
+        initMenu(menuCtrl!!)
+        initAdditionalMenuActions()
         initToolbar(toolbar)
+        initView()
     }
 
-    private fun initViewHandlers() {
+    private fun initView() {
+        val viewPlaceholder = findViewById(R.id.layout_placeholder) as LinearLayout
+        val view = layoutInflater.inflate(layoutId, viewPlaceholder, false)
+        viewPlaceholder.addView(view)
+    }
+
+    private fun initAdditionalMenuActions() {
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener({ view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -50,7 +57,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
         })
     }
 
-    private fun initView(menuCtrl: UserViewsMenuCtrl) {
+    private fun initMenu(menuCtrl: UserViewsMenuCtrl) {
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         val menuLayout = findViewById(R.id.left_menu_layout) as LinearLayout
 

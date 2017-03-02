@@ -10,7 +10,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/resources_view_bar"
+        layout="@layout/menu_frame_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
