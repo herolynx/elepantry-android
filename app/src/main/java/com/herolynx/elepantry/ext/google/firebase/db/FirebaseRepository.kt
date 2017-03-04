@@ -1,6 +1,7 @@
 package com.herolynx.elepantry.ext.google.firebase.db
 
 import com.google.firebase.database.DatabaseReference
+import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.ext.google.firebase.db.listener.CompletionListener
 import com.herolynx.elepantry.ext.google.firebase.db.listener.DeltaChangeListener
@@ -11,7 +12,7 @@ class FirebaseRepository<T>(
         private val rootRef: DatabaseReference,
         private val entityClass: Class<T>,
         private val idGetter: (T) -> String
-) {
+) : Repository<T> {
 
     private val valueListener = ValueListener<T>(entityClass)
     private val deltaListener = DeltaChangeListener<T>(entityClass)
@@ -26,7 +27,7 @@ class FirebaseRepository<T>(
      *
      * @return new stream
      */
-    fun observe(): Observable<DataEvent<T>> = Observable.merge(
+    override fun asObservable(): Observable<DataEvent<T>> = Observable.merge(
             Observable.from(valueListener.loadedData),
             Observable.create({ p -> deltaListener.subsribe(p) })
     )
@@ -36,14 +37,14 @@ class FirebaseRepository<T>(
      * @param t data to be deleted
      * @param new observable
      */
-    fun delete(t: T): Observable<DataEvent<T>> = modify(DataEvent(data = t, deleted = true))
+    override fun delete(t: T): Observable<DataEvent<T>> = modify(DataEvent(data = t, deleted = true))
 
     /**
      * Save data
      * @param t data to be updated
      * @param new observable
      */
-    fun save(t: T): Observable<DataEvent<T>> = modify(DataEvent(t))
+    override fun save(t: T): Observable<DataEvent<T>> = modify(DataEvent(t))
 
     /**
      * Modify data in DB
@@ -56,7 +57,7 @@ class FirebaseRepository<T>(
         if (t.deleted) {
             rootRef.child(id).removeValue(l)
         } else {
-            rootRef.child(id).setValue(t, l)
+            rootRef.child(id).setValue(t.data, l)
         }
         return Observable.create({ s -> l.subsribe(s) })
     }

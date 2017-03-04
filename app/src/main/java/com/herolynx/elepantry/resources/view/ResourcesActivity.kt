@@ -1,5 +1,6 @@
 package com.herolynx.elepantry.resources.view
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -9,6 +10,7 @@ import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.resources.ResourcePage
@@ -20,7 +22,6 @@ import com.herolynx.elepantry.resources.view.ui.ResourceItemView
 import com.herolynx.elepantry.resources.view.ui.ResourceList
 import org.funktionale.tries.Try
 import rx.Observable
-
 
 class ResourcesActivity : UserViewsMenu() {
 
@@ -101,4 +102,19 @@ class ResourcesActivity : UserViewsMenu() {
         loadData()
         return true
     }
+
+    companion object {
+
+        private val PARAM_VIEW_ID = "viewId"
+
+        fun navigate(a: Activity, v: View) {
+            a.navigateTo(ResourcesActivity::class.java, *navigationArgs(v.id))
+        }
+
+        fun navigationArgs(viewId: String): Array<Pair<String, String>> {
+            return arrayOf(Pair(PARAM_VIEW_ID, viewId))
+        }
+
+    }
+
 }

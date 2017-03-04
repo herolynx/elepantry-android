@@ -4,18 +4,17 @@ import android.content.Intent
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseUser
-import com.herolynx.elepantry.Intents
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.auth.SignInUseCase
+import com.herolynx.elepantry.config.Intents
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
-import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.google.GoogleApi
 import com.herolynx.elepantry.getAuthContext
-import com.herolynx.elepantry.resources.view.ResourcesActivity
+import com.herolynx.elepantry.resources.view.ResourceTagsActivity
 import rx.Observable
 
 internal class SignInCtrl(
@@ -61,7 +60,8 @@ internal class SignInCtrl(
         api.disconnect()
         if (auth.second != null) {
             view.getAuthContext().map { c -> c.setMainAccount(auth.first) }
-            view.navigateTo(ResourcesActivity::class.java)
+//            view.navigateTo(ResourcesActivity::class.java)
+            ResourceTagsActivity.navigateNewView(view)
         } else {
             view.toast(R.string.auth_failed, "Sign up failed")
         }

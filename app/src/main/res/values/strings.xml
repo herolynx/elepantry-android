@@ -18,7 +18,7 @@
     <!-- VIEWS -->
     <string name="google_drive">Google Drive</string>
     <string name="user_views">Your views</string>
-    <string name="add_view">Add view</string>
+    <string name="resource_type_view">View</string>
     <string name="resource_name">Name: </string>
     <string name="resource_name_placeholder">Resource name</string>
     <string name="tag_name_placeholder">Tag name</string>

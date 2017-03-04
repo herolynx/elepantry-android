@@ -11,7 +11,6 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
-import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.view.ResourceTagsActivity
 import com.herolynx.elepantry.user.model.User
@@ -26,7 +25,7 @@ class UserBadge(
     val newViewButton = layout.findViewById(R.id.add_new_view) as Button
 
     init {
-        newViewButton.setOnClickListener { activity.navigateTo(ResourceTagsActivity::class.java) }
+        newViewButton.setOnClickListener { ResourceTagsActivity.navigateNewView(activity) }
     }
 
     fun display() {
