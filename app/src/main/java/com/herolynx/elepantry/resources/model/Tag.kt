@@ -21,4 +21,4 @@ fun List<Tag>.add(name: String): List<Tag> {
 }
 
 
-fun List<Tag>.remove(name: String): List<Tag> = filter { t -> !t.name.equals(name) }
+fun List<Tag>.remove(toDelete: Tag): List<Tag> = filter { t -> !t.equals(toDelete) }

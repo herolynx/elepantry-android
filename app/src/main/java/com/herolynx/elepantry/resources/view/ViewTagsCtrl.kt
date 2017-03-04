@@ -3,6 +3,7 @@ package com.herolynx.elepantry.resources.view
 import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.resources.model.Tag
 import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.model.add
 import com.herolynx.elepantry.resources.model.remove
@@ -21,9 +22,12 @@ class ViewTagsCtrl(
         this.v = v
     }
 
-    private fun save(changed: View) {
+    private fun save(changed: View, tagsChanged: Boolean = false) {
         repository.save(changed)
         v = changed
+        if (tagsChanged) {
+            view.displayTags(v.tags)
+        }
     }
 
     fun changeName(name: String) {
@@ -33,14 +37,12 @@ class ViewTagsCtrl(
 
     fun addTag(name: String) {
         debug("$TAG Add tag - view: $v, new tag: $name")
-        save(v.copy(tags = v.tags.add(name)))
+        save(v.copy(tags = v.tags.add(name)), tagsChanged = true)
     }
 
-    fun deleteTag(name: String) {
-        debug("$TAG Delete tag - view: $v, delete tag: $name")
-        save(v.copy(tags = v.tags.remove(name)))
+    fun deleteTag(t: Tag) {
+        debug("$TAG Delete tag - view: $v, delete tag: $t")
+        save(v.copy(tags = v.tags.remove(t)), tagsChanged = true)
     }
-
-    fun getTags() = v.tags
 
 }
