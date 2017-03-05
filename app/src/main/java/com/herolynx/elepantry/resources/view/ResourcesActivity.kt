@@ -39,7 +39,9 @@ class ResourcesActivity : UserViewsMenu() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initResourceView()
-        loadParams(intent!!.extras)
+        if (intent.extras != null) {
+            loadParams(intent.extras)
+        }
     }
 
     private fun loadParams(b: Bundle) {
@@ -121,7 +123,7 @@ class ResourcesActivity : UserViewsMenu() {
 
         private val PARAM_VIEW = "view"
 
-        fun navigate(a: Activity, v: View = View(name = "Google", type = ViewType.GOOGLE)) {
+        fun navigate(a: Activity, v: View = View(name = a.getString(R.string.google_drive), type = ViewType.GOOGLE)) {
             a.navigateTo(
                     ResourcesActivity::class.java,
                     Pair(PARAM_VIEW, v.toJsonString().get())
