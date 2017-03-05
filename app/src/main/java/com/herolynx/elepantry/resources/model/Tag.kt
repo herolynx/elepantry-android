@@ -8,7 +8,7 @@ data class Tag(val id: String = newId(), val name: String) {
     }
 
     override fun equals(other: Any?): Boolean {
-        val v = other as Tag?
+        val v = other as? Tag
         return v?.id.equals(id)
     }
 

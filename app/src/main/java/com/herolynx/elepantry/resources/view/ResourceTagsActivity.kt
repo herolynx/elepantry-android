@@ -9,6 +9,7 @@ import android.widget.EditText
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.ResourceView
@@ -38,10 +39,12 @@ class ResourceTagsActivity : UserViewsMenu() {
 
     private fun loadParams(b: Bundle) {
         val resourceType = TYPE.valueOf(b.getString(PARAM_TYPE, ""))
+        val resource = b.getString(PARAM_RESOURCE, "")
+        debug("[ResourceTagActivity] Loading params - resource type: $resourceType, resource: $resource")
         when (resourceType) {
             TYPE.VIEW -> {
                 ctrl = ViewTagsCtrl(this)
-                ctrl?.init(b.getString(PARAM_RESOURCE, "").fromJsonString(View::class.java).get())
+                ctrl?.init(resource.fromJsonString(View::class.java).get())
             }
 
             else -> throw UnsupportedOperationException("Unknown resource type: $resourceType")
@@ -70,6 +73,11 @@ class ResourceTagsActivity : UserViewsMenu() {
         tagLists.layoutManager = linearLayoutManager
     }
 
+    internal fun displayName(name: String) {
+        resourceName?.text?.clear()
+        resourceName?.text?.append(name)
+    }
+
     internal fun displayTags(tags: List<Tag>) {
         tagsAdapter?.clear()
         tags.map { t -> tagsAdapter?.add(t) }
@@ -91,6 +99,7 @@ class ResourceTagsActivity : UserViewsMenu() {
         private val PARAM_TYPE = "resourceType"
 
         fun navigate(a: Activity, v: View) {
+            debug("[Navigation] Navigation to resource tags - view: $v")
             a.navigateTo(
                     ResourceTagsActivity::class.java,
                     Pair(PARAM_TYPE, TYPE.VIEW.toString()),

@@ -19,6 +19,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.view.ResourceTagsActivity
 import com.herolynx.elepantry.user.view.menu.UserBadge
 
 
@@ -76,12 +77,10 @@ abstract class UserViewsMenu : AppCompatActivity() {
 
     private fun initUserViews(layout: RecyclerView, menuCtrl: UserViewsMenuCtrl) {
         debug("[initUserViews] Creating...")
-        val listAdapter = UserViewsList.adapter({ v ->
-            onViewChange(
-                    v,
-                    menuCtrl.getView(v)
-            )
-        })
+        val listAdapter = UserViewsList.adapter(
+                clickHandler = { v -> onViewChange(v, menuCtrl.getResourceView(v)) },
+                editHandler = { v -> ResourceTagsActivity.navigate(this, v) }
+        )
         layout.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         layout.layoutManager = linearLayoutManager

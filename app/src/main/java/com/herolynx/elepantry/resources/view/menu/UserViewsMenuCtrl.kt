@@ -24,7 +24,7 @@ internal class UserViewsMenuCtrl(
 
     fun getGoogleDriveView() = GoogleDriveView.create(view).get()
 
-    fun getView(v: View): ResourceView = DynamicResourceView(v, { resourceView.asObservable() })
+    fun getResourceView(v: View): ResourceView = DynamicResourceView(v, { resourceView.asObservable() })
 
     fun logOut(api: GoogleApiClient = GoogleApi.build(view)) {
         api.asyncConnect()

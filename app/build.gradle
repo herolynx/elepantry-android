@@ -46,6 +46,7 @@ dependencies {
     //Core
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile files('libs/funktionale-all-1.0.0-beta.jar')
+    compile 'com.google.code.gson:gson:2.8.0'
 
     //Core - Android
     compile 'com.android.support:appcompat-v7:25.0.1'

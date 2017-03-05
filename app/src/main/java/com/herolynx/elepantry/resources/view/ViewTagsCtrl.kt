@@ -20,6 +20,8 @@ class ViewTagsCtrl(
     fun init(v: View) {
         debug("$TAG Init - view: $v")
         this.v = v
+        view.displayName(v.name)
+        view.displayTags(v.tags)
     }
 
     private fun save(changed: View, tagsChanged: Boolean = false) {

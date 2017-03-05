@@ -25,7 +25,7 @@ data class Resource(
     }
 
     override fun equals(other: Any?): Boolean {
-        val v = other as Resource?
+        val v = other as? Resource
         return v?.id.equals(id)
     }
 }

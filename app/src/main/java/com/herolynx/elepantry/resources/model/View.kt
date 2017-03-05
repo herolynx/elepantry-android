@@ -8,7 +8,7 @@ data class View(val id: String = newId(), val name: String, val tags: List<Tag> 
     }
 
     override fun equals(other: Any?): Boolean {
-        val v = other as View?
+        val v = other as? View
         return v?.id.equals(id)
     }
 
