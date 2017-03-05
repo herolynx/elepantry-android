@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:paddingRight="10dp"
                 android:background="@android:color/transparent"
-                android:drawableRight="@drawable/ic_view_resource_menu_plus"/>
+                android:drawableRight="@drawable/ic_view_resource_menu_pencil"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
