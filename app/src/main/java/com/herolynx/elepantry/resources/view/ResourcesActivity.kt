@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.MenuItem
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
@@ -120,6 +121,24 @@ class ResourcesActivity : UserViewsMenu() {
         listAdapter?.notifyDataSetChanged()
         loadData()
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
+        when (item.itemId) {
+            R.id.action_delete -> {
+
+                return true
+            }
+
+            R.id.action_edit -> {
+
+                return true
+            }
+
+            else -> throw UnsupportedOperationException("Unknown action - item: ${item.title}, action id: ${item.itemId}")
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

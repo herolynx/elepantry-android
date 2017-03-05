@@ -14,6 +14,7 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.ResourceView
+import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.model.Tag
 import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
@@ -29,7 +30,7 @@ class ResourceTagsActivity : UserViewsMenu() {
     private var resourceName: EditText? = null
     private var newTag: EditText? = null
     private var addTag: Button? = null
-    private var ctrl: ViewTagsCtrl? = null
+    private var ctrl: TagsCtrl<*>? = null
     private var tagsAdapter: ListAdapter<Tag, TagItemView>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,12 +46,14 @@ class ResourceTagsActivity : UserViewsMenu() {
         debug("[ResourceTagActivity] Loading params - resource type: $resourceType, resource: $resource")
         when (resourceType) {
             TYPE.VIEW -> {
-                ctrl = ViewTagsCtrl(this)
-                ctrl?.init(resource.fromJsonString(View::class.java).get())
+                val viewTagsCtrl = TagsCtrlFactory.viewTagsCtrl(this)
+                viewTagsCtrl.init(resource.fromJsonString(View::class.java).get())
+                ctrl = viewTagsCtrl
             }
 
             else -> throw UnsupportedOperationException("Unknown resource type: $resourceType")
         }
+        resourceName?.isEnabled = ctrl?.canChangeName() ?: false
     }
 
     private fun initView() {
@@ -112,6 +115,15 @@ class ResourceTagsActivity : UserViewsMenu() {
 
         private val PARAM_RESOURCE = "resource"
         private val PARAM_TYPE = "resourceType"
+
+        fun navigate(a: Activity, r: Resource) {
+            debug("[Navigation] Navigation to resource tags - resource: $r")
+            a.navigateTo(
+                    ResourceTagsActivity::class.java,
+                    Pair(PARAM_TYPE, TYPE.RESOURCE.toString()),
+                    Pair(PARAM_RESOURCE, r.toJsonString().get())
+            )
+        }
 
         fun navigate(a: Activity, v: View) {
             debug("[Navigation] Navigation to resource tags - view: $v")
