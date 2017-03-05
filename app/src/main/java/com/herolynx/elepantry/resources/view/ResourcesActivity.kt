@@ -56,6 +56,9 @@ class ResourcesActivity : UserViewsMenu() {
     private fun initResourceView() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
         listAdapter = ResourceList.adapter()
+        listAdapter?.onSelectedItemsChange { selected ->
+            topMenuItems().map { i -> i.setVisible(!selected.isEmpty()) }
+        }
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         listView.layoutManager = linearLayoutManager

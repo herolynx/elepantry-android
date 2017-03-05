@@ -11,7 +11,7 @@ import com.herolynx.elepantry.resources.model.Resource
 object ResourceList {
 
     fun adapter(): ListAdapter<Resource, ResourceItemView> =
-            ListAdapter<Resource, ResourceItemView>(
+            ListAdapter(
                     { ctx -> ResourceItemView(ctx) },
                     { r, h -> display(r, h) }
             )
