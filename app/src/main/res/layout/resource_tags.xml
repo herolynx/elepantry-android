@@ -34,8 +34,11 @@
                 android:id="@+id/resource_name"
                 android:layout_width="match_parent"
                 android:hint="@string/resource_name_placeholder"
-                android:textSize="18dp"
-                android:layout_marginTop="-10dp"
+                android:textSize="16dp"
+                android:textColor="@color/dark_1"
+                android:layout_marginTop="-5dp"
+                android:background="@drawable/resource_input"
+                android:textStyle="normal"
                 android:layout_height="wrap_content"
                 android:gravity="left|center" />
 
@@ -56,7 +59,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:text="Add new tag to file:"
-                    android:textSize="16dp"
+                    android:textSize="10dp"
                     android:textColor="@color/white"
                     android:layout_height="wrap_content"
                     android:gravity="left|center" />
@@ -79,6 +82,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
                         android:hint="@string/tag_name_placeholder"
+                        android:textColorHint="@color/blue_4"
                         android:textColor="@color/white"
                         android:padding="10dp"
                         android:ems="10"
@@ -120,8 +124,7 @@
             android:layout_gravity="top"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
