@@ -14,7 +14,7 @@ import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.google.GoogleApi
 import com.herolynx.elepantry.getAuthContext
-import com.herolynx.elepantry.resources.view.ResourceTagsActivity
+import com.herolynx.elepantry.resources.view.ResourcesActivity
 import rx.Observable
 
 internal class SignInCtrl(
@@ -60,8 +60,7 @@ internal class SignInCtrl(
         api.disconnect()
         if (auth.second != null) {
             view.getAuthContext().map { c -> c.setMainAccount(auth.first) }
-//            view.navigateTo(ResourcesActivity::class.java)
-            ResourceTagsActivity.navigateNewView(view)
+            ResourcesActivity.navigate(view)
         } else {
             view.toast(R.string.auth_failed, "Sign up failed")
         }

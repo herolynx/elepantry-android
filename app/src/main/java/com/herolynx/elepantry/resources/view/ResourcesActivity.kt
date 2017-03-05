@@ -19,6 +19,7 @@ import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.model.ViewType
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import com.herolynx.elepantry.resources.view.ui.ResourceItemView
 import com.herolynx.elepantry.resources.view.ui.ResourceList
@@ -120,7 +121,7 @@ class ResourcesActivity : UserViewsMenu() {
 
         private val PARAM_VIEW = "view"
 
-        fun navigate(a: Activity, v: View) {
+        fun navigate(a: Activity, v: View = View(name = "Google", type = ViewType.GOOGLE)) {
             a.navigateTo(
                     ResourcesActivity::class.java,
                     Pair(PARAM_VIEW, v.toJsonString().get())
