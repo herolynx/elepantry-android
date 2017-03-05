@@ -5,7 +5,7 @@
         android:id="@+id/action_edit"
         android:orderInCategory="100"
         android:title=""
-        android:icon="@drawable/ic_action_bar_delete"
+        android:icon="@drawable/ic_action_bar_pencil"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_delete"
