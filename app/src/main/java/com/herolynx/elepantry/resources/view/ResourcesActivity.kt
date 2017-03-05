@@ -31,6 +31,7 @@ class ResourcesActivity : UserViewsMenu() {
     private var loadData: () -> Unit = {}
 
     override val layoutId: Int = R.layout.resources_list
+    override val topMenuId = R.menu.resources_top_menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

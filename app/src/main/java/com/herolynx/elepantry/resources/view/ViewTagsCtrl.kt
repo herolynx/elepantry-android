@@ -3,6 +3,7 @@ package com.herolynx.elepantry.resources.view
 import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.resources.model.Tag
 import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.model.add
@@ -30,6 +31,12 @@ class ViewTagsCtrl(
         if (tagsChanged) {
             view.displayTags(v.tags)
         }
+    }
+
+    fun delete() {
+        debug("$TAG Deleting view - view: $v")
+        repository.delete(v)
+                .subscribe { view.navigateTo(ResourcesActivity::class.java) }
     }
 
     fun changeName(name: String) {

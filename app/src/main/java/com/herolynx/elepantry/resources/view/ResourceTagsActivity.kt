@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import com.herolynx.elepantry.R
@@ -23,6 +24,7 @@ import org.funktionale.option.toOption
 class ResourceTagsActivity : UserViewsMenu() {
 
     override val layoutId = R.layout.resource_tags
+    override val topMenuId = R.menu.resource_tags_top_menu
 
     private var resourceName: EditText? = null
     private var newTag: EditText? = null
@@ -87,6 +89,19 @@ class ResourceTagsActivity : UserViewsMenu() {
     override fun onViewChange(v: View, rv: ResourceView): Boolean {
         ResourcesActivity.navigate(this, v)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
+        when (item.itemId) {
+            R.id.action_delete -> {
+                ctrl?.delete()
+                return true
+            }
+
+            else -> throw UnsupportedOperationException("Unknown action - item: ${item.title}, action id: ${item.itemId}")
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

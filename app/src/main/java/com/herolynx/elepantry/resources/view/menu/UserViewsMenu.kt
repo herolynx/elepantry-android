@@ -26,6 +26,7 @@ import com.herolynx.elepantry.user.view.menu.UserBadge
 abstract class UserViewsMenu : AppCompatActivity() {
 
     abstract val layoutId: Int
+    abstract val topMenuId: Int
 
     private var menuCtrl: UserViewsMenuCtrl? = null
 
@@ -127,18 +128,12 @@ abstract class UserViewsMenu : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.top_menu, menu)
+        menuInflater.inflate(topMenuId, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        debug("[TopMenu] Item selected: %s", item.title)
-        val id = item.itemId
-
-        if (id == R.id.action_settings) {
-            return true
-        }
-
+        debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
         return super.onOptionsItemSelected(item)
     }
 
