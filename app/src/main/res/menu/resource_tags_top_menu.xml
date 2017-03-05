@@ -5,6 +5,6 @@
         android:id="@+id/action_delete"
         android:orderInCategory="100"
         android:title=""
-        android:icon="@drawable/ic_view_resource_delete"
+        android:icon="@drawable/ic_action_bar_delete"
         app:showAsAction="ifRoom" />
 </menu>

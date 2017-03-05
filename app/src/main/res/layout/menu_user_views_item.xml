@@ -4,23 +4,41 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:weightSum="1">
 
-    <Button
-        android:id="@+id/user_view_button"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@android:color/transparent"
-        android:gravity="left|center"
-        android:textAllCaps="false" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/user_view_edit_button"
-        android:layout_width="20dp"
-        android:layout_height="40dp"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_view_resource_plus"
-        android:textColor="#FFFFFF" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content">
 
+            <Button
+                android:id="@+id/user_view_button"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                android:gravity="left|center"
+                android:textAllCaps="false" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal|clip_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2">
+
+            <Button
+                android:id="@+id/user_view_edit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/ic_view_resource_menu_pencil"/>
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
