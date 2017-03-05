@@ -6,7 +6,7 @@ package com.herolynx.elepantry.core.rx
 data class DataEvent<T>(val data: T, val deleted: Boolean = false) {
 
     override fun equals(other: Any?): Boolean {
-        val e = other as DataEvent<T>?
+        val e = other as? DataEvent<*>
         return e?.data?.equals(data) ?: false
     }
 

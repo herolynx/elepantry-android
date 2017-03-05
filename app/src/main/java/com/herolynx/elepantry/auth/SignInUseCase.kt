@@ -7,7 +7,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Status
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
-import com.herolynx.elepantry.Intents
+import com.herolynx.elepantry.config.Intents
 import com.herolynx.elepantry.core.func.toObservable
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
