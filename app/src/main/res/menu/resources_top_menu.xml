@@ -6,11 +6,13 @@
         android:orderInCategory="100"
         android:title=""
         android:icon="@drawable/ic_action_bar_pencil"
+        android:visible="false"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_delete"
         android:orderInCategory="200"
         android:title=""
         android:icon="@drawable/ic_action_bar_delete"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 </menu>

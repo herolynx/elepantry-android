@@ -1,9 +1,7 @@
 package com.herolynx.elepantry.resources.view.menu
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -33,6 +31,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
 
     protected var loadDefaultItem: () -> Unit = {}
     protected var closeMenu: () -> Unit = {}
+    private val topMenuItems: MutableList<MenuItem> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +40,6 @@ abstract class UserViewsMenu : AppCompatActivity() {
         menuCtrl = UserViewsMenuCtrl(this)
         setSupportActionBar(toolbar)
         initMenu(menuCtrl!!)
-        initAdditionalMenuActions()
         initToolbar(toolbar)
         initView()
     }
@@ -50,14 +48,6 @@ abstract class UserViewsMenu : AppCompatActivity() {
         val viewPlaceholder = findViewById(R.id.layout_placeholder) as LinearLayout
         val view = layoutInflater.inflate(layoutId, viewPlaceholder, false)
         viewPlaceholder.addView(view)
-    }
-
-    private fun initAdditionalMenuActions() {
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener({ view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        })
     }
 
     private fun initMenu(menuCtrl: UserViewsMenuCtrl) {
@@ -129,8 +119,15 @@ abstract class UserViewsMenu : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(topMenuId, menu)
+        var i = 0
+        while (i < menu.size()) {
+            topMenuItems.add(menu.getItem(i))
+            i++
+        }
         return true
     }
+
+    protected fun topMenuItems() = topMenuItems.toList()
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
