@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.rx.DataEvent
 
 /**
@@ -15,13 +16,23 @@ import com.herolynx.elepantry.core.rx.DataEvent
 class ListAdapter<T, TU : View>(
         val viewFactory: (Context) -> TU,
         val display: (T?, ViewHolder<TU>) -> Unit,
-        val items: MutableList<T> = mutableListOf()
+        val items: MutableList<T> = mutableListOf(),
+        val selectedItems: MutableList<T> = mutableListOf()
 )
     : RecyclerView.Adapter<ListAdapter.ViewHolder<TU>>() {
 
+    private var selectedItemsChange: (List<T>) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<TU> = ViewHolder(viewFactory(parent.context))
 
-    override fun onBindViewHolder(holder: ViewHolder<TU>, position: Int) = display(items[position], holder)
+    override fun onBindViewHolder(holder: ViewHolder<TU>, position: Int) {
+        val i = items[position]
+        holder.view.setOnLongClickListener { v ->
+            v.isSelected = select(i)
+            true
+        }
+        display(i, holder)
+    }
 
     override fun getItemCount(): Int = items.size
 
@@ -43,5 +54,24 @@ class ListAdapter<T, TU : View>(
     }
 
     fun clear() = items.clear()
+
+    fun select(t: T): Boolean {
+        var isSelected: Boolean
+        if (selectedItems.contains(t)) {
+            debug("[ListAdapter] Item deselected: $t")
+            selectedItems.remove(t)
+            isSelected = false
+        } else {
+            debug("[ListAdapter] Item selected: $t")
+            selectedItems.add(t)
+            isSelected = true
+        }
+        selectedItemsChange(selectedItems.toList())
+        return isSelected
+    }
+
+    fun onSelectedItemsChange(selectedItemsChange: (List<T>) -> Unit) {
+        this.selectedItemsChange = selectedItemsChange
+    }
 
 }
