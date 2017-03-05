@@ -15,6 +15,7 @@ import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.dynamic.DynamicResourceView
 import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.model.ViewType
 
 internal class UserViewsMenuCtrl(
         private val view: UserViewsMenu,
@@ -22,9 +23,13 @@ internal class UserViewsMenuCtrl(
         private val resourceView: Repository<Resource> = Config.repository.userResources()
 ) {
 
-    fun getGoogleDriveView() = GoogleDriveView.create(view).get()
+    fun getResourceView(v: View): ResourceView = when (v.type) {
+        ViewType.DYNAMIC -> DynamicResourceView(v, { resourceView.asObservable() })
 
-    fun getResourceView(v: View): ResourceView = DynamicResourceView(v, { resourceView.asObservable() })
+        ViewType.GOOGLE -> GoogleDriveView.create(view).get()
+
+        else -> throw UnsupportedOperationException("Unknown view type - view: $view")
+    }
 
     fun logOut(api: GoogleApiClient = GoogleApi.build(view)) {
         api.asyncConnect()

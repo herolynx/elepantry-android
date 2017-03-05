@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.conversion.fromJsonString
+import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.rx.DataEvent
@@ -36,6 +38,16 @@ class ResourcesActivity : UserViewsMenu() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initResourceView()
+        loadParams(intent!!.extras)
+    }
+
+    private fun loadParams(b: Bundle) {
+        val view = b.getString(PARAM_VIEW, "")
+        debug("[ResourceActivity] Loading params - view: $view")
+        if (!view.isEmpty()) {
+            view.fromJsonString(View::class.java)
+                    .map { v -> onViewChange(v) }
+        }
     }
 
     private fun initResourceView() {
@@ -106,15 +118,15 @@ class ResourcesActivity : UserViewsMenu() {
 
     companion object {
 
-        private val PARAM_VIEW_ID = "viewId"
+        private val PARAM_VIEW = "view"
 
         fun navigate(a: Activity, v: View) {
-            a.navigateTo(ResourcesActivity::class.java, *navigationArgs(v.id))
+            a.navigateTo(
+                    ResourcesActivity::class.java,
+                    Pair(PARAM_VIEW, v.toJsonString().get())
+            )
         }
 
-        fun navigationArgs(viewId: String): Array<Pair<String, String>> {
-            return arrayOf(Pair(PARAM_VIEW_ID, viewId))
-        }
 
     }
 

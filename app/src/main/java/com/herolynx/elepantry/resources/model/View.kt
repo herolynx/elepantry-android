@@ -1,6 +1,6 @@
 package com.herolynx.elepantry.resources.model
 
-data class View(val id: String = newId(), val name: String, val tags: List<Tag> = listOf()) {
+data class View(val id: String = newId(), val name: String, val tags: List<Tag> = listOf(), val type: ViewType = ViewType.DYNAMIC) {
     constructor() : this(name = "")
 
     override fun hashCode(): Int {
@@ -11,5 +11,12 @@ data class View(val id: String = newId(), val name: String, val tags: List<Tag> 
         val v = other as? View
         return v?.id.equals(id)
     }
+
+}
+
+enum class ViewType {
+
+    DYNAMIC,
+    GOOGLE
 
 }

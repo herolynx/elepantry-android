@@ -19,6 +19,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.model.ViewType
 import com.herolynx.elepantry.resources.view.ResourceTagsActivity
 import com.herolynx.elepantry.user.view.menu.UserBadge
 
@@ -70,7 +71,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
         val menuLeft = layoutInflater.inflate(R.layout.menu_user_views, navigationView, false)
         menuLayout.addView(menuLeft)
 
-        initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button, menuCtrl)
+        initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button)
         initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView, menuCtrl)
 
         (menuLeft.findViewById(R.id.sign_out) as Button).setOnClickListener { menuCtrl.logOut() }
@@ -79,7 +80,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
     private fun initUserViews(layout: RecyclerView, menuCtrl: UserViewsMenuCtrl) {
         debug("[initUserViews] Creating...")
         val listAdapter = UserViewsList.adapter(
-                clickHandler = { v -> onViewChange(v, menuCtrl.getResourceView(v)) },
+                clickHandler = { v -> onViewChange(v) },
                 editHandler = { v -> ResourceTagsActivity.navigate(this, v) }
         )
         layout.adapter = listAdapter
@@ -94,18 +95,17 @@ abstract class UserViewsMenu : AppCompatActivity() {
                 }
     }
 
-    private fun initGoogleDriveView(b: Button, menuCtrl: UserViewsMenuCtrl) {
+    private fun initGoogleDriveView(b: Button) {
         debug("[initUserViews] Creating Google Drive view")
         val name = getString(R.string.google_drive)
-        val v = View(name = name)
-        val rv = menuCtrl.getGoogleDriveView()
-        b.setOnClickListener { onViewChange(v, rv) }
-        loadDefaultItem = { onViewChange(v, rv) }
+        val v = View(name = name, type = ViewType.GOOGLE)
+        b.setOnClickListener { onViewChange(v) }
+        loadDefaultItem = { onViewChange(v) }
     }
 
     protected abstract fun onViewChange(
             v: View,
-            rv: ResourceView
+            rv: ResourceView = menuCtrl!!.getResourceView(v)
     ): Boolean
 
     private fun initToolbar(toolbar: Toolbar) {
