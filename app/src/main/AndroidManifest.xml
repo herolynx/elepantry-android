@@ -29,6 +29,7 @@
         <activity
             android:name=".resources.view.ResourceTagsActivity"
             android:label="@string/title_activity_main"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
     </application>

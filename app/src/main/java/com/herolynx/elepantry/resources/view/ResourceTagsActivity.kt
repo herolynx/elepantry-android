@@ -30,7 +30,7 @@ class ResourceTagsActivity : UserViewsMenu() {
     private var resourceName: EditText? = null
     private var newTag: EditText? = null
     private var addTag: Button? = null
-    private var ctrl: TagsCtrl<*>? = null
+    private var resourceCtrl: ResourceTagsCtrl<*>? = null
     private var tagsAdapter: ListAdapter<Tag, TagItemView>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,33 +46,39 @@ class ResourceTagsActivity : UserViewsMenu() {
         debug("[ResourceTagActivity] Loading params - resource type: $resourceType, resource: $resource")
         when (resourceType) {
             TYPE.VIEW -> {
-                val viewTagsCtrl = TagsCtrlFactory.viewTagsCtrl(this)
+                val viewTagsCtrl = ResourceTagsCtrlFactory.viewTagsCtrl(this)
                 viewTagsCtrl.init(resource.fromJsonString(View::class.java).get())
-                ctrl = viewTagsCtrl
+                resourceCtrl = viewTagsCtrl
+            }
+
+            TYPE.RESOURCE -> {
+                val resourceTagsCtrl = ResourceTagsCtrlFactory.resourceTagsCtrl(this)
+                resourceTagsCtrl.init(resource.fromJsonString(Resource::class.java).get())
+                resourceCtrl = resourceTagsCtrl
             }
 
             else -> throw UnsupportedOperationException("Unknown resource type: $resourceType")
         }
-        resourceName?.isEnabled = ctrl?.canChangeName() ?: false
+        resourceName?.isEnabled = resourceCtrl?.canChangeName() ?: false
     }
 
     private fun initView() {
         resourceName = findViewById(R.id.resource_name) as EditText
         resourceName?.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                ctrl?.changeName(resourceName?.text.toString())
+                resourceCtrl?.changeName(resourceName?.text.toString())
             }
         }
 
         newTag = findViewById(R.id.new_tag) as EditText
         addTag = findViewById(R.id.add_tag) as Button
         addTag?.setOnClickListener {
-            newTag.toOption().map { t -> ctrl?.addTag(t.text.toString()) }
+            newTag.toOption().map { t -> resourceCtrl?.addTag(t.text.toString()) }
             newTag?.text?.clear()
         }
 
         val tagLists = findViewById(R.id.resource_tags_list) as RecyclerView
-        tagsAdapter = TagsList.adapter(deleteHandler = { tag -> ctrl?.deleteTag(tag) })
+        tagsAdapter = TagsList.adapter(deleteHandler = { tag -> resourceCtrl?.deleteTag(tag) })
         tagLists.adapter = tagsAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         tagLists.layoutManager = linearLayoutManager
@@ -98,7 +104,7 @@ class ResourceTagsActivity : UserViewsMenu() {
         debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
         when (item.itemId) {
             R.id.action_delete -> {
-                ctrl?.delete()
+                resourceCtrl?.delete()
                 return true
             }
 

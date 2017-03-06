@@ -9,7 +9,7 @@ import org.funktionale.option.Option
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
 
-internal class TagsCtrl<T>(
+internal class ResourceTagsCtrl<T>(
         private val view: ResourceTagsActivity,
         private val repository: Repository<T>,
         private val nameGetter: (T) -> String,
@@ -35,7 +35,7 @@ internal class TagsCtrl<T>(
         }
     }
 
-    protected fun save(changed: T, tagsChanged: Boolean = false): T? {
+    private fun save(changed: T, tagsChanged: Boolean = false): T? {
         repository.save(changed)
         r = changed
         if (tagsChanged) {

@@ -6,12 +6,12 @@ import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.model.View
 import org.funktionale.option.Option
 
-internal object TagsCtrlFactory {
+internal object ResourceTagsCtrlFactory {
 
     fun viewTagsCtrl(
             v: ResourceTagsActivity,
             r: Repository<View> = Config.repository.userViews()
-    ): TagsCtrl<View> = TagsCtrl<View>(
+    ): ResourceTagsCtrl<View> = ResourceTagsCtrl<View>(
             v,
             r,
             nameGetter = { v -> v.name },
@@ -23,7 +23,7 @@ internal object TagsCtrlFactory {
     fun resourceTagsCtrl(
             v: ResourceTagsActivity,
             r: Repository<Resource> = Config.repository.userResources()
-    ): TagsCtrl<Resource> = TagsCtrl<Resource>(
+    ): ResourceTagsCtrl<Resource> = ResourceTagsCtrl<Resource>(
             v,
             r,
             nameGetter = { r -> r.name },

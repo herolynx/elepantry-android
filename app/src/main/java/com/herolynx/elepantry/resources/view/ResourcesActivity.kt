@@ -58,7 +58,7 @@ class ResourcesActivity : UserViewsMenu() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
         listAdapter = ResourceList.adapter()
         listAdapter?.onSelectedItemsChange { selected ->
-            topMenuItems().map { i -> i.setVisible(!selected.isEmpty()) }
+            topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(!selected.isEmpty()) }
         }
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
@@ -127,12 +127,20 @@ class ResourcesActivity : UserViewsMenu() {
         debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
         when (item.itemId) {
             R.id.action_delete -> {
-
+                //TODO logic here
                 return true
             }
 
             R.id.action_edit -> {
+                when (listAdapter?.selectedItems?.size ?: 0) {
+                    0 -> {
+                    }
+                    1 -> ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems.get(0))
 
+                    else -> {
+                        //TODO logic here
+                    }
+                }
                 return true
             }
 
