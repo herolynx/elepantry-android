@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="@color/grey_3" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/grey_4" />
+    <item>
+        <selector android:enterFadeDuration="@android:integer/config_mediumAnimTime"
+            android:exitFadeDuration="@android:integer/config_mediumAnimTime" >
+            <item android:state_pressed="true" android:drawable="@color/grey_4" />
+        </selector>
+    </item>
+</layer-list>

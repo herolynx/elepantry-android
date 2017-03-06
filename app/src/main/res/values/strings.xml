@@ -13,7 +13,7 @@
     <string name="confirmation_deleted">Deleted</string>
 
     <!-- AUTH -->
-    <string name="sign_in_google">Google account</string>
+    <string name="sign_in_google">Sign in with Google</string>
     <string name="sign_out">Sign out</string>
     <string name="auth_failed">Authentication failed: %s</string>
 
