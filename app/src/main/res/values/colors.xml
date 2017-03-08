@@ -17,8 +17,9 @@
     <color name="dark_1">#464646</color>
 
     <color name="grey_1">#adadad</color>
-    <color name="grey_2">#f4f4f4</color>
+    <color name="grey_2">#dedede</color>
     <color name="grey_3">#cacaca</color>
+    <color name="grey_4">#f1f1f1</color>
 
     <color name="blue_1">#009cef</color>
     <color name="blue_2">#48b5ff</color>

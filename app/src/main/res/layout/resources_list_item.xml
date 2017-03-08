@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_2"
-    android:paddingBottom="1dp"
+    android:paddingBottom="0.5dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.herolynx.elepantry.resources.view.ResourcesActivity"
     tools:showIn="@layout/menu_frame_bar">
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="10dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/grey_3"
+                android:textColor="@color/grey_1"
                 android:text="#doc, #movie, #pdf, #favourite"
                 android:gravity="left|center" />
 
@@ -51,7 +51,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center"
-
             android:gravity="right">
 
             <TextView
