@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.MenuItem
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
@@ -13,6 +14,7 @@ import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
+import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.resources.ResourcePage
@@ -57,7 +59,7 @@ class ResourcesActivity : UserViewsMenu() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
         listAdapter = ResourceList.adapter()
         listAdapter?.onSelectedItemsChange { selected ->
-            topMenuItems().map { i -> i.setVisible(!selected.isEmpty()) }
+            topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(!selected.isEmpty()) }
         }
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
@@ -120,6 +122,34 @@ class ResourcesActivity : UserViewsMenu() {
         listAdapter?.notifyDataSetChanged()
         loadData()
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
+        when (item.itemId) {
+            R.id.action_delete -> {
+                //TODO logic here
+                toast("Deleting tags of a resource not supported yet")
+                return true
+            }
+
+            R.id.action_edit -> {
+                when (listAdapter?.selectedItems?.size ?: 0) {
+                    0 -> {
+                    }
+                    1 -> ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems.get(0))
+
+                    else -> {
+                        //TODO logic here
+                        toast("Multi-resource action not supported yet")
+                    }
+                }
+                return true
+            }
+
+            else -> throw UnsupportedOperationException("Unknown action - item: ${item.title}, action id: ${item.itemId}")
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

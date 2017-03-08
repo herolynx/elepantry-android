@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.rx.DataEvent
+import org.funktionale.option.Option
 
 /**
  * Adapter for UI list
@@ -16,6 +17,7 @@ import com.herolynx.elepantry.core.rx.DataEvent
 class ListAdapter<T, TU : View>(
         val viewFactory: (Context) -> TU,
         val display: (T?, ViewHolder<TU>) -> Unit,
+        val sortBy: Option<(T) -> String> = Option.None,
         val items: MutableList<T> = mutableListOf(),
         val selectedItems: MutableList<T> = mutableListOf()
 )
@@ -51,6 +53,10 @@ class ListAdapter<T, TU : View>(
 
     fun add(t: T) {
         items.add(t)
+    }
+
+    fun sort() {
+        sortBy.map { l -> items.sortBy(l) }
     }
 
     fun clear() = items.clear()
