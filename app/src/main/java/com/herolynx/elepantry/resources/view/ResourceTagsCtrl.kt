@@ -2,6 +2,8 @@ package com.herolynx.elepantry.resources.view
 
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.core.rx.observe
+import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.resources.model.Tag
 import com.herolynx.elepantry.resources.model.add
 import com.herolynx.elepantry.resources.model.remove
@@ -12,6 +14,8 @@ import org.funktionale.option.toOption
 internal class ResourceTagsCtrl<T>(
         private val view: ResourceTagsActivity,
         private val repository: Repository<T>,
+        private val autoReload: Boolean,
+        private val idGetter: (T) -> String,
         private val nameGetter: (T) -> String,
         private val nameChange: Option<(T, String) -> T>,
         private val tagsGetter: (T) -> List<Tag>,
@@ -20,33 +24,46 @@ internal class ResourceTagsCtrl<T>(
 
     private val TAG = "[TagsCtrl]"
 
-    private var r: T? = null
+    private var t: T? = null
 
-    fun init(r: T) {
-        debug("$TAG Init - resource: $r")
-        this.r = r
-        refresh(r)
+    fun init(data: T) {
+        debug("$TAG Init - resource: $data")
+        this.t = data
+        refresh(data)
+        if (autoReload) {
+            repository
+                    .asObservable()
+                    .schedule()
+                    .observe()
+                    .filter { e -> idGetter(e.data).equals(idGetter(data)) }
+                    .subscribe { changed ->
+                        debug("$TAG Resource changed, refreshing - resource: $data")
+                        this.t = changed.data
+                        refresh(this.t)
+                    }
+        }
     }
 
     private fun refresh(r: T?) {
         r.toOption().map { res ->
             view.displayName(nameGetter(res))
-            view.displayTags(tagsGetter(res))
+            val tags = tagsGetter(res)
+            view.displayTags(tags)
         }
     }
 
     private fun save(changed: T, tagsChanged: Boolean = false): T? {
         repository.save(changed)
-        r = changed
+        t = changed
         if (tagsChanged) {
-            refresh(r)
+            refresh(t)
         }
-        return r
+        return t
     }
 
     fun delete() {
-        debug("$TAG Deleting - resource: $r")
-        r.toOption()
+        debug("$TAG Deleting - resource: $t")
+        t.toOption()
                 .map { res ->
                     repository.delete(res)
                             .subscribe { ResourcesActivity.navigate(view) }
@@ -57,18 +74,18 @@ internal class ResourceTagsCtrl<T>(
 
     fun changeName(name: String): T? {
         return nameChange
-                .flatMap { logic -> r.toOption().map { res -> Pair(logic, res) } }
+                .flatMap { logic -> t.toOption().map { res -> Pair(logic, res) } }
                 .map { logicAndData ->
-                    debug("$TAG Changing name - resource: $r, new name: $name")
+                    debug("$TAG Changing name - resource: $t, new name: $name")
                     save(logicAndData.first(logicAndData.second, name))
                 }
-                .getOrElse { r }
+                .getOrElse { t }
 
     }
 
-    fun addTag(name: String): T? = changeTags(r, { tags -> tags.add(name) })
+    fun addTag(name: String): T? = changeTags(t, { tags -> tags.add(name) })
 
-    fun deleteTag(t: Tag): T? = changeTags(r, { tags -> tags.remove(t) })
+    fun deleteTag(t: Tag): T? = changeTags(this.t, { tags -> tags.remove(t) })
 
     private fun changeTags(r: T?, changeTags: (List<Tag>) -> List<Tag>): T? {
         return r.toOption()

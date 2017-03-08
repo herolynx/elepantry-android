@@ -12,11 +12,13 @@ internal object ResourceTagsCtrlFactory {
             v: ResourceTagsActivity,
             r: Repository<View> = Config.repository.userViews()
     ): ResourceTagsCtrl<View> = ResourceTagsCtrl<View>(
-            v,
-            r,
-            nameGetter = { v -> v.name },
+            view = v,
+            repository = r,
+            autoReload = true,
+            idGetter = View::id,
+            nameGetter = View::name,
             nameChange = Option.Some({ v, newName -> v.copy(name = newName) }),
-            tagsGetter = { v -> v.tags },
+            tagsGetter = View::tags,
             tagsSetter = { v, newTags -> v.copy(tags = newTags) }
     )
 
@@ -24,11 +26,13 @@ internal object ResourceTagsCtrlFactory {
             v: ResourceTagsActivity,
             r: Repository<Resource> = Config.repository.userResources()
     ): ResourceTagsCtrl<Resource> = ResourceTagsCtrl<Resource>(
-            v,
-            r,
-            nameGetter = { r -> r.name },
+            view = v,
+            repository = r,
+            autoReload = true,
+            idGetter = Resource::id,
+            nameGetter = Resource::name,
             nameChange = Option.None,
-            tagsGetter = { r -> r.tags },
+            tagsGetter = Resource::tags,
             tagsSetter = { r, newTags -> r.copy(tags = newTags) }
     )
 

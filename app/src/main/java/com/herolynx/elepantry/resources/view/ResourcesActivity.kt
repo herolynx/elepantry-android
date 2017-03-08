@@ -135,7 +135,7 @@ class ResourcesActivity : UserViewsMenu() {
                 when (listAdapter?.selectedItems?.size ?: 0) {
                     0 -> {
                     }
-                    1 -> ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems.get(0))
+                    1 -> ResourceTagsActivity.navigate(this,  listAdapter!!.selectedItems.get(0))
 
                     else -> {
                         //TODO logic here

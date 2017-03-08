@@ -9,6 +9,7 @@ fun File.toResource(): Resource {
     val f = this
     val ext = f.fileExtension ?: f.mimeType.substring(f.mimeType.indexOf('/') + 1)
     return Resource(
+            id = f.id,
             name = f.name,
             type = ResourceType.GOOGLE,
             extension = ext,
