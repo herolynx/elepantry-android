@@ -9,6 +9,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="confirmation_saved">Saved</string>
+    <string name="confirmation_deleted">Deleted</string>
 
     <!-- AUTH -->
     <string name="sign_in_google">Google account</string>
@@ -19,6 +21,7 @@
     <string name="google_drive">Google Drive</string>
     <string name="user_views">Your views</string>
     <string name="resource_type_view">View</string>
+    <string name="resource_type_resource">Resource</string>
     <string name="resource_name">Name: </string>
     <string name="resource_name_placeholder">Resource name</string>
     <string name="tag_name_placeholder">Tag name</string>

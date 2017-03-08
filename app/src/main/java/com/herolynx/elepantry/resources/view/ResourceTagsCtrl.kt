@@ -1,9 +1,11 @@
 package com.herolynx.elepantry.resources.view
 
+import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.resources.model.Tag
 import com.herolynx.elepantry.resources.model.add
 import com.herolynx.elepantry.resources.model.remove
@@ -52,8 +54,13 @@ internal class ResourceTagsCtrl<T>(
         }
     }
 
-    private fun save(changed: T, tagsChanged: Boolean = false): T? {
+    private fun save(changed: T, tagsChanged: Boolean = false, showConfirmation: Boolean = false): T? {
         repository.save(changed)
+                .subscribe {
+                    if (showConfirmation) {
+                        view.toast(R.string.confirmation_saved)
+                    }
+                }
         t = changed
         if (tagsChanged) {
             refresh(t)
@@ -61,40 +68,46 @@ internal class ResourceTagsCtrl<T>(
         return t
     }
 
-    fun delete() {
+    fun delete(showConfirmation: Boolean = true) {
         debug("$TAG Deleting - resource: $t")
         t.toOption()
                 .map { res ->
                     repository.delete(res)
-                            .subscribe { ResourcesActivity.navigate(view) }
+                            .subscribe {
+                                if (showConfirmation) {
+                                    view.toast(R.string.confirmation_deleted)
+                                }
+                                ResourcesActivity.navigate(view)
+                            }
                 }
     }
 
     fun canChangeName() = nameChange.isDefined()
 
-    fun changeName(name: String): T? {
+    fun changeName(name: String, showConfirmation: Boolean = false): T? {
         return nameChange
                 .flatMap { logic -> t.toOption().map { res -> Pair(logic, res) } }
                 .map { logicAndData ->
                     debug("$TAG Changing name - resource: $t, new name: $name")
-                    save(logicAndData.first(logicAndData.second, name))
+                    save(logicAndData.first(logicAndData.second, name), showConfirmation = showConfirmation)
                 }
                 .getOrElse { t }
 
     }
 
-    fun addTag(name: String): T? = changeTags(t, { tags -> tags.add(name) })
+    fun addTag(name: String, showConfirmation: Boolean = false): T? = changeTags(t, { tags -> tags.add(name) }, showConfirmation)
 
-    fun deleteTag(t: Tag): T? = changeTags(this.t, { tags -> tags.remove(t) })
+    fun deleteTag(t: Tag, showConfirmation: Boolean = false): T? = changeTags(this.t, { tags -> tags.remove(t) }, showConfirmation)
 
-    private fun changeTags(r: T?, changeTags: (List<Tag>) -> List<Tag>): T? {
+    private fun changeTags(r: T?, changeTags: (List<Tag>) -> List<Tag>, showConfirmation: Boolean = false): T? {
         return r.toOption()
                 .map { res ->
                     val tags = changeTags(tagsGetter(res))
                     debug("$TAG Changing tags - resource: $r, new tags: $tags")
-                    save(tagsSetter(res, tags), tagsChanged = true)
+                    save(tagsSetter(res, tags), tagsChanged = true, showConfirmation = showConfirmation)
                 }
                 .getOrElse { r }
     }
+
 
 }

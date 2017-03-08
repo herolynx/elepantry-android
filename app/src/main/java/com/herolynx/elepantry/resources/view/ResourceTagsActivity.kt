@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
@@ -32,10 +33,10 @@ class ResourceTagsActivity : UserViewsMenu() {
     private var addTag: Button? = null
     private var resourceCtrl: ResourceTagsCtrl<*>? = null
     private var tagsAdapter: ListAdapter<Tag, TagItemView>? = null
+    private var viewType: TYPE = TYPE.VIEW;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTitle(getString(R.string.resource_type_view))
         initView()
         loadParams(intent!!.extras)
     }
@@ -46,12 +47,16 @@ class ResourceTagsActivity : UserViewsMenu() {
         debug("[ResourceTagActivity] Loading params - resource type: $resourceType, resource: $resource")
         when (resourceType) {
             TYPE.VIEW -> {
+                viewType = TYPE.VIEW;
+                setTitle(getString(R.string.resource_type_view))
                 val viewTagsCtrl = ResourceTagsCtrlFactory.viewTagsCtrl(this)
                 viewTagsCtrl.init(resource.fromJsonString(View::class.java).get())
                 resourceCtrl = viewTagsCtrl
             }
 
             TYPE.RESOURCE -> {
+                viewType = TYPE.RESOURCE;
+                setTitle(getString(R.string.resource_type_resource))
                 val resourceTagsCtrl = ResourceTagsCtrlFactory.resourceTagsCtrl(this)
                 resourceTagsCtrl.init(resource.fromJsonString(Resource::class.java).get())
                 resourceCtrl = resourceTagsCtrl
@@ -60,6 +65,14 @@ class ResourceTagsActivity : UserViewsMenu() {
             else -> throw UnsupportedOperationException("Unknown resource type: $resourceType")
         }
         resourceName?.isEnabled = resourceCtrl?.canChangeName() ?: false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val created = super.onCreateOptionsMenu(menu)
+        if (viewType == TYPE.RESOURCE) {
+            topMenuItems().map { i -> i.setVisible(false) }
+        }
+        return created
     }
 
     private fun initView() {
@@ -103,7 +116,14 @@ class ResourceTagsActivity : UserViewsMenu() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
         when (item.itemId) {
+            R.id.action_save -> {
+                debug("[TopMenu] Saving...")
+                resourceCtrl?.changeName(resourceName?.text.toString(), showConfirmation = true)
+                return true
+            }
+
             R.id.action_delete -> {
+                debug("[TopMenu] Deleting...")
                 resourceCtrl?.delete()
                 return true
             }
