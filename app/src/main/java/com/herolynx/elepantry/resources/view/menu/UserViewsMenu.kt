@@ -55,6 +55,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
         val menuLayout = findViewById(R.id.left_menu_layout) as LinearLayout
 
         val userBadge = UserBadge.create(this, navigationView)
+        userBadge.initAddNewViewAction({ closeMenu() })
         menuLayout.addView(userBadge.layout)
         userBadge.display()
 
@@ -70,8 +71,14 @@ abstract class UserViewsMenu : AppCompatActivity() {
     private fun initUserViews(layout: RecyclerView, menuCtrl: UserViewsMenuCtrl) {
         debug("[initUserViews] Creating...")
         val listAdapter = UserViewsList.adapter(
-                clickHandler = { v -> onViewChange(v) },
-                editHandler = { v -> ResourceTagsActivity.navigate(this, v) }
+                clickHandler = { v ->
+                    closeMenu()
+                    onViewChange(v)
+                },
+                editHandler = { v ->
+                    closeMenu()
+                    ResourceTagsActivity.navigate(this, v)
+                }
         )
         layout.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)

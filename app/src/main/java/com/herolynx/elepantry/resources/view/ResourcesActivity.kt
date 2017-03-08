@@ -14,6 +14,7 @@ import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
+import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.resources.ResourcePage
@@ -128,6 +129,7 @@ class ResourcesActivity : UserViewsMenu() {
         when (item.itemId) {
             R.id.action_delete -> {
                 //TODO logic here
+                toast("Deleting tags of a resource not supported yet")
                 return true
             }
 
@@ -135,10 +137,11 @@ class ResourcesActivity : UserViewsMenu() {
                 when (listAdapter?.selectedItems?.size ?: 0) {
                     0 -> {
                     }
-                    1 -> ResourceTagsActivity.navigate(this,  listAdapter!!.selectedItems.get(0))
+                    1 -> ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems.get(0))
 
                     else -> {
                         //TODO logic here
+                        toast("Multi-resource action not supported yet")
                     }
                 }
                 return true

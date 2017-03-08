@@ -24,8 +24,11 @@ class UserBadge(
     val userImage = layout.findViewById(R.id.menu_user_picture) as ImageView
     val newViewButton = layout.findViewById(R.id.add_new_view) as Button
 
-    init {
-        newViewButton.setOnClickListener { ResourceTagsActivity.navigateNewView(activity) }
+    fun initAddNewViewAction(preAction: () -> Unit = {}) {
+        newViewButton.setOnClickListener {
+            preAction()
+            ResourceTagsActivity.navigateNewView(activity)
+        }
     }
 
     fun display() {
