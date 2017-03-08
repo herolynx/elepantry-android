@@ -88,6 +88,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
                 .subscribe { v ->
                     debug("[initUserViews] Adding view: %s", v)
                     listAdapter.add(v)
+                    listAdapter.sort()
                     listAdapter.notifyDataSetChanged()
                 }
     }

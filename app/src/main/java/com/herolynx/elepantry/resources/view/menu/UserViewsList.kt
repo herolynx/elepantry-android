@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.model.View
+import org.funktionale.option.Option
 
 object UserViewsList {
 
@@ -15,8 +16,9 @@ object UserViewsList {
             editHandler: (View) -> Unit
     ): ListAdapter<View, UserViewItem> =
             ListAdapter(
-                    { ctx -> UserViewItem(ctx) },
-                    { r, h -> display(r, h, clickHandler, editHandler) }
+                    viewFactory = { ctx -> UserViewItem(ctx) },
+                    display = { r, h -> display(r, h, clickHandler, editHandler) },
+                    sortBy = Option.Some(View::name)
             )
 
     fun display(

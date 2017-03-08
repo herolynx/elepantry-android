@@ -64,6 +64,7 @@ class ResourceTagsActivity : UserViewsMenu() {
             else -> throw UnsupportedOperationException("Unknown resource type: $resourceType")
         }
         resourceName?.isEnabled = resourceCtrl?.canChangeName() ?: false
+        initActions(resourceCtrl?.canChangeName() ?: false, true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,25 +84,32 @@ class ResourceTagsActivity : UserViewsMenu() {
         }
     }
 
-    private fun initView() {
-        resourceName = findViewById(R.id.resource_name) as EditText
-        resourceName?.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                changeResourceName()
+    private fun initActions(changeName: Boolean, changeTags: Boolean) {
+        if (changeName) {
+            resourceName?.setOnFocusChangeListener { view, hasFocus ->
+                if (!hasFocus) {
+                    changeResourceName()
+                }
             }
         }
+        if (changeTags) {
+            addTag?.setOnClickListener {
+                val tagName = newTag?.text.toString()
+                if (resourceCtrl?.isNameValid(tagName) ?: false) {
+                    resourceCtrl?.addTag(tagName)
+                    newTag?.text?.clear()
+                } else {
+                    newTag?.error = getString(R.string.resource_name_valid_length).format(ResourceTagsCtrl.MIN_LENGTH, ResourceTagsCtrl.MAX_LENGTH)
+                }
+            }
+        }
+    }
+
+    private fun initView() {
+        resourceName = findViewById(R.id.resource_name) as EditText
 
         newTag = findViewById(R.id.new_tag) as EditText
         addTag = findViewById(R.id.add_tag) as Button
-        addTag?.setOnClickListener {
-            val tagName = newTag?.text.toString()
-            if (resourceCtrl?.isNameValid(tagName) ?: false) {
-                resourceCtrl?.addTag(tagName)
-                newTag?.text?.clear()
-            } else {
-                newTag?.error = getString(R.string.resource_name_valid_length).format(ResourceTagsCtrl.MIN_LENGTH, ResourceTagsCtrl.MAX_LENGTH)
-            }
-        }
 
         val tagLists = findViewById(R.id.resource_tags_list) as RecyclerView
         tagsAdapter = TagsList.adapter(deleteHandler = { tag -> resourceCtrl?.deleteTag(tag) })
