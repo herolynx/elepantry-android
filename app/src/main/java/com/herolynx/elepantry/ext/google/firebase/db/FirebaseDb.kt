@@ -11,13 +11,10 @@ object FirebaseDb {
     private val database = FirebaseDatabase.getInstance()
 
     private fun userId() = UserId(FirebaseAuth.getCurrentUser().get().uid)
+    
+    fun userViews() = userRepo("views", View::class.java, View::id)
 
-    //TODO support chars: $ # [ ]
-    private fun orderId(id: String, name: String) = name.replace('.', '_') + "_" + id.substring(0, 10)
-
-    fun userViews() = userRepo("views", View::class.java, { v -> orderId(v.id, v.name) })
-
-    fun userResources() = userRepo("resources", Resource::class.java, { r -> orderId(r.id, r.name) })
+    fun userResources() = userRepo("resources", Resource::class.java, Resource::id)
 
     private fun <T> userRepo(name: String, entityClass: Class<T>, idGetter: (T) -> String) = FirebaseRepository(
             database.getReference(name).child(userId().uid),

@@ -44,8 +44,7 @@ class FirebaseRepository<T>(
      * @param t data to be updated
      * @param new observable
      */
-    override fun save(t: T): Observable<DataEvent<T>> = delete(t)
-            .flatMap { e -> modify(DataEvent(t)) }
+    override fun save(t: T): Observable<DataEvent<T>> = modify(DataEvent(t))
 
     /**
      * Modify data in DB
