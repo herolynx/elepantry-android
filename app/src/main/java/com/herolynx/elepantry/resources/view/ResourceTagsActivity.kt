@@ -21,7 +21,6 @@ import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import com.herolynx.elepantry.resources.view.ui.TagItemView
 import com.herolynx.elepantry.resources.view.ui.TagsList
-import org.funktionale.option.toOption
 
 class ResourceTagsActivity : UserViewsMenu() {
 
@@ -75,19 +74,33 @@ class ResourceTagsActivity : UserViewsMenu() {
         return created
     }
 
+    private fun changeResourceName(showConfirmation: Boolean = false) {
+        val name = resourceName?.text.toString()
+        if (resourceCtrl?.isNameValid(name) ?: false) {
+            resourceCtrl?.changeName(name, showConfirmation = showConfirmation)
+        } else {
+            resourceName?.error = getString(R.string.resource_name_valid_length).format(ResourceTagsCtrl.MIN_LENGTH, ResourceTagsCtrl.MAX_LENGTH)
+        }
+    }
+
     private fun initView() {
         resourceName = findViewById(R.id.resource_name) as EditText
         resourceName?.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                resourceCtrl?.changeName(resourceName?.text.toString())
+                changeResourceName()
             }
         }
 
         newTag = findViewById(R.id.new_tag) as EditText
         addTag = findViewById(R.id.add_tag) as Button
         addTag?.setOnClickListener {
-            newTag.toOption().map { t -> resourceCtrl?.addTag(t.text.toString()) }
-            newTag?.text?.clear()
+            val tagName = newTag?.text.toString()
+            if (resourceCtrl?.isNameValid(tagName) ?: false) {
+                resourceCtrl?.addTag(tagName)
+                newTag?.text?.clear()
+            } else {
+                newTag?.error = getString(R.string.resource_name_valid_length).format(ResourceTagsCtrl.MIN_LENGTH, ResourceTagsCtrl.MAX_LENGTH)
+            }
         }
 
         val tagLists = findViewById(R.id.resource_tags_list) as RecyclerView
@@ -118,7 +131,7 @@ class ResourceTagsActivity : UserViewsMenu() {
         when (item.itemId) {
             R.id.action_save -> {
                 debug("[TopMenu] Saving...")
-                resourceCtrl?.changeName(resourceName?.text.toString(), showConfirmation = true)
+                changeResourceName(showConfirmation = true)
                 return true
             }
 

@@ -25,5 +25,6 @@
     <string name="resource_name">Name: </string>
     <string name="resource_name_placeholder">Resource name</string>
     <string name="tag_name_placeholder">Tag name</string>
+    <string name="resource_name_valid_length" formatted="false">Name length must be between %s and %s characters</string>
 
 </resources>

@@ -46,6 +46,8 @@ internal class ResourceTagsCtrl<T>(
         }
     }
 
+    fun isNameValid(name: String?) = name != null && name.length >= MIN_LENGTH && name.length <= MAX_LENGTH
+
     private fun refresh(r: T?) {
         r.toOption().map { res ->
             view.displayName(nameGetter(res))
@@ -86,6 +88,7 @@ internal class ResourceTagsCtrl<T>(
 
     fun changeName(name: String, showConfirmation: Boolean = false): T? {
         return nameChange
+                .filter { logic -> isNameValid(name) }
                 .flatMap { logic -> t.toOption().map { res -> Pair(logic, res) } }
                 .map { logicAndData ->
                     debug("$TAG Changing name - resource: $t, new name: $name")
@@ -95,7 +98,12 @@ internal class ResourceTagsCtrl<T>(
 
     }
 
-    fun addTag(name: String, showConfirmation: Boolean = false): T? = changeTags(t, { tags -> tags.add(name) }, showConfirmation)
+    fun addTag(name: String, showConfirmation: Boolean = false): T? =
+            if (isNameValid(name)) {
+                changeTags(t, { tags -> tags.add(name) }, showConfirmation)
+            } else {
+                t
+            }
 
     fun deleteTag(t: Tag, showConfirmation: Boolean = false): T? = changeTags(this.t, { tags -> tags.remove(t) }, showConfirmation)
 
@@ -109,5 +117,11 @@ internal class ResourceTagsCtrl<T>(
                 .getOrElse { r }
     }
 
+    companion object {
+
+        val MIN_LENGTH = 2
+        val MAX_LENGTH = 20
+
+    }
 
 }
