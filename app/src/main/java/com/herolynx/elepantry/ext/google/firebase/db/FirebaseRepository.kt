@@ -20,7 +20,7 @@ class FirebaseRepository<T>(
     private val deltaListener = DeltaChangeListener<T>(entityClass)
 
     init {
-        rootRef.addListenerForSingleValueEvent(valueListener)
+        rootRef.addValueEventListener(valueListener)
         rootRef.addChildEventListener(deltaListener)
     }
 

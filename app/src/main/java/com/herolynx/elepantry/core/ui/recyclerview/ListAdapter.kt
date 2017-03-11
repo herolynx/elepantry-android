@@ -19,7 +19,8 @@ class ListAdapter<T, TU : View>(
         val display: (T?, ViewHolder<TU>) -> Unit,
         val sortBy: Option<(T) -> String> = Option.None,
         val items: MutableList<T> = mutableListOf(),
-        val selectedItems: MutableList<T> = mutableListOf()
+        val selectedItems: MutableList<T> = mutableListOf(),
+        val selectedUIItems: MutableList<View> = mutableListOf()
 )
     : RecyclerView.Adapter<ListAdapter.ViewHolder<TU>>() {
 
@@ -30,7 +31,7 @@ class ListAdapter<T, TU : View>(
     override fun onBindViewHolder(holder: ViewHolder<TU>, position: Int) {
         val i = items[position]
         holder.view.setOnLongClickListener { v ->
-            v.isSelected = select(i)
+            v.isSelected = select(i, v)
             true
         }
         display(i, holder)
@@ -61,20 +62,26 @@ class ListAdapter<T, TU : View>(
 
     fun clear() {
         items.clear()
+        clearSelected()
+    }
+
+    fun clearSelected() {
+        selectedUIItems.map { v -> v.isSelected = false }
+        selectedUIItems.clear()
         selectedItems.clear()
     }
 
-    fun clearSelected() = selectedItems.clear()
-
-    fun select(t: T): Boolean {
+    private fun select(t: T, v: View): Boolean {
         var isSelected: Boolean
         if (selectedItems.contains(t)) {
             debug("[ListAdapter] Item deselected: $t")
             selectedItems.remove(t)
+            selectedUIItems.remove(v)
             isSelected = false
         } else {
             debug("[ListAdapter] Item selected: $t")
             selectedItems.add(t)
+            selectedUIItems.add(v)
             isSelected = true
         }
         selectedItemsChange(selectedItems.toList())

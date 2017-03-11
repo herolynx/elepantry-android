@@ -58,6 +58,7 @@ class ResourcesActivity : UserViewsMenu() {
         super.onResume()
         debug("[onResume] Loading state")
         listAdapter?.clearSelected()
+        topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(false) }
         listAdapter?.notifyDataSetChanged()
     }
 
