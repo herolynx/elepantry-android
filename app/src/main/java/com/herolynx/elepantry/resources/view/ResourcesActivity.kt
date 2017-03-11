@@ -34,6 +34,7 @@ import rx.Observable
 
 class ResourcesActivity : UserViewsMenu() {
 
+    private var currentView: View? = null
     private var resourceView: ResourceView? = null
     private var resourcePage: Try<out ResourcePage>? = null
     private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
@@ -49,6 +50,20 @@ class ResourcesActivity : UserViewsMenu() {
         if (intent.extras != null) {
             loadParams(intent.extras)
         }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        debug("[onRestoreInstanceState] Loading state - bundle: $savedInstanceState")
+        if (savedInstanceState != null) {
+            loadParams(savedInstanceState)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        debug("[onSaveInstanceState] Saving state - current view: $currentView")
+        outState?.putString(PARAM_VIEW, currentView.toJsonString().get())
     }
 
     private fun loadParams(b: Bundle) {
@@ -121,6 +136,7 @@ class ResourcesActivity : UserViewsMenu() {
         debug("[onViewChange] View selected: %s", v)
         closeMenu()
         title = v.name
+        currentView = v
         resourceView = rv
         clearSearchAction()
         initDataLoad()
