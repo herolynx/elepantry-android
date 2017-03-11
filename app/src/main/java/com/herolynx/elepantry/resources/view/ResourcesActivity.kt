@@ -143,6 +143,7 @@ class ResourcesActivity : UserViewsMenu() {
             override fun onQueryTextSubmit(word: String): Boolean {
                 debug("[Search] onQueryTextSubmit: $word")
                 initDataLoad(word)
+                searchView.clearFocus()
                 return true
             }
 
