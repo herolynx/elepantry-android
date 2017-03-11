@@ -1,6 +1,7 @@
 package com.herolynx.elepantry.ext.google.drive
 
 import com.google.api.services.drive.Drive
+import com.herolynx.elepantry.core.func.Retry
 import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.ResourcePage
@@ -21,15 +22,17 @@ class GoogleDrivePage(
         if (!first && nextPageToken == null) {
             return Try.Failure(RuntimeException("No more data"))
         }
-        return Try {
-            val req = list(nextPageToken).execute()
-            GoogleDrivePage(
-                    list,
-                    false,
-                    req.nextPageToken,
-                    req.files.map { f -> f.toResource() }
-            )
-        }
+        return Retry.executeWithRetries(logic = {
+            Try {
+                val req = list(nextPageToken).execute()
+                GoogleDrivePage(
+                        list,
+                        false,
+                        req.nextPageToken,
+                        req.files.map { f -> f.toResource() }
+                )
+            }
+        })
                 .onFailure { ex -> warn("[GoogleDrive] Getting page data error", ex) }
     }
 
