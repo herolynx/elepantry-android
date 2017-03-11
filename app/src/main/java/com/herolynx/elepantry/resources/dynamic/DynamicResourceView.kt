@@ -20,6 +20,7 @@ class DynamicResourceView(
         DynamicResourcePage(
                 resources()
                         .filter { r -> r.data.containsAny(tagNames) }
+                        .filter { r -> if (c.text != null) r.data.containsText(c.text) else true }
         )
     }
 }

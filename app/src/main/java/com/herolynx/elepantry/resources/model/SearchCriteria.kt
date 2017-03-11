@@ -1,4 +1,4 @@
 package com.herolynx.elepantry.resources.model
 
-data class SearchCriteria(val text: String = "", val pageSize: Int = 30)
+data class SearchCriteria(val text: String? = null, val pageSize: Int = 30)
 

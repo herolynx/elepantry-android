@@ -6,6 +6,8 @@ import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.ext.google.firebase.db.listener.CompletionListener
 import com.herolynx.elepantry.ext.google.firebase.db.listener.DeltaChangeListener
 import com.herolynx.elepantry.ext.google.firebase.db.listener.ValueListener
+import org.funktionale.option.toOption
+import org.funktionale.tries.Try
 import rx.Observable
 
 class FirebaseRepository<T>(
@@ -20,6 +22,14 @@ class FirebaseRepository<T>(
     init {
         rootRef.addListenerForSingleValueEvent(valueListener)
         rootRef.addChildEventListener(deltaListener)
+    }
+
+    override fun find(id: String) = Try {
+        valueListener.loadedData
+                .filter { e -> !e.deleted }
+                .map { e -> e.data }
+                .find { r -> idGetter(r).equals(id) }
+                .toOption()
     }
 
     /**

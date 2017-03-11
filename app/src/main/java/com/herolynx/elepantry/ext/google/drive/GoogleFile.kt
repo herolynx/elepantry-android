@@ -7,7 +7,7 @@ import com.herolynx.elepantry.resources.model.Tag
 
 fun File.toResource(): Resource {
     val f = this
-    val ext = f.fileExtension ?: f.mimeType.substring(f.mimeType.indexOf('/') + 1)
+    val ext = getExtension()
     return Resource(
             id = f.id,
             name = f.name,
@@ -18,4 +18,15 @@ fun File.toResource(): Resource {
             lastModifiedDate = f.modifiedTime?.toStringRfc3339(),
             downloadLink = f.webViewLink
     )
+}
+
+internal fun File.getExtension(): String {
+    if (fileExtension != null) {
+        return fileExtension
+    }
+    val nameExtIdx = name.lastIndexOf('.')
+    if (nameExtIdx > 0) {
+        return name.substring(nameExtIdx + 1)
+    }
+    return mimeType.substring(mimeType.indexOf('/') + 1)
 }
