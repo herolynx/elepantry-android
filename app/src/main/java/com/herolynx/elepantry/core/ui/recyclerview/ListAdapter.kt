@@ -59,7 +59,12 @@ class ListAdapter<T, TU : View>(
         sortBy.map { l -> items.sortBy(l) }
     }
 
-    fun clear() = items.clear()
+    fun clear() {
+        items.clear()
+        selectedItems.clear()
+    }
+
+    fun clearSelected() = selectedItems.clear()
 
     fun select(t: T): Boolean {
         var isSelected: Boolean
@@ -79,5 +84,5 @@ class ListAdapter<T, TU : View>(
     fun onSelectedItemsChange(selectedItemsChange: (List<T>) -> Unit) {
         this.selectedItemsChange = selectedItemsChange
     }
-
 }
+

@@ -52,6 +52,13 @@ class ResourcesActivity : UserViewsMenu() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        debug("[onResume] Loading state")
+        listAdapter?.clearSelected()
+        listAdapter?.notifyDataSetChanged()
+    }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         debug("[onRestoreInstanceState] Loading state - bundle: $savedInstanceState")
