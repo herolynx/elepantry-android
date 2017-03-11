@@ -1,7 +1,7 @@
 package com.herolynx.elepantry.ext.google.drive
 
 import com.google.api.services.drive.Drive
-import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.model.Resource
@@ -30,7 +30,7 @@ class GoogleDrivePage(
                     req.files.map { f -> f.toResource() }
             )
         }
-                .onFailure { ex -> error("[GoogleDrive] Getting page data error", ex) }
+                .onFailure { ex -> warn("[GoogleDrive] Getting page data error", ex) }
     }
 
     override fun hasNext(): Boolean = nextPageToken != null

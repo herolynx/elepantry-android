@@ -31,6 +31,7 @@ import com.herolynx.elepantry.resources.view.ui.ResourceItemView
 import com.herolynx.elepantry.resources.view.ui.ResourceList
 import org.funktionale.tries.Try
 import rx.Observable
+import rx.Subscription
 
 class ResourcesActivity : UserViewsMenu() {
 
@@ -40,6 +41,7 @@ class ResourcesActivity : UserViewsMenu() {
     private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
     private var loadData: (String?) -> Unit = {}
     private var clearSearchAction: () -> Unit = {}
+    private var lastSubscription: Subscription? = null
 
     override val layoutId: Int = R.layout.resources_list
     override val topMenuId = R.menu.resources_top_menu
@@ -78,7 +80,10 @@ class ResourcesActivity : UserViewsMenu() {
         debug("[ResourceActivity] Loading params - view: $view")
         if (!view.isEmpty()) {
             view.fromJsonString(View::class.java)
-                    .map { v -> onViewChange(v) }
+                    .map { v ->
+                        debug("[ResourceActivity] Loading params - displaying view: $v")
+                        onViewChange(v)
+                    }
         }
     }
 
@@ -97,7 +102,8 @@ class ResourcesActivity : UserViewsMenu() {
 
     private fun initOnScrollDataLoading(listView: RecyclerView, linearLayoutManager: LinearLayoutManager, search: String? = null) {
         listView.clearOnScrollListeners()
-        Observable.merge(
+        lastSubscription?.unsubscribe()
+        lastSubscription = Observable.merge(
                 //initiate loading of first page
                 Observable.just(0),
                 //receive events about next needed pages to load

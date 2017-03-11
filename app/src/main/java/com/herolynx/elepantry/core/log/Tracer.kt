@@ -26,3 +26,7 @@ fun <T> T.error(msg: String, vararg args: Any?) {
 fun <T, E : Throwable> T.error(t: E, msg: String, vararg args: Any?) {
     Log.e(tag(this), msg.format(args.map { o -> o.toString() }), t)
 }
+
+fun <T, E : Throwable> T.warn(msg: String, t: E?) {
+    Log.w(tag(this), msg, t)
+}
