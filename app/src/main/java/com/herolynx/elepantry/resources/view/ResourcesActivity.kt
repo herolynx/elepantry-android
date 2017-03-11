@@ -29,6 +29,8 @@ import com.herolynx.elepantry.resources.model.ViewType
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import com.herolynx.elepantry.resources.view.ui.ResourceItemView
 import com.herolynx.elepantry.resources.view.ui.ResourceList
+import org.funktionale.option.getOrElse
+import org.funktionale.option.toOption
 import org.funktionale.tries.Try
 import rx.Observable
 import rx.Subscription
@@ -56,10 +58,14 @@ class ResourcesActivity : UserViewsMenu() {
 
     override fun onResume() {
         super.onResume()
-        debug("[onResume] Loading state")
-        listAdapter?.clearSelected()
+        debug("[onResume] Loading state - currentView: $currentView")
         topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(false) }
-        listAdapter?.notifyDataSetChanged()
+        currentView.toOption()
+                .map { v -> onViewChange(v) }
+                .getOrElse {
+                    listAdapter?.clearSelected()
+                    listAdapter?.notifyDataSetChanged()
+                }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
