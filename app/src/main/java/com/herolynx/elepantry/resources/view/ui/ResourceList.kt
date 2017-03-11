@@ -29,7 +29,9 @@ object ResourceList {
                 .flatMap { id -> userResourceRepository.find(id).getOrElse { Option.None } }
                 .map { userResource ->
                     h.view.ext.text = userResource.extension
-                    h.view.tags.text = userResource.tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }
+                    h.view.tags.text = if (!userResource.tags.isEmpty())
+                        userResource.tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }
+                    else ""
                 }
     }
 
