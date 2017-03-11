@@ -2,8 +2,11 @@ package com.herolynx.elepantry.resources.view
 
 import android.app.Activity
 import android.os.Bundle
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
+import android.view.Menu
 import android.view.MenuItem
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
@@ -20,6 +23,7 @@ import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.ResourceView
 import com.herolynx.elepantry.resources.model.Resource
+import com.herolynx.elepantry.resources.model.SearchCriteria
 import com.herolynx.elepantry.resources.model.View
 import com.herolynx.elepantry.resources.model.ViewType
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
@@ -33,7 +37,8 @@ class ResourcesActivity : UserViewsMenu() {
     private var resourceView: ResourceView? = null
     private var resourcePage: Try<out ResourcePage>? = null
     private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
-    private var loadData: () -> Unit = {}
+    private var loadData: (String?) -> Unit = {}
+    private var clearSearchAction: () -> Unit = {}
 
     override val layoutId: Int = R.layout.resources_list
     override val topMenuId = R.menu.resources_top_menu
@@ -64,11 +69,11 @@ class ResourcesActivity : UserViewsMenu() {
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         listView.layoutManager = linearLayoutManager
-        loadData = { initDataLoading(listView, linearLayoutManager) }
+        loadData = { search -> initOnScrollDataLoading(listView, linearLayoutManager, search) }
         loadDefaultItem()
     }
 
-    private fun initDataLoading(listView: RecyclerView, linearLayoutManager: LinearLayoutManager) {
+    private fun initOnScrollDataLoading(listView: RecyclerView, linearLayoutManager: LinearLayoutManager, search: String? = null) {
         listView.clearOnScrollListeners()
         Observable.merge(
                 //initiate loading of first page
@@ -78,7 +83,7 @@ class ResourcesActivity : UserViewsMenu() {
         )
                 .flatMap { pageNr ->
                     debug("[PageRequest] Loading next page - number: %s", pageNr)
-                    loadNextPage()
+                    loadNextPage(search)
                 }
                 .filter { p -> p.isSuccess() }
                 .map { p -> p.get().resources() }
@@ -104,8 +109,8 @@ class ResourcesActivity : UserViewsMenu() {
         )
     }
 
-    private fun loadNextPage() = Observable.defer {
-        resourcePage = if (resourcePage == null) resourceView?.search()
+    private fun loadNextPage(search: String? = null) = Observable.defer {
+        resourcePage = if (resourcePage == null) resourceView?.search(SearchCriteria(text = search))
         else if (resourcePage!!.isFailure()) resourcePage
         else resourcePage!!.get().next()
         Observable.just(resourcePage!!)
@@ -117,10 +122,43 @@ class ResourcesActivity : UserViewsMenu() {
         closeMenu()
         title = v.name
         resourceView = rv
+        clearSearchAction()
+        initDataLoad()
+        return true
+    }
+
+    private fun initDataLoad(search: String? = null) {
         resourcePage = null
         listAdapter?.clear()
         listAdapter?.notifyDataSetChanged()
-        loadData()
+        loadData(search)
+    }
+
+    private fun initSearchOption(searchView: SearchView) {
+        clearSearchAction = {
+            searchView.onActionViewCollapsed()
+        }
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(word: String): Boolean {
+                debug("[Search] onQueryTextSubmit: $word")
+                initDataLoad(word)
+                return true
+            }
+
+            override fun onQueryTextChange(text: String): Boolean {
+                debug("[Search] onQueryTextChange: $text")
+                initDataLoad(text)
+                return true
+            }
+        })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        super.onCreateOptionsMenu(menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = MenuItemCompat.getActionView(searchItem) as SearchView
+        initSearchOption(searchView)
         return true
     }
 

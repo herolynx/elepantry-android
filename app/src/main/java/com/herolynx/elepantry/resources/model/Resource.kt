@@ -20,6 +20,16 @@ data class Resource(
 
     fun <C : Collection<String>> containsAny(names: C) = tags.find { t -> names.contains(t.name) }.toOption().isDefined()
 
+    fun containsText(search: String): Boolean {
+        if (name.startsWith(search)) {
+            return true
+        }
+        return !tags
+                .filter { t -> t.name.startsWith(search) }
+                .toOption()
+                .isDefined()
+    }
+
     override fun hashCode(): Int {
         return id.hashCode()
     }
