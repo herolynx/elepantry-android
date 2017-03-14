@@ -5,8 +5,6 @@
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_2"
-    android:paddingBottom="0.5dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.herolynx.elepantry.resources.view.ResourcesActivity"
     tools:showIn="@layout/menu_frame_bar">
@@ -17,7 +15,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/select_list_row"
         android:gravity="center_vertical"
-        android:paddingBottom="12dp"
+        android:paddingBottom="14dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingTop="12dp"
@@ -33,6 +31,7 @@
                 android:id="@+id/resource_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/dark_1"
                 android:gravity="left|center" />
 
             <TextView
@@ -71,4 +70,8 @@
                 android:state_enabled="false" />
         </LinearLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey_3"/>
 </RelativeLayout>
