@@ -3,6 +3,9 @@
 
     <!-- GENERIC -->
     <string name="loading">Loading…</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="search">Search</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -4,21 +4,22 @@
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
-        android:title=""
+        android:orderInCategory="50"
+        android:title="@string/search"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="collapseActionView" />
     <item
         android:id="@+id/action_edit"
-        android:orderInCategory="100"
-        android:title=""
         android:icon="@drawable/ic_action_bar_pencil"
+        android:orderInCategory="100"
+        android:title="@string/edit"
         android:visible="false"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="collapseActionView" />
     <item
         android:id="@+id/action_delete"
-        android:orderInCategory="200"
-        android:title=""
         android:icon="@drawable/ic_action_bar_delete"
+        android:orderInCategory="200"
+        android:title="@string/delete"
         android:visible="false"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="collapseActionView" />
 </menu>

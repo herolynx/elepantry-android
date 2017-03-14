@@ -202,6 +202,11 @@ class ResourcesActivity : UserViewsMenu() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         debug("[TopMenu] Item selected - item: ${item.title}, action id: ${item.itemId}")
         when (item.itemId) {
+            R.id.action_search -> {
+                val searchView = MenuItemCompat.getActionView(item) as SearchView
+                initSearchOption(searchView)
+            }
+
             R.id.action_delete -> {
                 //TODO logic here
                 toast("Deleting tags of a resource not supported yet")
