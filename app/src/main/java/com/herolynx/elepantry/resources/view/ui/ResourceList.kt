@@ -1,16 +1,23 @@
 package com.herolynx.elepantry.resources.view.ui
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
+import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.core.rx.observe
+import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.model.Resource
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
+import rx.Subscription
 
 object ResourceList {
 
@@ -33,6 +40,26 @@ object ResourceList {
                         userResource.tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }
                     else ""
                 }
+        if (r?.thumbnailLink != null || r?.iconLink != null) {
+            var subs: Subscription? = null
+            subs = Uri.parse(r?.thumbnailLink ?: r?.iconLink)
+                    .download()
+                    .schedule()
+                    .observe()
+                    .subscribe(
+                            { bitmap ->
+                                h.view.thumbnail.setImageBitmap(bitmap)
+                                subs?.unsubscribe()
+                            },
+                            { ex ->
+                                error("[ResourceList] Couldn't get thumbnail", ex)
+                                subs?.unsubscribe()
+                            },
+                            {
+                                subs?.unsubscribe()
+                            }
+                    )
+        }
     }
 
 }
@@ -45,6 +72,7 @@ class ResourceItemView(ctx: Context) : LinearLayout(ctx) {
 
     val name = findViewById(R.id.resource_item_name) as TextView
     val tags = findViewById(R.id.resource_item_tags) as TextView
+    val thumbnail = findViewById(R.id.resource_thumbnail) as ImageView
     val ext = findViewById(R.id.resource_item_ext) as TextView
 
 }

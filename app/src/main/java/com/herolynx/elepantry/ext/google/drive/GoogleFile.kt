@@ -18,6 +18,7 @@ fun File.toResource(): Resource {
             webViewLink = f.webViewLink,
             downloadLink = f.webContentLink,
             thumbnailLink = f.thumbnailLink,
+            iconLink = f.iconLink,
             version = "" + f.version
     )
 }

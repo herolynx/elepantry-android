@@ -18,6 +18,7 @@ data class Resource(
         val webViewLink: String? = null,
         val downloadLink: String? = null,
         val thumbnailLink: String? = null,
+        val iconLink: String? = null,
         val extension: String? = null
 ) {
     constructor() : this(name = "", type = ResourceType.GOOGLE)

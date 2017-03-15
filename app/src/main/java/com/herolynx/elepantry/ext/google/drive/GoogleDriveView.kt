@@ -30,7 +30,7 @@ class GoogleDriveView(private val service: Drive) : ResourceView {
 
     companion object Factory {
 
-        private val DOWNLOAD_FIELDS = "nextPageToken, files(id,name,mimeType,createdTime,modifiedTime,webContentLink,webViewLink,thumbnailLink)"
+        private val DOWNLOAD_FIELDS = "nextPageToken, files(id,name,mimeType,createdTime,modifiedTime,webContentLink,webViewLink,thumbnailLink,iconLink)"
         private val QUERY_BY_NAME = "name contains '%s'"
         private val QUERY_NOT_DIRECTORY = "mimeType != 'application/vnd.google-apps.folder'"
 
