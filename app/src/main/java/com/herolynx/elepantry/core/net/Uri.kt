@@ -8,7 +8,11 @@ import java.net.URL
 
 fun Uri.download(): Observable<Bitmap> {
     return Observable.defer {
-        val bitMap = BitmapFactory.decodeStream(URL(toString()).openConnection().getInputStream())
-        Observable.just(bitMap)
+        try {
+            val bitMap = BitmapFactory.decodeStream(URL(toString()).openConnection().getInputStream())
+            Observable.just(bitMap)
+        } catch (t: Throwable) {
+            Observable.error<Bitmap>(t)
+        }
     }
 }

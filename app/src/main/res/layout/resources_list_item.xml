@@ -11,73 +11,73 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
         android:background="@drawable/select_list_row"
         android:gravity="center_vertical"
         android:paddingBottom="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="3dp"
-        android:paddingTop="8dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:paddingTop="8dp">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:layout_weight="0.15"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="45dp"
                 android:layout_height="45dp">
 
                 <ImageView
+                    android:id="@+id/resource_thumbnail"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/grey_2"
-                    android:id="@+id/imageView2" />
+                    android:background="@color/grey_2" />
 
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:orientation="vertical"
-            android:layout_weight="0.80"
-            android:paddingRight="5dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="left|center"
-            android:layout_height="wrap_content">
+            android:layout_weight="0.80"
+            android:orientation="vertical"
+            android:paddingRight="5dp">
 
             <TextView
                 android:id="@+id/resource_item_name"
                 android:layout_width="wrap_content"
-                android:ellipsize="end"
-                android:lines="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/dark_1"
-                android:gravity="left|center" />
+                android:ellipsize="end"
+                android:gravity="left|center"
+                android:lines="1"
+                android:textColor="@color/dark_1" />
 
             <TextView
                 android:id="@+id/resource_item_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp"
-                android:ellipsize="end"
-                android:lines="1"
                 android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:gravity="left|center"
+                android:lines="1"
                 android:textColor="@color/grey_1"
-                android:gravity="left|center" />
+                android:textSize="10dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:orientation="vertical"
-            android:layout_weight="0.05"
             android:layout_height="match_parent"
-            android:layout_gravity="right|top">
+            android:layout_gravity="right|top"
+            android:layout_weight="0.05"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/resource_item_ext"
@@ -87,10 +87,10 @@
                 android:layout_marginRight="@dimen/margin_5"
                 android:background="@drawable/resource_type_border"
                 android:gravity="center"
-                android:visibility="gone"
                 android:state_enabled="false"
                 android:textColor="@color/grey_1"
-                android:textSize="8dp" />
+                android:textSize="8dp"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -99,8 +99,9 @@
                 android:state_enabled="false" />
         </LinearLayout>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/grey_3"/>
+        android:background="@color/grey_3" />
 </RelativeLayout>

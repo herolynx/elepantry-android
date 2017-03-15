@@ -22,14 +22,18 @@ class GoogleDriveView(private val service: Drive) : ResourceView {
         debug("[GoogleDriveView] Search - criteria: $c")
         service.files()
                 .list()
-                .setQ(String.format(QUERY_BY_NAME, c?.text ?: ""))
+                .setFields(DOWNLOAD_FIELDS)
+                .setQ(String.format("$QUERY_BY_NAME and $QUERY_NOT_DIRECTORY", c?.text ?: ""))
                 .setPageSize(c.pageSize)
                 .setPageToken(nextPageToken)
     }
 
     companion object Factory {
 
+        private val DOWNLOAD_FIELDS = "nextPageToken, files(id,name,mimeType,createdTime,modifiedTime,webContentLink,webViewLink,thumbnailLink,iconLink)"
         private val QUERY_BY_NAME = "name contains '%s'"
+        private val QUERY_NOT_DIRECTORY = "mimeType != 'application/vnd.google-apps.folder'"
+
         private val HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport()
         private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
 
