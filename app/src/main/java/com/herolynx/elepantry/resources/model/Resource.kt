@@ -10,10 +10,14 @@ data class Resource(
         val id: String = newId(),
         val type: ResourceType,
         val name: String,
+        val mimeType: String? = null,
         val tags: List<Tag> = listOf(),
         val createdTime: String? = null,
         val lastModifiedDate: String? = null,
+        val version: String? = null,
+        val webViewLink: String? = null,
         val downloadLink: String? = null,
+        val thumbnailLink: String? = null,
         val extension: String? = null
 ) {
     constructor() : this(name = "", type = ResourceType.GOOGLE)

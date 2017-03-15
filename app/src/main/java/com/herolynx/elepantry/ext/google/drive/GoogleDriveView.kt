@@ -22,6 +22,7 @@ class GoogleDriveView(private val service: Drive) : ResourceView {
         debug("[GoogleDriveView] Search - criteria: $c")
         service.files()
                 .list()
+                .setFields(DOWNLOAD_FIELDS)
                 .setQ(String.format("$QUERY_BY_NAME and $QUERY_NOT_DIRECTORY", c?.text ?: ""))
                 .setPageSize(c.pageSize)
                 .setPageToken(nextPageToken)
@@ -29,6 +30,7 @@ class GoogleDriveView(private val service: Drive) : ResourceView {
 
     companion object Factory {
 
+        private val DOWNLOAD_FIELDS = "nextPageToken, files(id,name,mimeType,createdTime,modifiedTime,webContentLink,webViewLink,thumbnailLink)"
         private val QUERY_BY_NAME = "name contains '%s'"
         private val QUERY_NOT_DIRECTORY = "mimeType != 'application/vnd.google-apps.folder'"
 
