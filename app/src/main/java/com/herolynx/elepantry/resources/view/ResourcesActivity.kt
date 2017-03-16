@@ -22,6 +22,7 @@ import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.resources.ResourcePage
 import com.herolynx.elepantry.resources.ResourceView
+import com.herolynx.elepantry.resources.content.ResourceContentActivity
 import com.herolynx.elepantry.resources.model.Resource
 import com.herolynx.elepantry.resources.model.SearchCriteria
 import com.herolynx.elepantry.resources.model.View
@@ -96,7 +97,7 @@ class ResourcesActivity : UserViewsMenu() {
 
     private fun initResourceView() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
-        listAdapter = ResourceList.adapter()
+        listAdapter = ResourceList.adapter(onClickHandler = { r -> ResourceContentActivity.navigate(this, r) })
         listAdapter?.onSelectedItemsChange { selected ->
             topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(!selected.isEmpty()) }
         }

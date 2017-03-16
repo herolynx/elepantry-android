@@ -21,14 +21,27 @@ import rx.Subscription
 
 object ResourceList {
 
-    fun adapter(userResourceRepository: Repository<Resource> = Config.repository.userResources()):
+    fun adapter(
+            userResourceRepository: Repository<Resource> = Config.repository.userResources(),
+            onClickHandler: (Resource) -> Unit
+    ):
             ListAdapter<Resource, ResourceItemView> =
             ListAdapter(
                     { ctx -> ResourceItemView(ctx) },
-                    { r, h -> display(r, h, userResourceRepository) }
+                    { r, h -> display(r, h, userResourceRepository, onClickHandler) }
             )
 
-    fun display(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>, userResourceRepository: Repository<Resource>) {
+    fun display(
+            r: Resource?,
+            h: ListAdapter.ViewHolder<ResourceItemView>,
+            userResourceRepository: Repository<Resource>,
+            onClickHandler: (Resource) -> Unit
+    ) {
+        h.view.setOnClickListener { v ->
+            if (r != null) {
+                onClickHandler(r)
+            }
+        }
         h.view.name.text = r?.name
         h.view.ext.text = r?.extension
         r.toOption()
