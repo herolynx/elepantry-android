@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.resources.view
+package com.herolynx.elepantry.resources.view.tags
 
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
@@ -6,9 +6,10 @@ import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.notification.toast
-import com.herolynx.elepantry.resources.model.Tag
-import com.herolynx.elepantry.resources.model.add
-import com.herolynx.elepantry.resources.model.remove
+import com.herolynx.elepantry.resources.core.model.Tag
+import com.herolynx.elepantry.resources.core.model.add
+import com.herolynx.elepantry.resources.core.model.remove
+import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import org.funktionale.option.Option
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption

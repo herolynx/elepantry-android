@@ -31,7 +31,7 @@
     <color name="google">#ea4235</color>
     <color name="dropbox">#007ee6</color>
 
-
+    <color name="black_overlay">#66000000</color>
 
 
 </resources>

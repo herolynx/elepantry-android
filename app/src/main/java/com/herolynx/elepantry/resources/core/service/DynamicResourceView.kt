@@ -1,11 +1,9 @@
-package com.herolynx.elepantry.resources.dynamic
+package com.herolynx.elepantry.resources.core.service
 
 import com.herolynx.elepantry.core.rx.DataEvent
-import com.herolynx.elepantry.resources.ResourcePage
-import com.herolynx.elepantry.resources.ResourceView
-import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.model.SearchCriteria
-import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.service.SearchCriteria
+import com.herolynx.elepantry.resources.core.model.View
 import org.funktionale.tries.Try
 import rx.Observable
 

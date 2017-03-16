@@ -11,11 +11,11 @@ import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.ext.google.GoogleApi
 import com.herolynx.elepantry.ext.google.asyncConnect
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
-import com.herolynx.elepantry.resources.ResourceView
-import com.herolynx.elepantry.resources.dynamic.DynamicResourceView
-import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.model.View
-import com.herolynx.elepantry.resources.model.ViewType
+import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.model.View
+import com.herolynx.elepantry.resources.core.model.ViewType
+import com.herolynx.elepantry.resources.core.service.DynamicResourceView
+import com.herolynx.elepantry.resources.core.service.ResourceView
 
 internal class UserViewsMenuCtrl(
         private val view: UserViewsMenu,

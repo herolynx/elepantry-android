@@ -2,8 +2,8 @@ package com.herolynx.elepantry.config
 
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
-import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.model.View
 
 class RepoConfig internal constructor() {
 

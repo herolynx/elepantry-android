@@ -1,8 +1,8 @@
 package com.herolynx.elepantry.ext.google.drive
 
 import com.google.api.services.drive.model.File
-import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.model.ResourceType
+import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.model.ResourceType
 
 fun File.toResource(): Resource {
     val f = this

@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.resources.model
+package com.herolynx.elepantry.resources.core.model
 
 import java.util.*
 

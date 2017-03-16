@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.resources.view.ui
+package com.herolynx.elepantry.resources.view.tags
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
-import com.herolynx.elepantry.resources.model.Tag
+import com.herolynx.elepantry.resources.core.model.Tag
 
-object TagsList {
+internal object TagsList {
 
     fun adapter(deleteHandler: (Tag) -> Unit): ListAdapter<Tag, TagItemView> =
             ListAdapter<Tag, TagItemView>(
@@ -26,7 +26,7 @@ object TagsList {
 
 }
 
-class TagItemView(ctx: Context) : LinearLayout(ctx) {
+internal class TagItemView(ctx: Context) : LinearLayout(ctx) {
 
     init {
         LayoutInflater.from(context).inflate(R.layout.resources_tag_item, this)

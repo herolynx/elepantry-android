@@ -20,18 +20,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".resources.view.ResourcesActivity"
+            android:name=".resources.view.list.ResourcesActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".resources.view.ResourceTagsActivity"
+            android:name=".resources.view.tags.ResourceTagsActivity"
             android:label="@string/title_activity_main"
-            android:windowSoftInputMode="stateHidden"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.herolynx.elepantry.resources.view.content.ResourceContentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_resource_content"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

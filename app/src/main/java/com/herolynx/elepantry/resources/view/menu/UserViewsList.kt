@@ -6,10 +6,10 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
-import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.core.model.View
 import org.funktionale.option.Option
 
-object UserViewsList {
+internal object UserViewsList {
 
     fun adapter(
             clickHandler: (View) -> Unit,
@@ -34,7 +34,7 @@ object UserViewsList {
 
 }
 
-class UserViewItem(ctx: Context) : LinearLayout(ctx) {
+internal class UserViewItem(ctx: Context) : LinearLayout(ctx) {
 
     init {
         LayoutInflater.from(context).inflate(R.layout.menu_user_views_item, this)

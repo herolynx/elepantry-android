@@ -15,10 +15,10 @@ import android.widget.Button
 import android.widget.LinearLayout
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
-import com.herolynx.elepantry.resources.ResourceView
-import com.herolynx.elepantry.resources.model.View
-import com.herolynx.elepantry.resources.model.ViewType
-import com.herolynx.elepantry.resources.view.ResourceTagsActivity
+import com.herolynx.elepantry.resources.core.model.View
+import com.herolynx.elepantry.resources.core.model.ViewType
+import com.herolynx.elepantry.resources.core.service.ResourceView
+import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import com.herolynx.elepantry.user.view.menu.UserBadge
 
 

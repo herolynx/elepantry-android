@@ -8,11 +8,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
-import com.herolynx.elepantry.core.net.download
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.getAuthContext
-import com.herolynx.elepantry.resources.view.ResourceTagsActivity
+import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import com.herolynx.elepantry.user.model.User
 
 class UserBadge(
@@ -38,14 +36,7 @@ class UserBadge(
     fun display(user: User) {
         debug("[UserBadge] Displaying user info: %s", user)
         userName.text = user.displayName
-        user.photoUrl
-                .download()
-                .schedule()
-                .observe()
-                .subscribe { bitmap ->
-                    userImage.setImageBitmap(bitmap)
-                }
-
+        userImage.download(user.photoUrl)
     }
 
     companion object {
