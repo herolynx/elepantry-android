@@ -3,12 +3,13 @@ package com.herolynx.elepantry.resources.view.list
 import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
-import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.observe
@@ -53,6 +54,7 @@ internal object ResourceList {
                         userResource.tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }
                     else ""
                 }
+        h.view.thumbnail.visibility = View.INVISIBLE
         if (r?.thumbnailLink != null || r?.iconLink != null) {
             var subs: Subscription? = null
             subs = Uri.parse(r?.thumbnailLink ?: r?.iconLink)
@@ -61,11 +63,12 @@ internal object ResourceList {
                     .observe()
                     .subscribe(
                             { bitmap ->
+                                h.view.thumbnail.visibility = View.VISIBLE
                                 h.view.thumbnail.setImageBitmap(bitmap)
                                 subs?.unsubscribe()
                             },
                             { ex ->
-                                error("[ResourceList] Couldn't get thumbnail", ex)
+                                debug("[ResourceList] Couldn't get thumbnail", ex)
                                 subs?.unsubscribe()
                             },
                             {
