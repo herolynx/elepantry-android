@@ -1,24 +1,18 @@
 package com.herolynx.elepantry.resources.view.list
 
 import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
-import com.herolynx.elepantry.core.log.debug
-import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.core.repository.Repository
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
-import rx.Subscription
 
 internal object ResourceList {
 
@@ -45,6 +39,11 @@ internal object ResourceList {
         }
         h.view.name.text = r?.name
         h.view.ext.text = r?.extension
+        displayTags(r, h, userResourceRepository)
+        h.view.thumbnail.download(r?.thumbnailLink, r?.iconLink)
+    }
+
+    private fun displayTags(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>, userResourceRepository: Repository<Resource>) {
         r.toOption()
                 .map(Resource::id)
                 .flatMap { id -> userResourceRepository.find(id).getOrElse { Option.None } }
@@ -54,28 +53,6 @@ internal object ResourceList {
                         userResource.tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }
                     else ""
                 }
-        h.view.thumbnail.visibility = View.INVISIBLE
-        if (r?.thumbnailLink != null || r?.iconLink != null) {
-            var subs: Subscription? = null
-            subs = Uri.parse(r?.thumbnailLink ?: r?.iconLink)
-                    .download()
-                    .schedule()
-                    .observe()
-                    .subscribe(
-                            { bitmap ->
-                                h.view.thumbnail.visibility = View.VISIBLE
-                                h.view.thumbnail.setImageBitmap(bitmap)
-                                subs?.unsubscribe()
-                            },
-                            { ex ->
-                                debug("[ResourceList] Couldn't get thumbnail", ex)
-                                subs?.unsubscribe()
-                            },
-                            {
-                                subs?.unsubscribe()
-                            }
-                    )
-        }
     }
 
 }
