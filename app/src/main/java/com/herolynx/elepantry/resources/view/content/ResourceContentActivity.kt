@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.resources.content
+package com.herolynx.elepantry.resources.view.content
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -10,7 +10,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
-import com.herolynx.elepantry.resources.model.Resource
+import com.herolynx.elepantry.resources.core.model.Resource
 
 class ResourceContentActivity : AppCompatActivity() {
 

@@ -14,7 +14,7 @@ import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.google.GoogleApi
 import com.herolynx.elepantry.getAuthContext
-import com.herolynx.elepantry.resources.view.ResourcesActivity
+import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import rx.Observable
 
 internal class SignInCtrl(

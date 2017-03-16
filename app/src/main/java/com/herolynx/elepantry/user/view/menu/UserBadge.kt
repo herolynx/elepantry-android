@@ -12,7 +12,7 @@ import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.getAuthContext
-import com.herolynx.elepantry.resources.view.ResourceTagsActivity
+import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import com.herolynx.elepantry.user.model.User
 
 class UserBadge(

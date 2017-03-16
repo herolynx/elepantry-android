@@ -10,8 +10,8 @@ import com.google.api.services.drive.Drive
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.ext.google.GoogleConfig
 import com.herolynx.elepantry.getAuthContext
-import com.herolynx.elepantry.resources.ResourceView
-import com.herolynx.elepantry.resources.model.SearchCriteria
+import com.herolynx.elepantry.resources.core.service.ResourceView
+import com.herolynx.elepantry.resources.core.service.SearchCriteria
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
 import java.util.*

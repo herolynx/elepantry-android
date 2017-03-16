@@ -2,8 +2,8 @@ package com.herolynx.elepantry.ext.google.firebase.db
 
 import com.google.firebase.database.FirebaseDatabase
 import com.herolynx.elepantry.ext.google.firebase.auth.FirebaseAuth
-import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.user.model.UserId
 
 object FirebaseDb {

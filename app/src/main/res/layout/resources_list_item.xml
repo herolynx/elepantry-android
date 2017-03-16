@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.herolynx.elepantry.resources.view.ResourcesActivity"
+    tools:context="com.herolynx.elepantry.resources.view.list.ResourcesActivity"
     tools:showIn="@layout/menu_frame_bar">
 
     <LinearLayout

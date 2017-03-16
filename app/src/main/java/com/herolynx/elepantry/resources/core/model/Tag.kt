@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.resources.model
+package com.herolynx.elepantry.resources.core.model
 
 data class Tag(val id: String = newId(), val name: String) {
     constructor() : this(name = "")

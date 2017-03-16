@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.resources.view.ui
+package com.herolynx.elepantry.resources.view.list
 
 import android.content.Context
 import android.net.Uri
@@ -14,12 +14,12 @@ import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
-import com.herolynx.elepantry.resources.model.Resource
+import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
 import rx.Subscription
 
-object ResourceList {
+internal object ResourceList {
 
     fun adapter(
             userResourceRepository: Repository<Resource> = Config.repository.userResources(),
@@ -77,7 +77,7 @@ object ResourceList {
 
 }
 
-class ResourceItemView(ctx: Context) : LinearLayout(ctx) {
+internal class ResourceItemView(ctx: Context) : LinearLayout(ctx) {
 
     init {
         LayoutInflater.from(context).inflate(R.layout.resources_list_item, this)

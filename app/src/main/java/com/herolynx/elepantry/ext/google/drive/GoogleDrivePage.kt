@@ -4,8 +4,8 @@ import com.google.api.services.drive.Drive
 import com.herolynx.elepantry.core.func.Retry
 import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.core.rx.DataEvent
-import com.herolynx.elepantry.resources.ResourcePage
-import com.herolynx.elepantry.resources.model.Resource
+import com.herolynx.elepantry.resources.core.service.ResourcePage
+import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.tries.Try
 import rx.Observable
 

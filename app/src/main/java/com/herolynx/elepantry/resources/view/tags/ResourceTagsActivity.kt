@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.resources.view
+package com.herolynx.elepantry.resources.view.tags
 
 import android.app.Activity
 import android.os.Bundle
@@ -14,13 +14,14 @@ import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
-import com.herolynx.elepantry.resources.ResourceView
-import com.herolynx.elepantry.resources.model.Resource
-import com.herolynx.elepantry.resources.model.Tag
-import com.herolynx.elepantry.resources.model.View
+import com.herolynx.elepantry.resources.core.service.ResourceView
+import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.model.Tag
+import com.herolynx.elepantry.resources.core.model.View
+import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
-import com.herolynx.elepantry.resources.view.ui.TagItemView
-import com.herolynx.elepantry.resources.view.ui.TagsList
+import com.herolynx.elepantry.resources.view.tags.TagItemView
+import com.herolynx.elepantry.resources.view.tags.TagsList
 
 class ResourceTagsActivity : UserViewsMenu() {
 
