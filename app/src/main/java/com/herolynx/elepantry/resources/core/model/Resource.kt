@@ -43,4 +43,8 @@ data class Resource(
         val v = other as? Resource
         return v?.id.equals(id)
     }
+
+    fun getTagValue() = if (tags.isEmpty()) ""
+    else tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }
+
 }

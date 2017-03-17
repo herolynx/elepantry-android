@@ -30,8 +30,4 @@
     <string name="tag_name_placeholder">Tag name</string>
     <string name="resource_name_valid_length" formatted="false">Name length must be between %s and %s characters</string>
 
-    <string name="title_activity_resource_content">ResourceContentActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
 </resources>
