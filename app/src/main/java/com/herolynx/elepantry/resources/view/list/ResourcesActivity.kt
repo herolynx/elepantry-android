@@ -14,6 +14,7 @@ import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.notification.toast
@@ -117,10 +118,14 @@ class ResourcesActivity : UserViewsMenu() {
             when (listAdapter?.selectedItems?.size ?: 0) {
                 0 -> {
                 }
-                1 -> ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems.get(0))
+                1 -> {
+                    analytics?.metrics("ResourceEditSingle")
+                    ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems.get(0))
+                }
 
                 else -> {
                     //TODO logic here
+                    analytics?.metrics("ResourceEditGroup")
                     toast("Multi-resource action not supported yet")
                 }
             }
@@ -166,6 +171,7 @@ class ResourcesActivity : UserViewsMenu() {
 
             override fun onQueryTextSubmit(word: String): Boolean {
                 debug("[Search] onQueryTextSubmit: $word")
+                analytics?.metrics("SearchPhraseChosen")
                 clearLoadStatus()
                 loadData(word)
                 searchView.clearFocus()
@@ -174,6 +180,7 @@ class ResourcesActivity : UserViewsMenu() {
 
             override fun onQueryTextChange(text: String): Boolean {
                 debug("[Search] onQueryTextChange: $text")
+                analytics?.metrics("SearchPhraseChange")
                 clearLoadStatus()
                 loadData(text)
                 return true

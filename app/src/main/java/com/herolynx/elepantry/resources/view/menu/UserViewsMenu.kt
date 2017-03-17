@@ -15,8 +15,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.LinearLayout
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.log.metrics
+import com.herolynx.elepantry.core.log.viewVisit
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
 import com.herolynx.elepantry.resources.core.service.ResourceView
@@ -31,6 +34,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
 
     private var menuCtrl: UserViewsMenuCtrl? = null
 
+    protected var analytics: FirebaseAnalytics? = null
     protected var loadDefaultItem: () -> Unit = {}
     protected var closeMenu: () -> Unit = {}
     private val topMenuItems: MutableList<MenuItem> = mutableListOf()
@@ -38,6 +42,8 @@ abstract class UserViewsMenu : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        analytics = FirebaseAnalytics.getInstance(this)
+        analytics?.viewVisit(this)
         setContentView(R.layout.menu_frame)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         menuCtrl = UserViewsMenuCtrl(this)
@@ -68,7 +74,10 @@ abstract class UserViewsMenu : AppCompatActivity() {
         val menuLayout = findViewById(R.id.left_menu_layout) as LinearLayout
 
         val userBadge = UserBadge.create(this, navigationView)
-        userBadge.initAddNewViewAction({ closeMenu() })
+        userBadge.initAddNewViewAction({
+            analytics?.metrics("ViewAdd")
+            closeMenu()
+        })
         menuLayout.addView(userBadge.layout)
         userBadge.display()
 
@@ -86,10 +95,12 @@ abstract class UserViewsMenu : AppCompatActivity() {
         val listAdapter = UserViewsList.adapter(
                 clickHandler = { v ->
                     closeMenu()
+                    analytics?.metrics("ViewChange", id = v.id, name = v.name, value = v.type.toString())
                     onViewChange(v)
                 },
                 editHandler = { v ->
                     closeMenu()
+                    analytics?.metrics("ViewEdit", id = v.id, name = v.name)
                     ResourceTagsActivity.navigate(this, v)
                 }
         )
