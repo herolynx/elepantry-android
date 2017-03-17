@@ -1,6 +1,7 @@
 package com.herolynx.elepantry.core.log
 
 import android.util.Log
+import com.google.firebase.crash.FirebaseCrash
 
 private fun <T> tag(t: T): String {
     val o = t as Any
@@ -8,25 +9,44 @@ private fun <T> tag(t: T): String {
 }
 
 fun <T> T.debug(msg: String, vararg args: Any?) {
-    Log.d(tag(this), msg.format(args.map { o -> o.toString() }))
+    val infoMsg = msg.format(args.map { o -> o.toString() })
+    Log.d(tag(this), infoMsg)
+    FirebaseCrash.log(infoMsg)
+}
+
+fun <T> T.debug(msg: String, t: Throwable) {
+    Log.d(tag(this), msg, t)
+    FirebaseCrash.log(msg)
+    FirebaseCrash.log("Debug error message: ${t.message}")
 }
 
 fun <T> T.info(msg: String, vararg args: Any?) {
-    Log.i(tag(this), msg.format(args.map { o -> o.toString() }))
+    val infoMsg = msg.format(args.map { o -> o.toString() })
+    Log.i(tag(this), infoMsg)
+    FirebaseCrash.log(infoMsg)
 }
 
 fun <T, E : Throwable> T.error(msg: String, t: E?) {
     Log.e(tag(this), msg, t)
+    FirebaseCrash.log(msg)
+    FirebaseCrash.report(t)
 }
 
 fun <T> T.error(msg: String, vararg args: Any?) {
-    Log.e(tag(this), msg.format(args.map { o -> o.toString() }))
+    val errMsg = msg.format(args.map { o -> o.toString() })
+    Log.e(tag(this), errMsg)
+    FirebaseCrash.report(RuntimeException(errMsg))
 }
 
 fun <T, E : Throwable> T.error(t: E, msg: String, vararg args: Any?) {
-    Log.e(tag(this), msg.format(args.map { o -> o.toString() }), t)
+    val errMsg = msg.format(args.map { o -> o.toString() })
+    Log.e(tag(this), errMsg, t)
+    FirebaseCrash.log(errMsg)
+    FirebaseCrash.report(t)
 }
 
 fun <T, E : Throwable> T.warn(msg: String, t: E?) {
     Log.w(tag(this), msg, t)
+    FirebaseCrash.log(msg)
+    FirebaseCrash.log("Warn error message: ${t?.message}")
 }

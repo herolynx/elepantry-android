@@ -105,11 +105,12 @@
             android:textStyle="normal" />
 
         <TextView
+            android:id="@+id/app_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right|center"
             android:layout_gravity="center"
-            android:text="v00.1"
+            android:text="v00.0"
             android:textColor="@android:color/white"
             android:textSize="10dp"
             android:paddingRight="5dp"
