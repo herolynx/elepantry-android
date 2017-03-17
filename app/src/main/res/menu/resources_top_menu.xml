@@ -7,19 +7,5 @@
         android:orderInCategory="50"
         android:title="@string/search"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="collapseActionView" />
-    <item
-        android:id="@+id/action_edit"
-        android:icon="@drawable/ic_action_bar_pencil"
-        android:orderInCategory="100"
-        android:title="@string/edit"
-        android:visible="false"
-        app:showAsAction="collapseActionView" />
-    <item
-        android:id="@+id/action_delete"
-        android:icon="@drawable/ic_action_bar_delete"
-        android:orderInCategory="200"
-        android:title="@string/delete"
-        android:visible="false"
-        app:showAsAction="collapseActionView" />
+        app:showAsAction="always" />
 </menu>

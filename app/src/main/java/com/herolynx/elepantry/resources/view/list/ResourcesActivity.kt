@@ -45,6 +45,7 @@ class ResourcesActivity : UserViewsMenu() {
         ctrl = ResourcesCtrl()
         webView = WebView(this)
         initResourceView()
+        initEditAction()
         if (intent.extras != null) {
             loadParams(intent.extras)
         }
@@ -53,7 +54,7 @@ class ResourcesActivity : UserViewsMenu() {
     override fun onResume() {
         super.onResume()
         debug("[onResume] Loading state - currentView: ${ctrl?.currentView}")
-        topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(false) }
+        fabEditButton?.visibility = android.view.View.INVISIBLE
         ctrl.toOption()
                 .flatMap { c -> c.currentView.toOption() }
                 .map { v -> onViewChange(v) }
@@ -90,7 +91,7 @@ class ResourcesActivity : UserViewsMenu() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
         listAdapter = ResourceList.adapter(onClickHandler = { r -> webView?.loadUrl(r.downloadLink) })
         listAdapter?.onSelectedItemsChange { selected ->
-            topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(!selected.isEmpty()) }
+            fabEditButton?.visibility = if (selected.isEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
         }
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
@@ -109,6 +110,21 @@ class ResourcesActivity : UserViewsMenu() {
             )
         }
         loadDefaultItem()
+    }
+
+    private fun initEditAction() {
+        fabEditButton?.setOnClickListener { view ->
+            when (listAdapter?.selectedItems?.size ?: 0) {
+                0 -> {
+                }
+                1 -> ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems.get(0))
+
+                else -> {
+                    //TODO logic here
+                    toast("Multi-resource action not supported yet")
+                }
+            }
+        }
     }
 
     internal fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
@@ -180,28 +196,6 @@ class ResourcesActivity : UserViewsMenu() {
                 val searchView = MenuItemCompat.getActionView(item) as SearchView
                 initSearchOption(searchView)
             }
-
-            R.id.action_delete -> {
-                //TODO logic here
-                toast("Deleting tags of a resource not supported yet")
-                return true
-            }
-
-            R.id.action_edit -> {
-                when (listAdapter?.selectedItems?.size ?: 0) {
-                    0 -> {
-                    }
-                    1 -> ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems.get(0))
-
-                    else -> {
-                        //TODO logic here
-                        toast("Multi-resource action not supported yet")
-                    }
-                }
-                return true
-            }
-
-            else -> throw UnsupportedOperationException("Unknown action - item: ${item.title}, action id: ${item.itemId}")
         }
         return super.onOptionsItemSelected(item)
     }

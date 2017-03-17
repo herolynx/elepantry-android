@@ -1,7 +1,9 @@
 package com.herolynx.elepantry.resources.view.menu
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -32,6 +34,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
     protected var loadDefaultItem: () -> Unit = {}
     protected var closeMenu: () -> Unit = {}
     private val topMenuItems: MutableList<MenuItem> = mutableListOf()
+    protected var fabEditButton: FloatingActionButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +45,16 @@ abstract class UserViewsMenu : AppCompatActivity() {
         initMenu(menuCtrl!!)
         initToolbar(toolbar)
         initView()
+        initAdditionalMenuActions()
+    }
+
+    private fun initAdditionalMenuActions() {
+        fabEditButton = findViewById(R.id.fab_actio_edit) as FloatingActionButton
+        fabEditButton?.visibility = android.view.View.INVISIBLE
+        fabEditButton?.setOnClickListener({ view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+        })
     }
 
     private fun initView() {
