@@ -12,6 +12,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
@@ -31,7 +32,7 @@ class ResourceTagsActivity : UserViewsMenu() {
     private var addTag: Button? = null
     private var resourceCtrl: ResourceTagsCtrl<*>? = null
     private var tagsAdapter: ListAdapter<Tag, TagItemView>? = null
-    private var viewType: TYPE = TYPE.VIEW;
+    private var viewType: TYPE = TYPE.VIEW
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +96,7 @@ class ResourceTagsActivity : UserViewsMenu() {
             addTag?.setOnClickListener {
                 val tagName = newTag?.text.toString()
                 if (resourceCtrl?.isNameValid(tagName) ?: false) {
+                    analytics?.metrics("tagAdd")
                     resourceCtrl?.addTag(tagName)
                     newTag?.text?.clear()
                 } else {
@@ -111,7 +113,10 @@ class ResourceTagsActivity : UserViewsMenu() {
         addTag = findViewById(R.id.add_tag) as Button
 
         val tagLists = findViewById(R.id.resource_tags_list) as RecyclerView
-        tagsAdapter = TagsList.adapter(deleteHandler = { tag -> resourceCtrl?.deleteTag(tag) })
+        tagsAdapter = TagsList.adapter(deleteHandler = { tag ->
+            analytics?.metrics("tagDelete")
+            resourceCtrl?.deleteTag(tag)
+        })
         tagLists.adapter = tagsAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         tagLists.layoutManager = linearLayoutManager
@@ -138,12 +143,14 @@ class ResourceTagsActivity : UserViewsMenu() {
         when (item.itemId) {
             R.id.action_save -> {
                 debug("[TopMenu] Saving...")
+                analytics?.metrics("${viewType.name}Save")
                 changeResourceName(showConfirmation = true)
                 return true
             }
 
             R.id.action_delete -> {
                 debug("[TopMenu] Deleting...")
+                analytics?.metrics("${viewType.name}Delete")
                 resourceCtrl?.delete()
                 return true
             }

@@ -56,6 +56,8 @@ class ListAdapter<T, TU : View>(
         items.add(t)
     }
 
+    fun size() = items.size
+
     fun sort() {
         sortBy.map { l -> items.sortBy(l) }
     }
