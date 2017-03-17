@@ -23,7 +23,7 @@ class GoogleDriveView(private val service: Drive) : ResourceView {
         service.files()
                 .list()
                 .setFields(DOWNLOAD_FIELDS)
-                .setQ(String.format("$QUERY_BY_NAME and $QUERY_NOT_DIRECTORY", c?.text ?: ""))
+                .setQ(String.format("$QUERY_BY_NAME and $QUERY_NOT_DIRECTORY", c.text ?: ""))
                 .setPageSize(c.pageSize)
                 .setPageToken(nextPageToken)
     }

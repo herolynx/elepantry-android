@@ -14,14 +14,12 @@ import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
-import com.herolynx.elepantry.resources.core.service.ResourceView
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag
 import com.herolynx.elepantry.resources.core.model.View
+import com.herolynx.elepantry.resources.core.service.ResourceView
 import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
-import com.herolynx.elepantry.resources.view.tags.TagItemView
-import com.herolynx.elepantry.resources.view.tags.TagsList
 
 class ResourceTagsActivity : UserViewsMenu() {
 
@@ -149,8 +147,6 @@ class ResourceTagsActivity : UserViewsMenu() {
                 resourceCtrl?.delete()
                 return true
             }
-
-            else -> throw UnsupportedOperationException("Unknown action - item: ${item.title}, action id: ${item.itemId}")
         }
         return super.onOptionsItemSelected(item)
     }
