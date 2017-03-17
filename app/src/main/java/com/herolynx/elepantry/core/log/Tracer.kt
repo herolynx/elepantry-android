@@ -9,11 +9,15 @@ private fun <T> tag(t: T): String {
 }
 
 fun <T> T.debug(msg: String, vararg args: Any?) {
-    Log.d(tag(this), msg.format(args.map { o -> o.toString() }))
+    val infoMsg = msg.format(args.map { o -> o.toString() })
+    Log.d(tag(this), infoMsg)
+    FirebaseCrash.log(infoMsg)
 }
 
 fun <T> T.debug(msg: String, t: Throwable) {
     Log.d(tag(this), msg, t)
+    FirebaseCrash.log(msg)
+    FirebaseCrash.log("Debug error message: ${t.message}")
 }
 
 fun <T> T.info(msg: String, vararg args: Any?) {
@@ -44,4 +48,5 @@ fun <T, E : Throwable> T.error(t: E, msg: String, vararg args: Any?) {
 fun <T, E : Throwable> T.warn(msg: String, t: E?) {
     Log.w(tag(this), msg, t)
     FirebaseCrash.log(msg)
+    FirebaseCrash.log("Warn error message: ${t?.message}")
 }
