@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import android.webkit.WebView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
@@ -22,7 +23,6 @@ import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
 import com.herolynx.elepantry.resources.core.service.ResourceView
-import com.herolynx.elepantry.resources.view.content.ResourceContentActivity
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import org.funktionale.option.getOrElse
@@ -35,6 +35,7 @@ class ResourcesActivity : UserViewsMenu() {
     private var loadData: (String?) -> Unit = {}
     private var ctrl: ResourcesCtrl? = null
     private var clearSearchAction: () -> Unit = {}
+    private var webView: WebView? = null
 
     override val layoutId: Int = R.layout.resources_list
     override val topMenuId = R.menu.resources_top_menu
@@ -42,6 +43,7 @@ class ResourcesActivity : UserViewsMenu() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ctrl = ResourcesCtrl()
+        webView = WebView(this)
         initResourceView()
         if (intent.extras != null) {
             loadParams(intent.extras)
@@ -86,14 +88,14 @@ class ResourcesActivity : UserViewsMenu() {
 
     private fun initResourceView() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
-        listAdapter = ResourceList.adapter(onClickHandler = { r -> ResourceContentActivity.navigate(this, r) })
+        listAdapter = ResourceList.adapter(onClickHandler = { r -> webView?.loadUrl(r.downloadLink) })
         listAdapter?.onSelectedItemsChange { selected ->
             topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(!selected.isEmpty()) }
         }
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         listView.layoutManager = linearLayoutManager
-        loadData = { search ->
+        loadData = { searchCriteria ->
             listView.clearOnScrollListeners()
             ctrl?.loadData(
                     pageRequests = Observable.merge(
@@ -102,7 +104,7 @@ class ResourcesActivity : UserViewsMenu() {
                             //receive events about next needed pages to load
                             listView.onInfiniteLoading(linearLayoutManager)
                     ),
-                    search = search,
+                    search = searchCriteria,
                     viewDisplay = { page -> displayPage(page) }
             )
         }

@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.webkit.WebView
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
@@ -14,6 +16,7 @@ import com.herolynx.elepantry.resources.core.model.Resource
 
 class ResourceContentActivity : AppCompatActivity() {
 
+    private var webView: WebView? = null
     private val mHideHandler = Handler()
     private var mContentView: View? = null
     private val mHidePart2Runnable = Runnable {
@@ -61,7 +64,24 @@ class ResourceContentActivity : AppCompatActivity() {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener)
+//        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener)
+
+        webView = findViewById(R.id.webView) as WebView
+        if (intent.extras != null) {
+            loadParams(intent.extras)
+        }
+    }
+
+    private fun loadParams(b: Bundle) {
+        val resource = b.getString(PARAM_RESOURCE, "")
+        debug("[ResourceContentActivity] Loading params - resource: $resource")
+        if (!resource.isEmpty()) {
+            resource.fromJsonString(com.herolynx.elepantry.resources.core.model.Resource::class.java)
+                    .map { r ->
+                        debug("[ResourceContentActivity] Loading params - displaying resource: $r")
+                        webView?.loadUrl(r.downloadLink)
+                    }
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
