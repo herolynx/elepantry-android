@@ -14,8 +14,6 @@ import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.rx.DataEvent
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
@@ -23,33 +21,27 @@ import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
-import com.herolynx.elepantry.resources.core.service.ResourcePage
 import com.herolynx.elepantry.resources.core.service.ResourceView
-import com.herolynx.elepantry.resources.core.service.SearchCriteria
 import com.herolynx.elepantry.resources.view.content.ResourceContentActivity
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
-import org.funktionale.tries.Try
 import rx.Observable
-import rx.Subscription
 
 class ResourcesActivity : UserViewsMenu() {
 
-    private var currentView: View? = null
-    private var resourceView: ResourceView? = null
-    private var resourcePage: Try<out ResourcePage>? = null
     private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
     private var loadData: (String?) -> Unit = {}
+    private var ctrl: ResourcesCtrl? = null
     private var clearSearchAction: () -> Unit = {}
-    private var lastSubscription: Subscription? = null
 
     override val layoutId: Int = R.layout.resources_list
     override val topMenuId = R.menu.resources_top_menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ctrl = ResourcesCtrl()
         initResourceView()
         if (intent.extras != null) {
             loadParams(intent.extras)
@@ -58,14 +50,12 @@ class ResourcesActivity : UserViewsMenu() {
 
     override fun onResume() {
         super.onResume()
-        debug("[onResume] Loading state - currentView: $currentView")
+        debug("[onResume] Loading state - currentView: ${ctrl?.currentView}")
         topMenuItems().filter { i -> i.itemId == R.id.action_edit }.map { i -> i.setVisible(false) }
-        currentView.toOption()
+        ctrl.toOption()
+                .flatMap { c -> c.currentView.toOption() }
                 .map { v -> onViewChange(v) }
-                .getOrElse {
-                    listAdapter?.clearSelected()
-                    listAdapter?.notifyDataSetChanged()
-                }
+                .getOrElse { clearLoadStatus() }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -78,8 +68,8 @@ class ResourcesActivity : UserViewsMenu() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        debug("[onSaveInstanceState] Saving state - current view: $currentView")
-        outState?.putString(PARAM_VIEW, currentView.toJsonString().get())
+        debug("[onSaveInstanceState] Saving state - current view: ${ctrl?.currentView}")
+        outState?.putString(PARAM_VIEW, ctrl?.currentView.toJsonString().get())
     }
 
     private fun loadParams(b: Bundle) {
@@ -103,34 +93,23 @@ class ResourcesActivity : UserViewsMenu() {
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
         listView.layoutManager = linearLayoutManager
-        loadData = { search -> initOnScrollDataLoading(listView, linearLayoutManager, search) }
+        loadData = { search ->
+            listView.clearOnScrollListeners()
+            ctrl?.loadData(
+                    pageRequests = Observable.merge(
+                            //initiate loading of first page
+                            Observable.just(0),
+                            //receive events about next needed pages to load
+                            listView.onInfiniteLoading(linearLayoutManager)
+                    ),
+                    search = search,
+                    viewDisplay = { page -> displayPage(page) }
+            )
+        }
         loadDefaultItem()
     }
 
-    private fun initOnScrollDataLoading(listView: RecyclerView, linearLayoutManager: LinearLayoutManager, search: String? = null) {
-        listView.clearOnScrollListeners()
-        lastSubscription?.unsubscribe()
-        lastSubscription = Observable.merge(
-                //initiate loading of first page
-                Observable.just(0),
-                //receive events about next needed pages to load
-                listView.onInfiniteLoading(linearLayoutManager)
-        )
-                .flatMap { pageNr ->
-                    debug("[PageRequest] Loading next page - number: %s", pageNr)
-                    loadNextPage(search)
-                }
-                .filter { p -> p.isSuccess() }
-                .map { p -> p.get().resources() }
-                .schedule()
-                .observe()
-                .subscribe(
-                        { pageResources -> displayPage(pageResources) },
-                        { ex -> error("[PageRequest] Loading error", ex) }
-                )
-    }
-
-    private fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
+    internal fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
         pageResources.subscribe(
                 { r ->
                     listAdapter?.add(r)
@@ -144,30 +123,21 @@ class ResourcesActivity : UserViewsMenu() {
         )
     }
 
-    private fun loadNextPage(search: String? = null) = Observable.defer {
-        resourcePage = if (resourcePage == null) resourceView?.search(SearchCriteria(text = search))
-        else if (resourcePage!!.isFailure()) resourcePage
-        else resourcePage!!.get().next()
-        Observable.just(resourcePage!!)
-    }
-            .schedule()
-
     override fun onViewChange(v: View, rv: ResourceView): Boolean {
         debug("[onViewChange] View selected: %s", v)
         closeMenu()
         title = v.name
-        currentView = v
-        resourceView = rv
         clearSearchAction()
-        initDataLoad()
+        ctrl?.changeView(v, rv)
+        clearLoadStatus()
+        loadData(null)
         return true
     }
 
-    private fun initDataLoad(search: String? = null) {
-        resourcePage = null
+    private fun clearLoadStatus() {
+        ctrl?.clearLoadState()
         listAdapter?.clear()
         listAdapter?.notifyDataSetChanged()
-        loadData(search)
     }
 
     private fun initSearchOption(searchView: SearchView) {
@@ -178,14 +148,16 @@ class ResourcesActivity : UserViewsMenu() {
 
             override fun onQueryTextSubmit(word: String): Boolean {
                 debug("[Search] onQueryTextSubmit: $word")
-                initDataLoad(word)
+                clearLoadStatus()
+                loadData(word)
                 searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(text: String): Boolean {
                 debug("[Search] onQueryTextChange: $text")
-                initDataLoad(text)
+                clearLoadStatus()
+                loadData(text)
                 return true
             }
         })
