@@ -55,7 +55,7 @@ internal class SignInCtrl(
     }
 
     private fun onAuthResult(auth: Pair<GoogleSignInAccount, FirebaseUser?>) {
-        debug("[Auth] User is logged in - auth: $auth, api connected: ${api.isConnected}")
+        debug("[Auth] User is logged in - auth: ${auth.first.id}, api connected: ${api.isConnected}")
         view.hideProgressDialog()
         api.disconnect()
         if (auth.second != null) {

@@ -6,6 +6,7 @@ import com.google.firebase.database.ValueEventListener
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.rx.DataEvent
+import com.herolynx.elepantry.ext.google.firebase.db.checkError
 import rx.Subscriber
 
 /**
@@ -26,7 +27,8 @@ class ValueListener<T>(
     }
 
     override fun onCancelled(databaseError: DatabaseError) {
-        error("$TAG_NAME Error", databaseError.toException())
+        databaseError.checkError()
+                .map { ex -> error("$TAG_NAME Error", ex) }
         handleError(databaseError)
         close()
     }
