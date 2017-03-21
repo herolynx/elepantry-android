@@ -13,6 +13,7 @@ import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
+import rx.Subscription
 
 internal object ResourceList {
 
@@ -32,6 +33,7 @@ internal object ResourceList {
             userResourceRepository: Repository<Resource>,
             onClickHandler: (Resource) -> Unit
     ) {
+        h.view.lastSubscription.filter { s -> !s.isUnsubscribed }.map { s -> s.unsubscribe() }
         h.view.setOnClickListener { v ->
             if (r != null) {
                 onClickHandler(r)
@@ -39,8 +41,13 @@ internal object ResourceList {
         }
         h.view.name.text = r?.name
         h.view.ext.text = r?.extension
+        h.view.parentId = r.toOption().map(Resource::id)
         displayTags(r, h, userResourceRepository)
-        h.view.thumbnail.download(r?.thumbnailLink, r?.iconLink)
+        h.view.lastSubscription = h.view.thumbnail.download(
+                h.view.parentId,
+                { h.view.parentId },
+                r?.thumbnailLink, r?.iconLink
+        )
     }
 
     private fun displayTags(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>, userResourceRepository: Repository<Resource>) {
@@ -65,6 +72,8 @@ internal class ResourceItemView(ctx: Context) : LinearLayout(ctx) {
     val tags = findViewById(R.id.resource_item_tags) as TextView
     val thumbnail = findViewById(R.id.resource_thumbnail) as ImageView
     val ext = findViewById(R.id.resource_item_ext) as TextView
+    var parentId: Option<String> = Option.None
+    var lastSubscription: Option<Subscription> = Option.None
 
 }
 

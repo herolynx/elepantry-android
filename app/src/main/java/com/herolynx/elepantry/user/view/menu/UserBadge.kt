@@ -12,6 +12,7 @@ import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import com.herolynx.elepantry.user.model.User
+import org.funktionale.option.Option
 
 class UserBadge(
         val layout: LinearLayout,
@@ -36,7 +37,7 @@ class UserBadge(
     fun display(user: User) {
         debug("[UserBadge] Displaying user info: %s", user)
         userName.text = user.displayName
-        userImage.download(user.photoUrl)
+        userImage.download(uri = user.photoUrl, parentId = Option.Some(user.id), parentIdGetter = { Option.Some(user.id) })
     }
 
     companion object {

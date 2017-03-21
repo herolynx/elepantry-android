@@ -7,20 +7,29 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
+import org.funktionale.option.Option
 import org.funktionale.option.toOption
+import rx.Subscription
 
 internal object ImageViewUtils {
 
-    fun download(img: ImageView, uri: Uri) {
+    fun <T> download(
+            img: ImageView,
+            uri: Uri,
+            parentId: Option<T> = Option.None,
+            parentIdGetter: () -> Option<T> = { Option.None }
+    ): Subscription {
         img.visibility = View.INVISIBLE
-        uri
+        return uri
                 .download()
                 .schedule()
                 .observe()
                 .subscribe(
                         { bitmap ->
-                            img.visibility = View.VISIBLE
-                            img.setImageBitmap(bitmap)
+                            if (parentId.equals(parentIdGetter())) {
+                                img.visibility = View.VISIBLE
+                                img.setImageBitmap(bitmap)
+                            }
                         },
                         { ex ->
                             debug("[ImageView] Couldn't get image", ex)
@@ -30,13 +39,19 @@ internal object ImageViewUtils {
 
 }
 
-fun ImageView.download(uri: Uri) {
-    ImageViewUtils.download(this, uri)
-}
+fun <T> ImageView.download(
+        uri: Uri,
+        parentId: Option<T> = Option.None,
+        parentIdGetter: () -> Option<T> = { Option.None }
+): Subscription = ImageViewUtils.download(this, uri, parentId, parentIdGetter)
 
-fun ImageView.download(vararg urls: String?) = urls
+fun <T> ImageView.download(
+        parentId: Option<T> = Option.None,
+        parentIdGetter: () -> Option<T> = { Option.None },
+        vararg urls: String?
+): Option<Subscription> = urls
         .filter { url -> url != null }
         .get(0)
         .toOption()
         .map { url -> Uri.parse(url) }
-        .forEach { uri -> download(uri) }
+        .map { uri -> download(uri, parentId, parentIdGetter) }
