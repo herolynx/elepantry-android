@@ -4,11 +4,14 @@ import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
+import com.herolynx.elepantry.user.model.UserMetaInf
 
 class RepoConfig internal constructor() {
 
     fun userViews(): Repository<View> = FirebaseDb.userViews()
 
     fun userResources(): Repository<Resource> = FirebaseDb.userResources()
+
+    fun userMetaInfo(): Repository<UserMetaInf> = FirebaseDb.userMetaInfo()
 
 }

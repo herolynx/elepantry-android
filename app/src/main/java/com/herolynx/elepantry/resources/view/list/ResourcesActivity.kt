@@ -20,6 +20,7 @@ import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
+import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
@@ -37,6 +38,7 @@ class ResourcesActivity : UserViewsMenu() {
     private var ctrl: ResourcesCtrl? = null
     private var clearSearchAction: () -> Unit = {}
     private var webView: WebView? = null
+    private var syncJob: GoogleDriveMetaInfoSync? = null
 
     override val layoutId: Int = R.layout.resources_list
     override val topMenuId = R.menu.resources_top_menu
@@ -50,6 +52,7 @@ class ResourcesActivity : UserViewsMenu() {
         if (intent.extras != null) {
             loadParams(intent.extras)
         }
+        syncJob = GoogleDriveMetaInfoSync.create(this)
     }
 
     override fun onResume() {
@@ -60,6 +63,7 @@ class ResourcesActivity : UserViewsMenu() {
                 .flatMap { c -> c.currentView.toOption() }
                 .map { v -> onViewChange(v) }
                 .getOrElse { clearLoadStatus() }
+        syncJob?.sync()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
