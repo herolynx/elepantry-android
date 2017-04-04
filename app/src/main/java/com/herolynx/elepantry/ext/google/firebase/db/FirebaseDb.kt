@@ -5,14 +5,17 @@ import com.herolynx.elepantry.ext.google.firebase.auth.FirebaseAuth
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.user.model.UserId
+import com.herolynx.elepantry.user.model.UserMetaInf
 
 object FirebaseDb {
 
     private val database = FirebaseDatabase.getInstance()
 
     private fun userId() = UserId(FirebaseAuth.getCurrentUser().get().uid)
-    
+
     fun userViews() = userRepo("views", View::class.java, View::id)
+
+    fun userMetaInfo() = userRepo("userMetaInfo", UserMetaInf::class.java, UserMetaInf::id)
 
     fun userResources() = userRepo("resources", Resource::class.java, Resource::id)
 
