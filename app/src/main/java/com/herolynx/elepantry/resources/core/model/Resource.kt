@@ -44,11 +44,10 @@ data class Resource(
         return v?.id.equals(id)
     }
 
-    fun getTagValue() = if (tags.isEmpty()) ""
-    else tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }
-
     fun isTheSame(r2: Resource): Boolean = super.equals(r2.copy(tags = this.tags))
 
     fun merge(r2: Resource): Resource = this.copy(tags = r2.tags)
 
 }
+
+fun Resource.getTagValue() = if (tags.isEmpty()) "" else tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }

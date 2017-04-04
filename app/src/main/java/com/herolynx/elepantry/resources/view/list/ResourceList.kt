@@ -11,6 +11,7 @@ import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.model.getTagValue
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
 import rx.Subscription
