@@ -32,32 +32,38 @@ class GoogleDriveMetaInfoSync(
     private var subscription: Subscription? = null
     private var syncOnGoing = false
 
-    fun sync() {
-        debug("$TAG Checking sync status - on-going: $syncOnGoing")
+    fun isSyncing() = syncOnGoing
+
+    fun sync(scheduleInMs: Long = 5000, afterSyncLogic: () -> Unit = {}) {
         if (syncOnGoing) {
             return
         }
-        subscription = userRep.asObservable()
-                .filter { e -> !e.deleted && e.data.id.equals(jobId) }
-                .map { e -> e.data }
-                .firstOrDefault(UserMetaInf(jobId))
-                .schedule()
-                .observeOn(Schedulers.io())
-                .subscribe(
-                        { u ->
-                            debug("$TAG Checking last sync time - info: $u")
-                            if (Duration(u.getLastSyncTimeDate().time, Date().time).isLongerThan(syncEvery)) {
-                                debug("$TAG Starting sync - info: $u")
-                                syncOnGoing = true
-                                sync(gDrive.search(), resRep, u, {
-                                    syncOnGoing = false
-                                    subscription?.unsubscribe()
-                                })
-                            }
-                        },
-                        { ex -> error("$TAG Sync error", ex) },
-                        { subscription?.unsubscribe() }
-                )
+        Thread({
+            Thread.sleep(scheduleInMs)
+            debug("$TAG Checking sync status - on-going: $syncOnGoing")
+            subscription = userRep.asObservable()
+                    .filter { e -> !e.deleted && e.data.id.equals(jobId) }
+                    .map { e -> e.data }
+                    .firstOrDefault(UserMetaInf(jobId))
+                    .schedule()
+                    .observeOn(Schedulers.io())
+                    .subscribe(
+                            { u ->
+                                debug("$TAG Checking last sync time - info: $u")
+                                if (Duration(u.getLastSyncTimeDate().time, Date().time).isLongerThan(syncEvery)) {
+                                    debug("$TAG Starting sync - info: $u")
+                                    syncOnGoing = true
+                                    sync(gDrive.search(), resRep, u, {
+                                        syncOnGoing = false
+                                        subscription?.unsubscribe()
+                                        afterSyncLogic()
+                                    })
+                                }
+                            },
+                            { ex -> error("$TAG Sync error", ex) },
+                            { subscription?.unsubscribe() }
+                    )
+        }).start()
     }
 
     private fun sync(page: Try<GoogleDrivePage>, res: Repository<Resource>, user: UserMetaInf, afterLogic: () -> Unit) {

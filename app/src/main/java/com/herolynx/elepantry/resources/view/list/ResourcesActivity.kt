@@ -59,11 +59,15 @@ class ResourcesActivity : UserViewsMenu() {
         super.onResume()
         debug("[onResume] Loading state - currentView: ${ctrl?.currentView}")
         fabEditButton?.visibility = android.view.View.INVISIBLE
+        refreshView()
+        syncJob?.sync(afterSyncLogic = { runOnUiThread { refreshView() } })
+    }
+
+    private fun refreshView() {
         ctrl.toOption()
                 .flatMap { c -> c.currentView.toOption() }
                 .map { v -> onViewChange(v) }
                 .getOrElse { clearLoadStatus() }
-        syncJob?.sync()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -139,8 +143,10 @@ class ResourcesActivity : UserViewsMenu() {
     internal fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
         pageResources.subscribe(
                 { r ->
-                    listAdapter?.add(r)
-                    listAdapter?.notifyDataSetChanged()
+                    if (!(syncJob?.isSyncing() ?: false)) { //check job in order to avoid to many changes on UI
+                        listAdapter?.add(r)
+                        listAdapter?.notifyDataSetChanged()
+                    }
                 },
                 { ex -> error("[PageRequest] Page result error", ex) },
                 {
