@@ -19,7 +19,7 @@
         android:background="@drawable/select_list_row"
         android:gravity="center_vertical"
         android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
+        android:paddingLeft="5dp"
         android:paddingRight="3dp"
         android:paddingTop="8dp">
 
@@ -30,14 +30,19 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="45dp"
-                android:layout_height="45dp">
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="55dp"
+                android:background="@color/grey_4"
+                android:layout_height="55dp">
 
                 <ImageView
                     android:id="@+id/resource_thumbnail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/grey_2" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:background="@color/grey_4"
+                    />
 
             </LinearLayout>
         </LinearLayout>
@@ -48,6 +53,7 @@
             android:layout_gravity="left|center"
             android:layout_weight="0.80"
             android:orientation="vertical"
+            android:paddingLeft="10dp"
             android:paddingRight="5dp">
 
             <TextView
