@@ -18,9 +18,8 @@ import rx.Subscription
 internal class ResourceTagsCtrl<T>(
         private val view: ResourceTagsActivity,
         private val repository: Repository<T>,
-        private val autoReload: Boolean,
-        private val idGetter: (T) -> String,
-        private val nameGetter: (T) -> String,
+        private val loadFilter: Option<(T, T) -> Boolean>,
+        private val nameGetter: Option<(T) -> String>,
         private val nameChange: Option<(T, String) -> T>,
         private val tagsGetter: (T) -> List<Tag>,
         private val tagsSetter: (T, List<Tag>) -> T
@@ -35,11 +34,11 @@ internal class ResourceTagsCtrl<T>(
         debug("$TAG Init - resource: $data")
         this.t = data
         refresh(data)
-        if (autoReload) {
+        if (loadFilter.isDefined()) {
             subs = repository.asObservable()
                     .schedule()
                     .observe()
-                    .filter { e -> idGetter(e.data).equals(idGetter(data)) }
+                    .filter { e -> loadFilter.get()(t!!, e.data) }
                     .subscribe { changed ->
                         debug("$TAG Resource changed, refreshing - resource: $data")
                         this.t = changed.data
@@ -53,7 +52,9 @@ internal class ResourceTagsCtrl<T>(
 
     private fun refresh(r: T?) {
         r.toOption().map { res ->
-            view.displayName(nameGetter(res))
+            if (nameGetter.isDefined()) {
+                view.displayName(nameGetter.get()(res))
+            }
             val tags = tagsGetter(res)
             view.displayTags(tags)
         }

@@ -25,6 +25,7 @@
     <string name="user_views">Your views</string>
     <string name="resource_type_view">View</string>
     <string name="resource_type_resource">Resource</string>
+    <string name="resource_type_group">Group</string>
     <string name="resource_name">Name: </string>
     <string name="resource_name_placeholder">Resource name</string>
     <string name="tag_name_placeholder">Tag name</string>

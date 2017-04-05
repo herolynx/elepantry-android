@@ -17,7 +17,6 @@ import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
-import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
@@ -132,9 +131,8 @@ class ResourcesActivity : UserViewsMenu() {
                 }
 
                 else -> {
-                    //TODO logic here
                     analytics?.metrics("ResourceEditGroup")
-                    toast("Multi-resource action not supported yet")
+                    ResourceTagsActivity.navigate(this, listAdapter!!.selectedItems)
                 }
             }
         }

@@ -14,9 +14,8 @@ internal object ResourceTagsCtrlFactory {
     ): ResourceTagsCtrl<View> = ResourceTagsCtrl<View>(
             view = v,
             repository = r,
-            autoReload = true,
-            idGetter = View::id,
-            nameGetter = View::name,
+            loadFilter = Option.Some({ v1, v2 -> v1.id.equals(v2.id) }),
+            nameGetter = Option.Some(View::name),
             nameChange = Option.Some({ v, newName -> v.copy(name = newName) }),
             tagsGetter = View::tags,
             tagsSetter = { v, newTags -> v.copy(tags = newTags) }
@@ -28,12 +27,25 @@ internal object ResourceTagsCtrlFactory {
     ): ResourceTagsCtrl<Resource> = ResourceTagsCtrl<Resource>(
             view = v,
             repository = r,
-            autoReload = true,
-            idGetter = Resource::id,
-            nameGetter = Resource::name,
+            loadFilter = Option.Some({ v1, v2 -> v1.id.equals(v2.id) }),
+            nameGetter = Option.Some(Resource::name),
             nameChange = Option.None,
             tagsGetter = Resource::tags,
             tagsSetter = { r, newTags -> r.copy(tags = newTags) }
+    )
+
+    fun groupTagsCtrl(
+            v: ResourceTagsActivity,
+            r: Repository<Resource> = Config.repository.userResources(),
+            group: List<Resource>
+    ): ResourceTagsCtrl<GroupResourcesTags> = ResourceTagsCtrl<GroupResourcesTags>(
+            view = v,
+            repository = GroupResourcesTagsRepository(r, group),
+            loadFilter = Option.Some({ v1, v2 -> true }),
+            nameGetter = Option.None,
+            nameChange = Option.None,
+            tagsGetter = GroupResourcesTags::getTags,
+            tagsSetter = { g, newTags -> g.addTags(newTags) }
     )
 
 }

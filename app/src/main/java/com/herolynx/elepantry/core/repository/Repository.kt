@@ -8,6 +8,12 @@ import rx.Observable
 interface Repository<T> {
 
     /**
+     * Find all resources
+     * @return results
+     */
+    fun findAll(): Try<List<T>>
+
+    /**
      * Find resource
      * @param id ID of a resource
      * @return results

@@ -24,6 +24,13 @@ class FirebaseRepository<T>(
         rootRef.addChildEventListener(deltaListener)
     }
 
+    override fun findAll() = Try {
+        valueListener.loadedData
+                .filter { e -> !e.deleted }
+                .map { e -> e.data }
+                .toList()
+    }
+
     override fun find(id: String) = Try {
         valueListener.loadedData
                 .filter { e -> !e.deleted }
@@ -32,28 +39,13 @@ class FirebaseRepository<T>(
                 .toOption()
     }
 
-    /**
-     * Create stream and observe changes on data source
-     *
-     * @return new stream
-     */
     override fun asObservable(): Observable<DataEvent<T>> = Observable.merge(
             Observable.from(valueListener.loadedData),
             Observable.create({ p -> deltaListener.subsribe(p) })
     )
 
-    /**
-     * Delete data
-     * @param t data to be deleted
-     * @param new observable
-     */
     override fun delete(t: T): Observable<DataEvent<T>> = modify(DataEvent(data = t, deleted = true))
 
-    /**
-     * Save data
-     * @param t data to be updated
-     * @param new observable
-     */
     override fun save(t: T): Observable<DataEvent<T>> = modify(DataEvent(t))
 
     /**
