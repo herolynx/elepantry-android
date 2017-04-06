@@ -8,6 +8,8 @@ import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.core.rx.observe
+import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
@@ -54,10 +56,19 @@ internal object ResourceList {
     private fun displayTags(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>, userResourceRepository: Repository<Resource>) {
         r.toOption()
                 .map(Resource::id)
-                .flatMap { id -> userResourceRepository.find(id).getOrElse { Option.None } }
-                .map { userResource ->
-                    h.view.ext.text = userResource.extension
-                    h.view.tags.text = userResource.getTagValue()
+                .map { id ->
+                    userResourceRepository.find(id)
+                            .filter { ur -> ur.isDefined() }
+                            .map { ur -> ur.get() }
+                            .schedule()
+                            .observe()
+                            .subscribe(
+                                    { userResource ->
+                                        h.view.ext.text = userResource.extension
+                                        h.view.tags.text = userResource.getTagValue()
+                                    },
+                                    { ex -> error("[ResourceList] Couldn't display tags of resource: $r") }
+                            )
                 }
     }
 

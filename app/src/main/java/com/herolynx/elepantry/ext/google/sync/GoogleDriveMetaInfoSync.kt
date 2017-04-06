@@ -14,7 +14,6 @@ import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.user.model.UserMetaInf
 import com.herolynx.elepantry.user.model.getLastSyncTimeDate
-import org.funktionale.option.Option
 import org.funktionale.tries.Try
 import org.joda.time.Duration
 import rx.Subscription
@@ -74,12 +73,18 @@ class GoogleDriveMetaInfoSync(
                     .subscribe(
                             { r ->
                                 res.find(r.id)
-                                        .getOrElse { Option.None }
+                                        .filter { r -> r.isDefined() }
+                                        .map { r -> r.get() }
                                         .filter { f -> !f.isTheSame(r) }
-                                        .map { f ->
-                                            debug("$TAG Saving changed resource -  new: $r, old: $f")
-                                            res.save(r.merge(f))
-                                        }
+                                        .schedule()
+                                        .observeOn(Schedulers.io())
+                                        .subscribe(
+                                                { f ->
+                                                    debug("$TAG Saving changed resource -  new: $r, old: $f")
+                                                    res.save(r.merge(f))
+                                                },
+                                                { ex -> error("$TAG Error while getting result for resource: $r", ex) }
+                                        )
                             },
                             { ex -> error("$TAG Error while syncing Google Drive meta info", ex) },
                             {

@@ -1,10 +1,10 @@
 package com.herolynx.elepantry.resources.view.tags
 
-import android.os.SystemClock
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag
+import org.funktionale.option.firstOption
 import rx.Observable
 
 internal class GroupResourcesTagsRepository(
@@ -14,25 +14,14 @@ internal class GroupResourcesTagsRepository(
 
     private val ids = resources.map(Resource::id).toSet()
 
-    override fun findAll() = throw UnsupportedOperationException("not implemented")
+    override fun findAll() = repository.findAll()
+            .map { l -> l.filter { e -> ids.contains(e.id) } }
+            .map { l -> listOf(GroupResourcesTags(l)) }
 
-    override fun find(id: String) = throw UnsupportedOperationException("not implemented")
+    override fun find(id: String) = findAll().map { l -> l.firstOption() }
 
-    override fun asObservable() = Observable.defer {
-        var resources: List<Resource> = listOf()
-        var tries = 0
-        do {
-            resources = repository.findAll().getOrElse { listOf() }
-            tries++
-            SystemClock.sleep(50)
-        } while (resources.isEmpty() && tries < 50)
-        Observable.just(DataEvent(GroupResourcesTags(resources.filter { r -> ids.contains(r.id) })))
-    }
-//            repository.asObservable()
-//            .filter { e -> !e.deleted && ids.contains(e.data.id) }
-//            .map { e -> e.data }
-//            .reduce(list(), { l, r -> l.plus(r) })
-//            .map { l -> DataEvent(GroupResourcesTags(l)) }
+    override fun asObservable() = repository.findAll()
+            .map { l -> DataEvent(GroupResourcesTags(l)) }
 
     override fun delete(t: GroupResourcesTags): Observable<DataEvent<GroupResourcesTags>> {
         t.resources.forEach { r -> repository.delete(r) }

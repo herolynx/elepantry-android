@@ -13,7 +13,6 @@ import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import org.funktionale.option.Option
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
-import rx.Subscription
 
 internal class ResourceTagsCtrl<T>(
         private val view: ResourceTagsActivity,
@@ -28,22 +27,20 @@ internal class ResourceTagsCtrl<T>(
     private val TAG = "[TagsCtrl]"
 
     private var t: T? = null
-    private var subs: Subscription? = null
 
     fun init(data: T) {
         debug("$TAG Init - resource: $data")
         this.t = data
         refresh(data)
-        if (loadFilter.isDefined()) {
-            subs = repository.asObservable()
+        loadFilter.map { f ->
+            repository.findAll()
                     .schedule()
                     .observe()
-                    .filter { e -> loadFilter.get()(t!!, e.data) }
+                    .map { l -> l.filter { e -> f(t!!, e) }.first() }
                     .subscribe { changed ->
                         debug("$TAG Resource changed, refreshing - resource: $data")
-                        this.t = changed.data
+                        this.t = changed
                         refresh(this.t)
-                        subs?.unsubscribe()
                     }
         }
     }
