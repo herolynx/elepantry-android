@@ -54,6 +54,8 @@ internal object ResourceList {
     }
 
     private fun displayTags(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>, userResourceRepository: Repository<Resource>) {
+        h.view.tags.text = ""
+        h.view.ext.text = ""
         r.toOption()
                 .map(Resource::id)
                 .map { id ->

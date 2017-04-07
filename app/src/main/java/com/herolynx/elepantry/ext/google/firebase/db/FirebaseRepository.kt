@@ -39,9 +39,7 @@ class FirebaseRepository<T>(
     }
 
     override fun find(id: String) = findAll()
-            .map { l ->
-                l.filter { t -> idGetter(t).equals(id) }.firstOption()
-            }
+            .map { l -> l.filter { t -> idGetter(t).equals(id) }.firstOption() }
 
     override fun asObservable(): Observable<DataEvent<T>> = Observable.merge(
             Observable.from(valueListener.loadedData),

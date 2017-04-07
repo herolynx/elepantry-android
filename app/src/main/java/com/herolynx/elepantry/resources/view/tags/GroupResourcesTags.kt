@@ -1,5 +1,6 @@
 package com.herolynx.elepantry.resources.view.tags
 
+import com.herolynx.elepantry.core.log.info
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.core.model.Resource
@@ -9,13 +10,19 @@ import rx.Observable
 
 internal class GroupResourcesTagsRepository(
         private val repository: Repository<Resource>,
-        resources: List<Resource>
+        private val resources: List<Resource>
 ) : Repository<GroupResourcesTags> {
 
     private val ids = resources.map(Resource::id).toSet()
 
     override fun findAll() = repository.findAll()
-            .map { l -> l.filter { e -> ids.contains(e.id) } }
+            .map { l ->
+                val inGroup = l.filter { e -> ids.contains(e.id) }
+                val all: MutableSet<Resource> = mutableSetOf()
+                all.addAll(inGroup)
+                all.addAll(resources)
+                all.toList()
+            }
             .map { l -> listOf(GroupResourcesTags(l)) }
 
     override fun find(id: String) = findAll().map { l -> l.firstOption() }
@@ -38,17 +45,8 @@ internal class GroupResourcesTags(internal val resources: List<Resource>) {
 
     fun getTags(): List<Tag> = resources.flatMap(Resource::tags)
             .groupBy(Tag::name)
-            .filterValues { v -> v.size > 1 }
-            .flatMapTo(mutableListOf(), { v -> v.value })
+            .flatMapTo(mutableListOf(), { v -> listOf(v.value[0]) })
 
-    fun addTags(newTags: List<Tag>) = GroupResourcesTags(
-            resources
-                    .map { r ->
-                        val allTags: Set<Tag> = mutableSetOf()
-                        allTags.plus(r.tags)
-                        allTags.plus(newTags)
-                        r.copy(tags = allTags.toList())
-                    }
-    )
+    fun addTags(newTags: List<Tag>) = GroupResourcesTags(resources.map { r -> r.copy(tags = newTags.toList()) })
 
 }
