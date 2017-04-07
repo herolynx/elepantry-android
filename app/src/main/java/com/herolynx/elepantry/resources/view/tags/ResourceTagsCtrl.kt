@@ -2,6 +2,7 @@ package com.herolynx.elepantry.resources.view.tags
 
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
@@ -11,16 +12,15 @@ import com.herolynx.elepantry.resources.core.model.add
 import com.herolynx.elepantry.resources.core.model.remove
 import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import org.funktionale.option.Option
+import org.funktionale.option.firstOption
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
-import rx.Subscription
 
 internal class ResourceTagsCtrl<T>(
         private val view: ResourceTagsActivity,
         private val repository: Repository<T>,
-        private val autoReload: Boolean,
-        private val idGetter: (T) -> String,
-        private val nameGetter: (T) -> String,
+        private val loadFilter: Option<(T, T) -> Boolean>,
+        private val nameGetter: Option<(T) -> String>,
         private val nameChange: Option<(T, String) -> T>,
         private val tagsGetter: (T) -> List<Tag>,
         private val tagsSetter: (T, List<Tag>) -> T
@@ -29,23 +29,26 @@ internal class ResourceTagsCtrl<T>(
     private val TAG = "[TagsCtrl]"
 
     private var t: T? = null
-    private var subs: Subscription? = null
 
     fun init(data: T) {
         debug("$TAG Init - resource: $data")
         this.t = data
         refresh(data)
-        if (autoReload) {
-            subs = repository.asObservable()
+        loadFilter.map { f ->
+            repository.findAll()
                     .schedule()
                     .observe()
-                    .filter { e -> idGetter(e.data).equals(idGetter(data)) }
-                    .subscribe { changed ->
-                        debug("$TAG Resource changed, refreshing - resource: $data")
-                        this.t = changed.data
-                        refresh(this.t)
-                        subs?.unsubscribe()
-                    }
+                    .map { l -> l.filter { e -> f(t!!, e) }.firstOption() }
+                    .filter { o -> o.isDefined() }
+                    .map { o -> o.get() }
+                    .subscribe(
+                            { changed ->
+                                debug("$TAG Resource changed, refreshing - resource: $data")
+                                this.t = changed
+                                refresh(this.t)
+                            }
+                            , { ex -> error("$TAG Couldn't load resource: $data", ex) }
+                    )
         }
     }
 
@@ -53,7 +56,9 @@ internal class ResourceTagsCtrl<T>(
 
     private fun refresh(r: T?) {
         r.toOption().map { res ->
-            view.displayName(nameGetter(res))
+            if (nameGetter.isDefined()) {
+                view.displayName(nameGetter.get()(res))
+            }
             val tags = tagsGetter(res)
             view.displayTags(tags)
         }

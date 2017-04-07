@@ -1,19 +1,22 @@
 package com.herolynx.elepantry.ext.google.firebase.db
 
+import android.os.SystemClock
 import com.google.firebase.database.DatabaseReference
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.ext.google.firebase.db.listener.CompletionListener
 import com.herolynx.elepantry.ext.google.firebase.db.listener.DeltaChangeListener
 import com.herolynx.elepantry.ext.google.firebase.db.listener.ValueListener
-import org.funktionale.option.toOption
-import org.funktionale.tries.Try
+import org.funktionale.option.firstOption
+import org.joda.time.Duration
 import rx.Observable
 
 class FirebaseRepository<T>(
         private val rootRef: DatabaseReference,
         private val entityClass: Class<T>,
-        private val idGetter: (T) -> String
+        private val idGetter: (T) -> String,
+        private val waitTime: Duration = Duration.millis(50),
+        private val maxWaitTime: Duration = Duration.standardSeconds(30)
 ) : Repository<T> {
 
     private val valueListener = ValueListener<T>(entityClass)
@@ -24,36 +27,27 @@ class FirebaseRepository<T>(
         rootRef.addChildEventListener(deltaListener)
     }
 
-    override fun find(id: String) = Try {
-        valueListener.loadedData
-                .filter { e -> !e.deleted }
-                .map { e -> e.data }
-                .find { r -> idGetter(r).equals(id) }
-                .toOption()
+    override fun findAll() = Observable.defer {
+        var resources: List<DataEvent<T>> = valueListener.loadedData
+        var time = Duration.ZERO
+        while (resources.isEmpty() && time.isShorterThan(maxWaitTime)) {
+            resources = valueListener.loadedData
+            time = time.plus(waitTime)
+            SystemClock.sleep(waitTime.millis)
+        }
+        Observable.just(resources.filter { e -> !e.deleted }.map { e -> e.data })
     }
 
-    /**
-     * Create stream and observe changes on data source
-     *
-     * @return new stream
-     */
+    override fun find(id: String) = findAll()
+            .map { l -> l.filter { t -> idGetter(t).equals(id) }.firstOption() }
+
     override fun asObservable(): Observable<DataEvent<T>> = Observable.merge(
             Observable.from(valueListener.loadedData),
             Observable.create({ p -> deltaListener.subsribe(p) })
     )
 
-    /**
-     * Delete data
-     * @param t data to be deleted
-     * @param new observable
-     */
     override fun delete(t: T): Observable<DataEvent<T>> = modify(DataEvent(data = t, deleted = true))
 
-    /**
-     * Save data
-     * @param t data to be updated
-     * @param new observable
-     */
     override fun save(t: T): Observable<DataEvent<T>> = modify(DataEvent(t))
 
     /**

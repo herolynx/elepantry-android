@@ -2,17 +2,22 @@ package com.herolynx.elepantry.core.repository
 
 import com.herolynx.elepantry.core.rx.DataEvent
 import org.funktionale.option.Option
-import org.funktionale.tries.Try
 import rx.Observable
 
 interface Repository<T> {
+
+    /**
+     * Find all resources
+     * @return results
+     */
+    fun findAll(): Observable<List<T>>
 
     /**
      * Find resource
      * @param id ID of a resource
      * @return results
      */
-    fun find(id: String): Try<Option<T>>
+    fun find(id: String): Observable<Option<T>>
 
     /**
      * Create stream and observe changes on data source

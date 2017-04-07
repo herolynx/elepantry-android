@@ -21,7 +21,7 @@ class ValueListener<T>(
     private val TAG_NAME = "[Firebase][ValueListener]"
 
     override fun onDataChange(dataSnapshot: DataSnapshot) {
-        debug("$TAG_NAME On data change")
+        debug("$TAG_NAME On data change - snapshot: $dataSnapshot")
         loadedData.clear()
         loadedData.addAll(toList(dataSnapshot).map { d -> DataEvent(d) })
     }
