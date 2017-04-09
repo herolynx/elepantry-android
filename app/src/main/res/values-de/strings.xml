@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Elepantry</string>
+
+    <!-- GENERIC -->
+    <string name="loading">Laden...</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="delete">Löschen</string>
+    <string name="search">Suchen</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="terms_and_conditions">Geschäftsbedingungen</string>
+    <string name="welcome">Wilkommen</string>
+
+    <string name="navigation_drawer_open">Navigation öffnen</string>
+    <string name="navigation_drawer_close">Navigation schließen</string>
+
+    <string name="action_settings">Einstellungen</string>
+    <string name="confirmation_saved">Gespeichert</string>
+    <string name="confirmation_deleted">Gelöscht</string>
+
+    <!-- AUTH -->
+    <string name="sign_in_google">Melden Sie sich mit Google an</string>
+    <string name="sign_out">Ausloggen</string>
+    <string name="auth_failed">Ihre Identität wurde nicht bestätigt</string>
+
+    <!-- VIEWS -->
+    <string name="add_new_view">Ansicht hinzufügen</string>
+    <string name="google_drive">Google Drive</string>
+    <string name="user_views">Ihre Ansichten</string>
+    <string name="resource_type_view">Ansicht</string>
+    <string name="resource_type_resource">Ressource</string>
+    <string name="resource_type_group">Gruppe</string>
+    <string name="resource_name">Name:</string>
+    <string name="resource_name_placeholder">Ressource Name</string>
+    <string name="tag_name_placeholder">Tag Name</string>
+    <string name="resource_name_valid_length" formatted="false">Der Name muss mindestens %s und höchstens %s Zeichen haben</string>
+</resources>
