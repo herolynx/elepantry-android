@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.herolynx.elepantry.resources.view.list.ResourcesActivity"
+>
     tools:showIn="@layout/menu_frame_bar">
 
     <LinearLayout
@@ -23,26 +24,26 @@
         android:paddingRight="3dp"
         android:paddingTop="8dp">
 
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.15"
+            android:layout_weight="0.20"
             android:orientation="vertical">
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_gravity="center"
                 android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
                 android:background="@color/grey_4"
-                android:layout_height="55dp">
+                android:gravity="center">
 
                 <ImageView
                     android:id="@+id/resource_thumbnail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
                     android:background="@color/grey_4"
-                    />
+                    android:scaleType="centerCrop" />
 
             </LinearLayout>
         </LinearLayout>
@@ -63,6 +64,7 @@
                 android:ellipsize="end"
                 android:gravity="left|center"
                 android:lines="1"
+                android:text="fadsfasdfasdf"
                 android:textColor="@color/dark_1" />
 
             <TextView
@@ -73,6 +75,7 @@
                 android:ellipsize="end"
                 android:gravity="left|center"
                 android:lines="1"
+                android:text="sdfdasf"
                 android:textColor="@color/grey_1"
                 android:textSize="10dp" />
 
@@ -81,27 +84,38 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right|top"
-            android:layout_weight="0.05"
+            android:layout_gravity="right|center"
+            android:gravity="center"
+            android:layout_weight="0.1"
             android:orientation="vertical">
 
-            <TextView
+             <TextView
                 android:id="@+id/resource_item_ext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/margin_5"
                 android:background="@drawable/resource_type_border"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:state_enabled="false"
                 android:textColor="@color/grey_1"
                 android:textSize="8dp"
                 android:visibility="gone" />
-
-            <TextView
+            <!--
+           <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:drawableRight="@drawable/ic_list_resource_google"
+                android:state_enabled="false" />
+            -->
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center"
+                android:drawableRight="@drawable/ic_view_resource_open"
+                android:gravity="center|center"
                 android:state_enabled="false" />
         </LinearLayout>
     </LinearLayout>
