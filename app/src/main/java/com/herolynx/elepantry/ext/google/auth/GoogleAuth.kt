@@ -20,10 +20,9 @@ object GoogleAuth {
         }
     }
 
-    fun silentLogIn(api: GoogleApiClient): Observable<GoogleSignInAccount> {
+    fun silentLogIn(api: GoogleApiClient): Observable<GoogleSignInAccount?> {
         return Auth.GoogleSignInApi.silentSignIn(api)
                 .toObservable()
-                .filter { result -> result.isSuccess }
                 .map { result -> result.signInAccount }
     }
 

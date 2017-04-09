@@ -24,12 +24,13 @@ internal class SignInCtrl(
 
     fun handleLoginResult(requestCode: Int, data: Intent) {
         if (requestCode == Intents.GOOGLE_SIGN_IN) {
-            handleAuthResults(SignInUseCase.onLoginResult(data))
+            handleAuthResults(SignInUseCase.onLoginResult(data), showErrorToast = true)
         }
     }
 
     fun autoLogIn() {
-        handleAuthResults(SignInUseCase.autoLogIn(api))
+        view.showProgressDialog(view)
+        handleAuthResults(SignInUseCase.autoLogIn(api), showErrorToast = false)
     }
 
     fun logIn() {
@@ -37,12 +38,12 @@ internal class SignInCtrl(
         SignInUseCase.startLogIn(view, api)
     }
 
-    private fun handleAuthResults(o: Observable<Pair<GoogleSignInAccount, FirebaseUser?>>) {
+    private fun handleAuthResults(o: Observable<Pair<GoogleSignInAccount?, FirebaseUser?>>, showErrorToast: Boolean) {
         o.schedule()
                 .observe()
                 .subscribe(
-                        { auth -> onAuthResult(auth) },
-                        { ex -> onAuthError(ex) }
+                        { auth -> onAuthResult(auth, showErrorToast) },
+                        { ex -> onAuthError(ex, showErrorToast) }
                 )
     }
 
@@ -50,19 +51,19 @@ internal class SignInCtrl(
         view.hideProgressDialog()
         error("[Auth] Couldn't log in user", t)
         if (showToast) {
-            view.toast(R.string.auth_failed, "Sign up failed")
+            view.toast(R.string.auth_failed)
         }
     }
 
-    private fun onAuthResult(auth: Pair<GoogleSignInAccount, FirebaseUser?>) {
-        debug("[Auth] User is logged in - auth: ${auth.first.id}, api connected: ${api.isConnected}")
+    private fun onAuthResult(auth: Pair<GoogleSignInAccount?, FirebaseUser?>, showErrorToast: Boolean) {
+        debug("[Auth] User is logged in - auth: ${auth.first?.id}, api connected: ${api.isConnected}")
         view.hideProgressDialog()
         api.disconnect()
-        if (auth.second != null) {
+        if (auth.first != null && auth.second != null) {
             view.getAuthContext().map { c -> c.setMainAccount(auth.first) }
             ResourcesActivity.navigate(view)
-        } else {
-            view.toast(R.string.auth_failed, "Sign up failed")
+        } else if (showErrorToast) {
+            view.toast(R.string.auth_failed)
         }
     }
 }

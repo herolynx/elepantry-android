@@ -37,13 +37,15 @@ internal object SignInUseCase {
      */
     fun autoLogIn(
             api: GoogleApiClient,
-            googleAuth: (GoogleApiClient) -> Observable<GoogleSignInAccount> = { a -> GoogleAuth.silentLogIn(a) }
-    ): Observable<Pair<GoogleSignInAccount, FirebaseUser?>> {
+            googleAuth: (GoogleApiClient) -> Observable<GoogleSignInAccount?> = { a -> GoogleAuth.silentLogIn(a) }
+    ): Observable<Pair<GoogleSignInAccount?, FirebaseUser?>> {
         return googleAuth(api)
-                .filter { acc -> FirebaseAuth.getCurrentUser().isSuccess() }
                 .map { acc ->
-                    debug("[AutoLogIn] Success")
-                    Pair(acc, FirebaseAuth.getCurrentUser().get())
+                    debug("[AutoLogIn] Google account received - getting Firebase account")
+                    Pair(
+                            acc,
+                            if (FirebaseAuth.getCurrentUser().isSuccess()) FirebaseAuth.getCurrentUser().get() else null
+                    )
                 }
     }
 
@@ -58,8 +60,8 @@ internal object SignInUseCase {
     fun onLoginResult(
             data: Intent,
             googleAuth: (Intent) -> Try<GoogleSignInAccount> = { data -> GoogleAuth.onLogInResult(data) },
-            firebaseAuth: (GoogleSignInAccount) -> Observable<Pair<GoogleSignInAccount, AuthResult>> = { account -> FirebaseAuth.logIn(account) }
-    ): Observable<Pair<GoogleSignInAccount, FirebaseUser?>> {
+            firebaseAuth: (GoogleSignInAccount) -> Observable<Pair<GoogleSignInAccount?, AuthResult>> = { account -> FirebaseAuth.logIn(account) }
+    ): Observable<Pair<GoogleSignInAccount?, FirebaseUser?>> {
         return googleAuth(data)
                 .onFailure { ex ->
                     error("[onLoginResult][GoogleAuth] Couldn't log in user", ex)

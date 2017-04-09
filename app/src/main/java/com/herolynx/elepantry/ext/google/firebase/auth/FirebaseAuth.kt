@@ -21,7 +21,7 @@ object FirebaseAuth {
                 .getOrElse { Try.Failure(RuntimeException("User not logged in")) }
     }
 
-    fun logIn(account: GoogleSignInAccount): Observable<Pair<GoogleSignInAccount, AuthResult>> {
+    fun logIn(account: GoogleSignInAccount): Observable<Pair<GoogleSignInAccount?, AuthResult>> {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         return FirebaseAuth.getInstance().signInWithCredential(credential)
                 .toObservable()
