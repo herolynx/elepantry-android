@@ -22,12 +22,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:weightSum="1"
+                android:background="@drawable/left_menu_item">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/left_menu_item">
+                    android:layout_weight="0.8"
+                    >
 
                     <TextView
                         android:layout_width="20dp"
@@ -58,7 +60,24 @@
                         android:gravity="center" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:layout_gravity="center"
+                    >
+
+                    <TextView
+                        android:id="@+id/user_view_edit_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:background="@android:color/transparent"
+                        android:drawableRight="@drawable/ic_menu_refresh"/>
+
+                </LinearLayout>
             </LinearLayout>
+
 
             <!-- Views -->
 
