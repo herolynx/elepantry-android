@@ -138,8 +138,10 @@ class ResourcesActivity : UserViewsMenu() {
     internal fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
         pageResources.subscribe(
                 { r ->
-                    listAdapter?.add(r)
-                    listAdapter?.notifyDataSetChanged()
+                    if (!blockScreen) {
+                        listAdapter?.add(r)
+                        listAdapter?.notifyDataSetChanged()
+                    }
                 },
                 { ex -> error("[PageRequest] Page result error", ex) },
                 {

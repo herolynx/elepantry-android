@@ -19,10 +19,10 @@ class GoogleDriveMetaInfoSync(
         private val resRep: Repository<Resource>
 ) {
 
-    fun sync(progressBar: (Boolean) -> Unit) {
+    fun sync(jobStatus: (Boolean) -> Unit) {
         Thread {
-            progressBar(true)
-            sync(gDrive.search(), resRep, { progressBar(false) })
+            jobStatus(true)
+            sync(gDrive.search(), resRep, { jobStatus(false) })
         }.start()
     }
 

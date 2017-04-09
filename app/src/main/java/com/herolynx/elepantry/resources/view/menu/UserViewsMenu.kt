@@ -39,6 +39,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
     private var menuCtrl: UserViewsMenuCtrl? = null
 
     override var mProgressDialog: ProgressDialog? = null
+    protected var blockScreen = false
     protected var analytics: FirebaseAnalytics? = null
     protected var loadDefaultItem: () -> Unit = {}
     protected var closeMenu: () -> Unit = {}
@@ -131,13 +132,14 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         refresh.setOnClickListener {
             val syncJob = GoogleDriveMetaInfoSync.create(this)
             syncJob.sync(
-                    progressBar = { show -> showProgressBar(show) }
+                    jobStatus = { start -> showProgressBar(start) }
             )
         }
     }
 
-    private fun showProgressBar(show: Boolean) {
-        if (show)
+    private fun showProgressBar(start: Boolean) {
+        blockScreen = start
+        if (start)
             runOnUiThread { showProgressDialog(this) }
         else
             runOnUiThread { hideProgressDialog() }
