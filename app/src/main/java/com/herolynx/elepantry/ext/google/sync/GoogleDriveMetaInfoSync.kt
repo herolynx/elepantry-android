@@ -92,7 +92,14 @@ class GoogleDriveMetaInfoSync(
                                     sync(p.next(), res, user, afterLogic)
                                 else {
                                     info("$TAG Sync completed")
-                                    userRep.save(user.copy(lastSyncTime = Date().toISO8601().getOrElse { "" }))
+                                    userRep
+                                            .save(user.copy(lastSyncTime = Date().toISO8601().getOrElse { "" }))
+                                            .schedule()
+                                            .observeOn(Schedulers.io())
+                                            .subscribe(
+                                                    { info -> debug("$TAG Sync info saved: $info") },
+                                                    { ex -> error("$TAG Sync info not saved", ex) }
+                                            )
                                     afterLogic()
                                 }
                             }
