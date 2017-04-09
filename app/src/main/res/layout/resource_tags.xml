@@ -3,18 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="45dp"
+    android:paddingTop="?android:attr/actionBarSize"
     android:weightSum="1">
 
     <LinearLayout
+        android:id="@+id/container_name"
         android:layout_width="match_parent"
         android:layout_weight="0"
-        android:paddingTop="20dp"
         android:orientation="vertical"
+        android:paddingTop="@dimen/margin_10"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/container_name"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:paddingLeft="10dp"
@@ -44,74 +44,74 @@
                 android:gravity="left|center" />
 
         </LinearLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/blue_1"
+        android:padding="10dp"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:background="@color/blue_1"
-            android:padding="10dp"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
+                android:text="Add new tag:"
+                android:textSize="10dp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"
+                android:gravity="left|center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.8"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <EditText
                     android:layout_width="match_parent"
-                    android:text="Add new tag:"
-                    android:textSize="10dp"
-                    android:textColor="@color/white"
                     android:layout_height="wrap_content"
-                    android:gravity="left|center" />
+                    android:inputType="textPersonName"
+                    android:hint="@string/tag_name_placeholder"
+                    android:textColorHint="@color/blue_4"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    android:ems="10"
+                    android:background="@drawable/resource_input_add_tag"
+                    android:id="@+id/new_tag" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_width="0dp"
+                android:layout_weight="0.2"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.8"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:hint="@string/tag_name_placeholder"
-                        android:textColorHint="@color/blue_4"
-                        android:textColor="@color/white"
-                        android:padding="10dp"
-                        android:ems="10"
-                        android:background="@drawable/resource_input_add_tag"
-                        android:id="@+id/new_tag" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-
-                    <Button
-                        android:id="@+id/add_tag"
-                        android:drawableLeft="@drawable/ic_view_resource_plus"
-                        android:textColor="#FFFFFF"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:stateListAnimator="@null"
-                        android:background="@drawable/resource_btn_add_tag"/>
-                </LinearLayout>
-
+                <Button
+                    android:id="@+id/add_tag"
+                    android:drawableLeft="@drawable/ic_view_resource_plus"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:stateListAnimator="@null"
+                    android:background="@drawable/resource_btn_add_tag"/>
             </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,7 +123,7 @@
             android:id="@+id/resource_tags_list"
             android:layout_gravity="top"
             android:scrollbars="vertical"
-             android:layout_width="match_parent"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
@@ -131,5 +131,5 @@
 
 
 
-    </LinearLayout>
+</LinearLayout>
 
