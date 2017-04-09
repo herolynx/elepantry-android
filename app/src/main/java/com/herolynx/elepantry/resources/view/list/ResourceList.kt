@@ -37,7 +37,7 @@ internal object ResourceList {
             onClickHandler: (Resource) -> Unit
     ) {
         h.view.lastSubscription.filter { s -> !s.isUnsubscribed }.map { s -> s.unsubscribe() }
-        h.view.setOnClickListener { v ->
+        h.view.open.setOnClickListener { v ->
             if (r != null) {
                 onClickHandler(r)
             }
@@ -88,6 +88,7 @@ internal class ResourceItemView(ctx: Context) : LinearLayout(ctx) {
     val ext = findViewById(R.id.resource_item_ext) as TextView
     var parentId: Option<String> = Option.None
     var lastSubscription: Option<Subscription> = Option.None
+    val open = findViewById(R.id.resource_open) as TextView
 
 }
 
