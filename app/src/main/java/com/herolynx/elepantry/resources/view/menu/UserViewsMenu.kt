@@ -1,5 +1,6 @@
 package com.herolynx.elepantry.resources.view.menu
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
@@ -15,11 +16,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.log.viewVisit
+import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
+import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
 import com.herolynx.elepantry.resources.core.service.ResourceView
@@ -27,13 +31,14 @@ import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import com.herolynx.elepantry.user.view.menu.UserBadge
 
 
-abstract class UserViewsMenu : AppCompatActivity() {
+abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
 
     abstract val layoutId: Int
     abstract val topMenuId: Int
 
     private var menuCtrl: UserViewsMenuCtrl? = null
 
+    override var mProgressDialog: ProgressDialog? = null
     protected var analytics: FirebaseAnalytics? = null
     protected var loadDefaultItem: () -> Unit = {}
     protected var closeMenu: () -> Unit = {}
@@ -84,7 +89,7 @@ abstract class UserViewsMenu : AppCompatActivity() {
         val menuLeft = layoutInflater.inflate(R.layout.menu_user_views, navigationView, false)
         menuLayout.addView(menuLeft)
 
-        initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button)
+        initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button, menuLeft.findViewById(R.id.drive_google_refresh) as TextView)
         initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView, menuCtrl)
 
         (menuLeft.findViewById(R.id.sign_out) as Button).setOnClickListener { menuCtrl.logOut() }
@@ -117,12 +122,25 @@ abstract class UserViewsMenu : AppCompatActivity() {
                 }
     }
 
-    private fun initGoogleDriveView(b: Button) {
+    private fun initGoogleDriveView(b: Button, refresh: TextView) {
         debug("[initUserViews] Creating Google Drive view")
         val name = getString(R.string.google_drive)
         val v = View(name = name, type = ViewType.GOOGLE)
         b.setOnClickListener { onViewChange(v) }
         loadDefaultItem = { onViewChange(v) }
+        refresh.setOnClickListener {
+            val syncJob = GoogleDriveMetaInfoSync.create(this)
+            syncJob.sync(
+                    progressBar = { show -> showProgressBar(show) }
+            )
+        }
+    }
+
+    private fun showProgressBar(show: Boolean) {
+        if (show)
+            runOnUiThread { showProgressDialog(this) }
+        else
+            runOnUiThread { hideProgressDialog() }
     }
 
     protected abstract fun onViewChange(

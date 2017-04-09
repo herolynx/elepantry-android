@@ -68,7 +68,7 @@
                     >
 
                     <TextView
-                        android:id="@+id/user_view_edit_button"
+                        android:id="@+id/drive_google_refresh"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="0dp"

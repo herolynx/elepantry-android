@@ -1,7 +1,6 @@
 package com.herolynx.elepantry.resources.view.list
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -18,10 +17,8 @@ import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
-import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
-import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
@@ -32,16 +29,14 @@ import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
 import rx.Observable
 
-class ResourcesActivity : UserViewsMenu(), WithProgressDialog {
+class ResourcesActivity : UserViewsMenu() {
 
     private var listAdapter: ListAdapter<Resource, ResourceItemView>? = null
     private var loadData: (String?) -> Unit = {}
     private var ctrl: ResourcesCtrl? = null
     private var clearSearchAction: () -> Unit = {}
     private var webView: WebView? = null
-    private var syncJob: GoogleDriveMetaInfoSync? = null
 
-    override var mProgressDialog: ProgressDialog? = null
     override val layoutId: Int = R.layout.resources_list
     override val topMenuId = R.menu.resources_top_menu
 
@@ -54,7 +49,6 @@ class ResourcesActivity : UserViewsMenu(), WithProgressDialog {
         if (intent.extras != null) {
             loadParams(intent.extras)
         }
-        syncJob = GoogleDriveMetaInfoSync.create(this)
     }
 
     override fun onResume() {
@@ -62,18 +56,8 @@ class ResourcesActivity : UserViewsMenu(), WithProgressDialog {
         debug("[onResume] Loading state - currentView: ${ctrl?.currentView}")
         fabEditButton?.visibility = android.view.View.INVISIBLE
         refreshView()
-        syncJob?.sync(
-                progressBar = { show -> showProgressBar(show) },
-                afterSyncLogic = { runOnUiThread { refreshView() } }
-        )
     }
 
-    private fun showProgressBar(show: Boolean) {
-        if (show)
-            runOnUiThread { showProgressDialog(this) }
-        else
-            runOnUiThread { hideProgressDialog() }
-    }
 
     private fun refreshView() {
         ctrl.toOption()
@@ -154,10 +138,8 @@ class ResourcesActivity : UserViewsMenu(), WithProgressDialog {
     internal fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
         pageResources.subscribe(
                 { r ->
-                    if (!(syncJob?.isSyncing() ?: false)) { //check job in order to avoid to many changes on UI
-                        listAdapter?.add(r)
-                        listAdapter?.notifyDataSetChanged()
-                    }
+                    listAdapter?.add(r)
+                    listAdapter?.notifyDataSetChanged()
                 },
                 { ex -> error("[PageRequest] Page result error", ex) },
                 {

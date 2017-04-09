@@ -3,7 +3,6 @@ package com.herolynx.elepantry.ext.google.sync
 
 import android.app.Activity
 import com.herolynx.elepantry.config.Config
-import com.herolynx.elepantry.core.generic.toISO8601
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.info
@@ -12,62 +11,22 @@ import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.ext.google.drive.GoogleDrivePage
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.resources.core.model.Resource
-import com.herolynx.elepantry.user.model.UserMetaInf
-import com.herolynx.elepantry.user.model.getLastSyncTimeDate
 import org.funktionale.tries.Try
-import org.joda.time.Duration
-import rx.Subscription
 import rx.schedulers.Schedulers
-import java.util.*
 
 class GoogleDriveMetaInfoSync(
         private val gDrive: GoogleDriveView,
-        private val resRep: Repository<Resource>,
-        private val userRep: Repository<UserMetaInf>,
-        private val syncEvery: Duration,
-        private val jobId: String = "googleSyncInfo"
+        private val resRep: Repository<Resource>
 ) {
 
-    private var subscription: Subscription? = null
-    private var syncOnGoing = false
-
-    fun isSyncing() = syncOnGoing
-
-    fun sync(scheduleInMs: Long = 5000, progressBar: (Boolean) -> Unit, afterSyncLogic: () -> Unit = {}) {
-        if (syncOnGoing) {
-            return
-        }
-        Thread({
-            Thread.sleep(scheduleInMs)
-            debug("$TAG Checking sync status - on-going: $syncOnGoing")
-            subscription = userRep.asObservable()
-                    .filter { e -> !e.deleted && e.data.id.equals(jobId) }
-                    .map { e -> e.data }
-                    .firstOrDefault(UserMetaInf(jobId))
-                    .schedule()
-                    .observeOn(Schedulers.io())
-                    .subscribe(
-                            { u ->
-                                debug("$TAG Checking last sync time - info: $u")
-                                if (Duration(u.getLastSyncTimeDate().time, Date().time).isLongerThan(syncEvery)) {
-                                    debug("$TAG Starting sync - info: $u")
-                                    syncOnGoing = true
-                                    progressBar(true)
-                                    sync(gDrive.search(), resRep, u, {
-                                        syncOnGoing = false
-                                        subscription?.unsubscribe()
-                                        progressBar(false)
-                                        afterSyncLogic()
-                                    })
-                                }
-                            },
-                            { ex -> error("$TAG Sync error", ex) },
-                            { subscription?.unsubscribe() }
-                    )
-        }).start()
+    fun sync(progressBar: (Boolean) -> Unit) {
+        Thread {
+            progressBar(true)
+            sync(gDrive.search(), resRep, { progressBar(false) })
+        }.start()
     }
 
-    private fun sync(page: Try<GoogleDrivePage>, res: Repository<Resource>, user: UserMetaInf, afterLogic: () -> Unit) {
+    private fun sync(page: Try<GoogleDrivePage>, res: Repository<Resource>, afterLogic: () -> Unit) {
         page.map { p ->
             p.resources()
                     .filter { e -> !e.deleted }
@@ -98,17 +57,9 @@ class GoogleDriveMetaInfoSync(
                             { ex -> error("$TAG Error while syncing Google Drive meta info", ex) },
                             {
                                 if (p.hasNext())
-                                    sync(p.next(), res, user, afterLogic)
+                                    sync(p.next(), res, afterLogic)
                                 else {
                                     info("$TAG Sync completed")
-                                    userRep
-                                            .save(user.copy(lastSyncTime = Date().toISO8601().getOrElse { "" }))
-                                            .schedule()
-                                            .observeOn(Schedulers.io())
-                                            .subscribe(
-                                                    { info -> debug("$TAG Sync info saved: $info") },
-                                                    { ex -> error("$TAG Sync info not saved", ex) }
-                                            )
                                     afterLogic()
                                 }
                             }
@@ -123,14 +74,10 @@ class GoogleDriveMetaInfoSync(
         fun create(
                 a: Activity,
                 gDrive: GoogleDriveView = GoogleDriveView.Factory.create(a).get(),
-                resRep: Repository<Resource> = Config.repository.userResources(),
-                userRep: Repository<UserMetaInf> = Config.repository.userMetaInfo(),
-                syncEvery: Duration = Duration.standardHours(4)
+                resRep: Repository<Resource> = Config.repository.userResources()
         ): GoogleDriveMetaInfoSync = GoogleDriveMetaInfoSync(
                 gDrive,
-                resRep,
-                userRep,
-                syncEvery
+                resRep
         )
 
     }
