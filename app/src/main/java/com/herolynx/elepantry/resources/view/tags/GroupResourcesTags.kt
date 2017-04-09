@@ -1,12 +1,15 @@
 package com.herolynx.elepantry.resources.view.tags
 
-import com.herolynx.elepantry.core.log.info
+import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.DataEvent
+import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag
 import org.funktionale.option.firstOption
 import rx.Observable
+import rx.schedulers.Schedulers
 
 internal class GroupResourcesTagsRepository(
         private val repository: Repository<Resource>,
@@ -31,12 +34,31 @@ internal class GroupResourcesTagsRepository(
             .map { l -> DataEvent(GroupResourcesTags(l)) }
 
     override fun delete(t: GroupResourcesTags): Observable<DataEvent<GroupResourcesTags>> {
-        t.resources.forEach { r -> repository.delete(r) }
+        t.resources.forEach { r ->
+            repository
+                    .delete(r)
+                    .schedule()
+                    .observeOn(Schedulers.io())
+                    .subscribe(
+                            { r -> debug("[GroupResourcesTags] Resource deleted: $r") },
+                            { ex -> error("[GroupResourcesTags] Couldn't delete group: $t") }
+                    )
+        }
         return Observable.just(DataEvent(t))
     }
 
     override fun save(t: GroupResourcesTags): Observable<DataEvent<GroupResourcesTags>> {
-        t.resources.forEach { r -> repository.save(r) }
+        t.resources.forEach { r ->
+            repository
+                    .save(r)
+                    .schedule()
+                    .observeOn(Schedulers.io())
+                    .subscribe(
+                            { r -> debug("[GroupResourcesTags] Resource changes saved: $r") },
+                            { ex -> error("[GroupResourcesTags] Couldn't save changes - group: $t") }
+                    )
+
+        }
         return Observable.just(DataEvent(t))
     }
 }

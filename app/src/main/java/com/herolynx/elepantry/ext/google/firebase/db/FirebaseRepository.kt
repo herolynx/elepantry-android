@@ -56,14 +56,16 @@ class FirebaseRepository<T>(
      * @param new observable
      */
     private fun modify(t: DataEvent<T>): Observable<DataEvent<T>> {
-        val l = CompletionListener<T>(t, entityClass)
-        val id = idGetter(t.data)
-        if (t.deleted) {
-            rootRef.child(id).removeValue(l)
-        } else {
-            rootRef.child(id).setValue(t.data, l)
+        return Observable.defer {
+            val l = CompletionListener<T>(t, entityClass)
+            val id = idGetter(t.data)
+            if (t.deleted) {
+                rootRef.child(id).removeValue(l)
+            } else {
+                rootRef.child(id).setValue(t.data, l)
+            }
+            Observable.just(t)
         }
-        return Observable.create({ s -> l.subsribe(s) })
     }
 
 }

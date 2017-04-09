@@ -66,11 +66,16 @@ internal class ResourceTagsCtrl<T>(
 
     private fun save(changed: T, tagsChanged: Boolean = false, showConfirmation: Boolean = false): T? {
         repository.save(changed)
-                .subscribe {
-                    if (showConfirmation) {
-                        view.toast(R.string.confirmation_saved)
-                    }
-                }
+                .schedule()
+                .observe()
+                .subscribe(
+                        {
+                            if (showConfirmation) {
+                                view.toast(R.string.confirmation_saved)
+                            }
+                        },
+                        { ex -> error("$TAG Couldn't save changes - resource: $changed") }
+                )
         t = changed
         if (tagsChanged) {
             refresh(t)
@@ -83,12 +88,17 @@ internal class ResourceTagsCtrl<T>(
         t.toOption()
                 .map { res ->
                     repository.delete(res)
-                            .subscribe {
-                                if (showConfirmation) {
-                                    view.toast(R.string.confirmation_deleted)
-                                }
-                                ResourcesActivity.navigate(view)
-                            }
+                            .schedule()
+                            .observe()
+                            .subscribe(
+                                    {
+                                        if (showConfirmation) {
+                                            view.toast(R.string.confirmation_deleted)
+                                        }
+                                        ResourcesActivity.navigate(view)
+                                    },
+                                    { ex -> error("$TAG Couldn't delete resource: $res") }
+                            )
                 }
     }
 
