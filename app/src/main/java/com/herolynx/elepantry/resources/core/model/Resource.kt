@@ -26,11 +26,11 @@ data class Resource(
     fun <C : Collection<String>> containsAny(names: C) = tags.find { t -> names.contains(t.name) }.toOption().isDefined()
 
     fun containsText(search: String): Boolean {
-        if (name.startsWith(search)) {
+        if (name.contains(search)) {
             return true
         }
         return !tags
-                .filter { t -> t.name.startsWith(search) }
+                .filter { t -> t.name.contains(search) }
                 .toOption()
                 .isDefined()
     }
