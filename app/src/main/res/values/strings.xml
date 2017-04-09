@@ -7,6 +7,8 @@
     <string name="delete">Delete</string>
     <string name="search">Search</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="regulations_and_terms">Regulation and terms</string>
+    <string name="welcome">Welcome</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -21,6 +23,7 @@
     <string name="auth_failed">Authentication failed</string>
 
     <!-- VIEWS -->
+    <string name="add_new_view">Add new view</string>
     <string name="google_drive">Google Drive</string>
     <string name="user_views">Your views</string>
     <string name="resource_type_view">View</string>

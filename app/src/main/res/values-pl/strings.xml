@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Elepantry</string>
+
+    <!-- GENERIC -->
+    <string name="loading">Wczytywanie…</string>
+    <string name="edit">Edytuj</string>
+    <string name="delete">Skasuj</string>
+    <string name="search">Szukaj</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="regulations_and_terms">Regulamin i warunki</string>
+    <string name="welcome">Witaj</string>
+
+    <string name="navigation_drawer_open">Otworz nawigacje</string>
+    <string name="navigation_drawer_close">Zamknij nawigacje</string>
+
+    <string name="action_settings">Ustawienia</string>
+    <string name="confirmation_saved">Zapisano</string>
+    <string name="confirmation_deleted">Skasowano</string>
+
+    <!-- AUTH -->
+    <string name="sign_in_google">Zaloguj uzywajac Google</string>
+    <string name="sign_out">Wyloguj</string>
+    <string name="auth_failed">Twoja tozsamosc nie zostala potwierdzona</string>
+
+    <!-- VIEWS -->
+    <string name="add_new_view">Nowy widok</string>
+    <string name="google_drive">Google Drive</string>
+    <string name="user_views">Twoje widoki</string>
+    <string name="resource_type_view">Widok</string>
+    <string name="resource_type_resource">Zasob</string>
+    <string name="resource_type_group">Grupa</string>
+    <string name="resource_name">Nazwa: </string>
+    <string name="resource_name_placeholder">Nazwa zasobu</string>
+    <string name="tag_name_placeholder">Nazwa tagu</string>
+    <string name="resource_name_valid_length" formatted="false">Nazwa musi miec przynajmniej %s i maksymalnie %s znakow</string>
+
+</resources>

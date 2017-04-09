@@ -91,7 +91,7 @@
                 android:layout_gravity="right"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_menu_plus"
-                android:text="Add new view"
+                android:text="@string/add_new_view"
                 android:textAllCaps="false"
                 android:textColor="@color/blue_1"
                 android:textStyle="normal" />
