@@ -33,7 +33,7 @@ class GoogleDriveMetaInfoSync(
 
     fun isSyncing() = syncOnGoing
 
-    fun sync(scheduleInMs: Long = 5000, afterSyncLogic: () -> Unit = {}) {
+    fun sync(scheduleInMs: Long = 5000, progressBar: (Boolean) -> Unit, afterSyncLogic: () -> Unit = {}) {
         if (syncOnGoing) {
             return
         }
@@ -52,9 +52,11 @@ class GoogleDriveMetaInfoSync(
                                 if (Duration(u.getLastSyncTimeDate().time, Date().time).isLongerThan(syncEvery)) {
                                     debug("$TAG Starting sync - info: $u")
                                     syncOnGoing = true
+                                    progressBar(true)
                                     sync(gDrive.search(), resRep, u, {
                                         syncOnGoing = false
                                         subscription?.unsubscribe()
+                                        progressBar(false)
                                         afterSyncLogic()
                                     })
                                 }
@@ -80,8 +82,15 @@ class GoogleDriveMetaInfoSync(
                                         .observeOn(Schedulers.io())
                                         .subscribe(
                                                 { f ->
-                                                    debug("$TAG Saving changed resource -  new: $r, old: $f")
-                                                    res.save(r.merge(f))
+                                                    val newVersion = r.merge(f)
+                                                    debug("$TAG Saving changed resource -  new: $newVersion, old: $f")
+                                                    res.save(newVersion)
+                                                            .schedule()
+                                                            .observeOn(Schedulers.io())
+                                                            .subscribe(
+                                                                    { info -> debug("$TAG New version of resource saved: $newVersion") },
+                                                                    { ex -> error("$TAG New version of resource not saved: $newVersion", ex) }
+                                                            )
                                                 },
                                                 { ex -> error("$TAG Error while getting result for resource: $r", ex) }
                                         )
