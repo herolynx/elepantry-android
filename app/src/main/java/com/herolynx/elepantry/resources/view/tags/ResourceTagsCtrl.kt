@@ -23,7 +23,8 @@ internal class ResourceTagsCtrl<T>(
         private val nameGetter: Option<(T) -> String>,
         private val nameChange: Option<(T, String) -> T>,
         private val tagsGetter: (T) -> List<Tag>,
-        private val tagsSetter: (T, List<Tag>) -> T
+        private val tagsSetter: (T, List<Tag>) -> T,
+        private val showProgress: (Boolean) -> Unit = {}
 ) {
 
     private val TAG = "[TagsCtrl]"
@@ -61,6 +62,7 @@ internal class ResourceTagsCtrl<T>(
             }
             val tags = tagsGetter(res)
             view.displayTags(tags)
+            showProgress(false)
         }
     }
 
@@ -126,6 +128,7 @@ internal class ResourceTagsCtrl<T>(
     fun deleteTag(t: Tag, showConfirmation: Boolean = false): T? = changeTags(this.t, { tags -> tags.remove(t) }, showConfirmation)
 
     private fun changeTags(r: T?, changeTags: (List<Tag>) -> List<Tag>, showConfirmation: Boolean = false): T? {
+        showProgress(true)
         return r.toOption()
                 .map { res ->
                     val tags = changeTags(tagsGetter(res))

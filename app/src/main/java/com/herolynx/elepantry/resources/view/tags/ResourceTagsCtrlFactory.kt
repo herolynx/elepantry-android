@@ -45,7 +45,11 @@ internal object ResourceTagsCtrlFactory {
             nameGetter = Option.None,
             nameChange = Option.None,
             tagsGetter = GroupResourcesTags::getTags,
-            tagsSetter = { g, newTags -> g.addTags(newTags) }
+            tagsSetter = { g, newTags -> g.addTags(newTags) },
+            showProgress = { show ->
+                if (show) v.runOnUiThread { v.showProgressDialog(v) }
+                else v.runOnUiThread { v.hideProgressDialog() }
+            }
     )
 
 }

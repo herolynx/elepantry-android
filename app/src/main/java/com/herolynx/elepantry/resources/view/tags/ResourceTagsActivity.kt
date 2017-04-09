@@ -1,6 +1,7 @@
 package com.herolynx.elepantry.resources.view.tags
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
+import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag
@@ -23,10 +25,11 @@ import com.herolynx.elepantry.resources.core.service.ResourceView
 import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 
-class ResourceTagsActivity : UserViewsMenu() {
+class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
 
     override val layoutId = R.layout.resource_tags
     override val topMenuId = R.menu.resource_tags_top_menu
+    override var mProgressDialog: ProgressDialog? = null
 
     private var containerTags: LinearLayout? = null
     private var containerName: LinearLayout? = null
