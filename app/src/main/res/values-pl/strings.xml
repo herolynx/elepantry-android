@@ -7,7 +7,7 @@
     <string name="delete">Skasuj</string>
     <string name="search">Szukaj</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="regulations_and_terms">Regulamin i warunki</string>
+    <string name="terms_and_conditions">Regulamin i warunki</string>
     <string name="welcome">Witaj</string>
 
     <string name="navigation_drawer_open">Otworz nawigacje</string>

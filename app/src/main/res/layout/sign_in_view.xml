@@ -99,7 +99,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/regulations_and_terms"
+            android:text="@string/terms_and_conditions"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textStyle="normal" />
