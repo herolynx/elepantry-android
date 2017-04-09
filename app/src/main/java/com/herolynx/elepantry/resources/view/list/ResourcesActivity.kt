@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.WebView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
@@ -16,6 +15,7 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.rx.DataEvent
+import com.herolynx.elepantry.core.ui.WebViewUtils
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
@@ -35,7 +35,6 @@ class ResourcesActivity : UserViewsMenu() {
     private var loadData: (String?) -> Unit = {}
     private var ctrl: ResourcesCtrl? = null
     private var clearSearchAction: () -> Unit = {}
-    private var webView: WebView? = null
 
     override val layoutId: Int = R.layout.resources_list
     override val topMenuId = R.menu.resources_top_menu
@@ -43,7 +42,6 @@ class ResourcesActivity : UserViewsMenu() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ctrl = ResourcesCtrl()
-        webView = WebView(this)
         initResourceView()
         initEditAction()
         if (intent.extras != null) {
@@ -94,7 +92,7 @@ class ResourcesActivity : UserViewsMenu() {
 
     private fun initResourceView() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
-        listAdapter = ResourceList.adapter(onClickHandler = { r -> webView?.loadUrl(r.downloadLink) })
+        listAdapter = ResourceList.adapter(onClickHandler = { r -> WebViewUtils.openLink(this, r.downloadLink) })
         listAdapter?.onSelectedItemsChange { selected ->
             fabEditButton?.visibility = if (selected.isEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
         }
