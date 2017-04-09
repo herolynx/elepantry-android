@@ -9,7 +9,10 @@ import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.BuildConfig
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.config.Config
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.viewVisit
+import com.herolynx.elepantry.core.ui.WebViewUtils
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 
 class SignInActivity : FragmentActivity(), WithProgressDialog {
@@ -38,6 +41,11 @@ class SignInActivity : FragmentActivity(), WithProgressDialog {
     private fun initActionHandlers(ctrl: SignInCtrl) {
         val buttonSignIn = findViewById(R.id.sign_in_button) as Button
         buttonSignIn.setOnClickListener { ctrl.logIn() }
+        val buttonRegulations = findViewById(R.id.regulation) as Button
+        buttonRegulations.setOnClickListener {
+            debug("[SignIn] Going to regulations and terms")
+            WebViewUtils.openLink(this, Config.licenseUrl)
+        }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {

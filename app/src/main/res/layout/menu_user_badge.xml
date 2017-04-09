@@ -74,13 +74,6 @@
                 android:layout_marginTop="@dimen/margin_10"
                 android:gravity="right">
 
-                <Button
-                    android:id="@+id/settings"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="right"
-                    android:background="@drawable/ic_menu_settings"
-                    android:gravity="right|center" />
             </LinearLayout>
         </LinearLayout>
 
