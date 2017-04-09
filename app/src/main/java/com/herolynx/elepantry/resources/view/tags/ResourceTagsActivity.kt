@@ -28,6 +28,7 @@ class ResourceTagsActivity : UserViewsMenu() {
     override val layoutId = R.layout.resource_tags
     override val topMenuId = R.menu.resource_tags_top_menu
 
+    private var containerTags: LinearLayout? = null
     private var containerName: LinearLayout? = null
     private var resourceName: EditText? = null
     private var newTag: EditText? = null
@@ -49,7 +50,6 @@ class ResourceTagsActivity : UserViewsMenu() {
         when (resourceType) {
             TYPE.VIEW -> {
                 viewType = TYPE.VIEW
-                containerName?.visibility = android.view.View.VISIBLE
                 setTitle(getString(R.string.resource_type_view))
                 val viewTagsCtrl = ResourceTagsCtrlFactory.viewTagsCtrl(this)
                 viewTagsCtrl.init(resource.fromJsonString(View::class.java).get())
@@ -58,7 +58,6 @@ class ResourceTagsActivity : UserViewsMenu() {
 
             TYPE.RESOURCE -> {
                 viewType = TYPE.RESOURCE
-                containerName?.visibility = android.view.View.VISIBLE
                 setTitle(getString(R.string.resource_type_resource))
                 val resourceTagsCtrl = ResourceTagsCtrlFactory.resourceTagsCtrl(this)
                 resourceTagsCtrl.init(resource.fromJsonString(Resource::class.java).get())
@@ -67,7 +66,7 @@ class ResourceTagsActivity : UserViewsMenu() {
 
             TYPE.GROUP -> {
                 viewType = TYPE.GROUP
-                containerName?.visibility = android.view.View.INVISIBLE
+                containerTags?.removeView(containerName)
                 //TODO deserialize with sub-types
                 val group = resource.fromJsonString(List::class.java).map { l -> l.map { e -> e.toJsonString().get().fromJsonString(Resource::class.java).get() } }.get()
                 setTitle(getString(R.string.resource_type_group))
@@ -122,6 +121,7 @@ class ResourceTagsActivity : UserViewsMenu() {
     }
 
     private fun initView() {
+        containerTags = findViewById(R.id.container_tags) as LinearLayout
         containerName = findViewById(R.id.container_name) as LinearLayout
         resourceName = findViewById(R.id.resource_name) as EditText
 
