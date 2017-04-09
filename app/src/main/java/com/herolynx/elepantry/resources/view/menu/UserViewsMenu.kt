@@ -132,7 +132,15 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         refresh.setOnClickListener {
             val syncJob = GoogleDriveMetaInfoSync.create(this)
             syncJob.sync(
-                    jobStatus = { start -> showProgressBar(start) }
+                    jobStatus = { start ->
+                        showProgressBar(start)
+                        if (!start) {
+                            runOnUiThread {
+                                closeMenu()
+                                refreshView()
+                            }
+                        }
+                    }
             )
         }
     }
@@ -143,6 +151,10 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
             runOnUiThread { showProgressDialog(this) }
         else
             runOnUiThread { hideProgressDialog() }
+    }
+
+    protected open fun refreshView() {
+        //empty
     }
 
     protected abstract fun onViewChange(

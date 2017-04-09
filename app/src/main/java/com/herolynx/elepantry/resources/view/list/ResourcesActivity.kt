@@ -56,8 +56,8 @@ class ResourcesActivity : UserViewsMenu() {
         refreshView()
     }
 
-
-    private fun refreshView() {
+    override fun refreshView() {
+        debug("[ResourceActivity] Refreshing view")
         ctrl.toOption()
                 .flatMap { c -> c.currentView.toOption() }
                 .map { v -> onViewChange(v) }
