@@ -40,3 +40,5 @@ captures/
 .config
 *.jks
 keystore.properties
+*.properties
+build.gradle

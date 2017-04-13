@@ -10,10 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.9"
+        android:layout_weight="1.8"
         android:gravity="center_vertical"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,11 +21,11 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="281dp"
-                android:layout_height="90dp"
+                android:id="@+id/elepantry_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_login_elepantry" />
+                android:src="@drawable/login_logo_elepantry" />
 
         </LinearLayout>
 
@@ -34,90 +33,164 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_20"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_30"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/tagging_space"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/blue_5"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/describe_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/welcome"
-                android:layout_marginTop="40dp"
+                android:text="@string/organize_all_files"
                 android:textColor="@android:color/white"
-                android:textSize="18dp" />
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
+                android:layout_height="180dp"
+                android:layout_gravity="center"
+                android:src="@drawable/login_img_app" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_25"
+            android:orientation="vertical">
 
             <Button
                 android:id="@+id/sign_in_button"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/margin_15"
                 android:background="@drawable/login_google_button"
                 android:drawableLeft="@drawable/ic_login_google"
+                android:drawablePadding="@dimen/margin_10"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="@string/sign_in_google"
                 android:textColor="@android:color/white" />
-        </LinearLayout>
 
+            <Button
+                android:id="@+id/regulation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/terms_and_conditions"
+                android:textAllCaps="false"
+                android:textSize="12dp"
+                android:textColor="@android:color/white"
+                android:textStyle="normal" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="0.1"
+        android:layout_weight="0.2"
+        android:paddingTop="@dimen/margin_5"
+        android:paddingBottom="@dimen/margin_5"
+        android:paddingLeft="@dimen/margin_10"
+        android:paddingRight="@dimen/margin_10"
         android:gravity="center|bottom">
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/blue_2"></View>
-
-        <Button
-            android:layout_width="150px"
-            android:layout_height="59px"
-            android:layout_gravity="left|center"
-            android:background="@drawable/herolynx"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="5dp"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textStyle="normal" />
-
-        <Button
-            android:id="@+id/regulation"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/view"
+            android:weightSum="1"
             android:layout_gravity="center"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/terms_and_conditions"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textStyle="normal" />
+            android:orientation="horizontal"
+            >
 
-        <TextView
-            android:id="@+id/app_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right|center"
-            android:layout_gravity="center"
-            android:text="v00.0"
-            android:textColor="@android:color/white"
-            android:textSize="10dp"
-            android:paddingRight="5dp"
-            android:layout_alignBaseline="@+id/regulation"
-            android:layout_alignBottom="@+id/regulation"
-            android:layout_alignParentEnd="true"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left">
 
+                <ImageView
+                    android:id="@+id/link_herolynx"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/login_logo_herolynx" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                 android:gravity="center">
+
+                <TextView
+                    android:id="@+id/website_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/visit_our_website"
+                    android:textColor="@android:color/white"
+                    android:textSize="10dp"/>
+
+                <TextView
+                    android:id="@+id/elepantry_website"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/elepantry_website"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="11dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.33"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:gravity="right">
+
+                <TextView
+                    android:id="@+id/app_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="v 1.0"
+                    android:textColor="@android:color/white"
+                    android:textSize="10dp" />
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
-
 </LinearLayout>
