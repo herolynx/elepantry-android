@@ -1,37 +1,23 @@
 # elepantry-android [![CircleCI](https://circleci.com/gh/herolynx/elepantry-android.svg?style=svg)](https://circleci.com/gh/herolynx/elepantry-android)[![Kotlin](https://img.shields.io/badge/kotlin-1.0.6-blue.svg)](http://kotlinlang.org)
 
-Resource manager for unifying cloud storage like google-drive, dropbox etc.
+We have created `Elepantry` Tagging Space to let you easily find the files on your cloud drives.
 
-# Certificates (signing with key)
+One place in which you can connect all of your cloud storages, `tag` the files and easily search for them.
 
-## Certificate fingerprints - debug
+Elepantry is the one arm man knife for your files in the cloud, just log in with your `Google Account` and start tagging!
 
-1) Go to `.android` in your home directory
+If you have files on other cloud drives, that’s not a problem!
 
-keytool -exportcert -list -v -alias androiddebugkey -keystore .\debug.keystore
+You can connect your `Dropbox`, `Azure OneDrive` and `Amazon S3` accounts and manage your files in one place.
 
-# Articles
+You can display your tagged resource in variety of `views` based on chosen criteria, i.e.:
 
-## Generic
+* SiFi books in `MOBI` or `PDF` format
 
-[Signing app with cert](https://developer.android.com/studio/publish/app-signing.html)
+* Horrors in any format: books, audio-books, movies
 
-[Kotlin - reference](https://kotlinlang.org/docs/reference/)
+* Pictures of my family made at home
 
-## Google
+# Overview
 
-[Android Sign In - integration](https://developers.google.com/identity/sign-in/android/start-integrating)
-
-[Android Sign In - sample code](https://developers.google.com/identity/sign-in/android/sign-in)
-
-[OAuth for Google services](https://developers.google.com/android/guides/http-auth)
-
-## Google Drive
-
-[Google Drive API for Android](https://developers.google.com/drive/android/intro)
-
-[Google Drive code samples](https://github.com/googledrive/android-demos/tree/master/app/src/main/java/com/google/android/gms/drive/sample/demo)
-
-## Firebase
-
-[Firebase - Google sign in](https://firebase.google.com/docs/auth/android/google-signin)
+![overview.png](https://github.com/herolynx/elepantry-android/blob/master/docs/elepantry-overview.png)
