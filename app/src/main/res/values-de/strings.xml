@@ -8,6 +8,9 @@
     <string name="search">Suchen</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="terms_and_conditions">Geschäftsbedingungen</string>
+    <string name="tagging_space">Tagging space</string>
+    <string name="organize_all_files">organize all of your files in one place</string>
+    <string name="visit_our_website">visit our website</string>
     <string name="welcome">Wilkommen</string>
 
     <string name="navigation_drawer_open">Navigation öffnen</string>
