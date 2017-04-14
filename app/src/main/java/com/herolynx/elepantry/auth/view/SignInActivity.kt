@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.BuildConfig
@@ -45,6 +46,16 @@ class SignInActivity : FragmentActivity(), WithProgressDialog {
         buttonRegulations.setOnClickListener {
             debug("[SignIn] Going to regulations and terms")
             WebViewUtils.openLink(this, Config.licenseUrl)
+        }
+        val buttonElepantry = findViewById(R.id.elepantry_website) as TextView
+        buttonElepantry.setOnClickListener {
+            debug("[SignIn] Going to elepantry page")
+            WebViewUtils.openLink(this, Config.elepantryUrl)
+        }
+        val buttonHeroLynx = findViewById(R.id.link_herolynx) as ImageView
+        buttonHeroLynx.setOnClickListener {
+            debug("[SignIn] Going to herolynx page")
+            WebViewUtils.openLink(this, Config.herolynxUrl)
         }
     }
 
