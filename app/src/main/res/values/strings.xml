@@ -7,8 +7,12 @@
     <string name="delete">Delete</string>
     <string name="search">Search</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="terms_and_conditions">Terms and Conditions</string>
-    <string name="welcome">Welcome</string>
+    <string name="terms_and_conditions">terms and conditions</string>
+    <string name="tagging_space">Tagging space</string>
+    <string name="organize_all_files">organize all of your files in one place</string>
+    <string name="visit_our_website">visit our website</string>
+    <string name="elepantry_website">elepantry.com</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

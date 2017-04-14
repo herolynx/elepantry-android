@@ -7,31 +7,34 @@
     <string name="delete">Skasuj</string>
     <string name="search">Szukaj</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="terms_and_conditions">Regulamin i warunki</string>
-    <string name="welcome">Witaj</string>
+    <string name="terms_and_conditions">regulamin i warunki</string>
+    <string name="tagging_space">Tagging space</string>
+    <string name="organize_all_files">organize all of your files in one place</string>
+    <string name="visit_our_website">odwiedź naszą stronę</string>
+    <string name="elepantry_website">elepantry.com</string>
 
-    <string name="navigation_drawer_open">Otworz nawigacje</string>
-    <string name="navigation_drawer_close">Zamknij nawigacje</string>
+    <string name="navigation_drawer_open">Otwórz nawigację</string>
+    <string name="navigation_drawer_close">Zamknij nawigację</string>
 
     <string name="action_settings">Ustawienia</string>
     <string name="confirmation_saved">Zapisano</string>
     <string name="confirmation_deleted">Skasowano</string>
 
     <!-- AUTH -->
-    <string name="sign_in_google">Zaloguj uzywajac Google</string>
+    <string name="sign_in_google">Zaloguj używając Google</string>
     <string name="sign_out">Wyloguj</string>
-    <string name="auth_failed">Twoja tozsamosc nie zostala potwierdzona</string>
+    <string name="auth_failed">Twoja tożsamość nie została potwierdzona</string>
 
     <!-- VIEWS -->
     <string name="add_new_view">Nowy widok</string>
     <string name="google_drive">Google Drive</string>
     <string name="user_views">Twoje widoki</string>
     <string name="resource_type_view">Widok</string>
-    <string name="resource_type_resource">Zasob</string>
+    <string name="resource_type_resource">Zasób</string>
     <string name="resource_type_group">Grupa</string>
     <string name="resource_name">Nazwa: </string>
     <string name="resource_name_placeholder">Nazwa zasobu</string>
     <string name="tag_name_placeholder">Nazwa tagu</string>
-    <string name="resource_name_valid_length" formatted="false">Nazwa musi miec przynajmniej %s i maksymalnie %s znakow</string>
+    <string name="resource_name_valid_length" formatted="false">Nazwa musi mieć przynajmniej %s i maksymalnie %s znaków</string>
 
 </resources>
