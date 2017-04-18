@@ -71,8 +71,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|right"
-                android:layout_marginTop="@dimen/margin_10"
                 android:gravity="right">
+
+                <Button
+                    android:id="@+id/sign_out"
+                    android:layout_width="18dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|right"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_menu_logout"
+                    android:gravity="right"
+                    android:textColor="@color/grey_1" />
+
 
             </LinearLayout>
         </LinearLayout>
@@ -86,11 +96,12 @@
 
             <Button
                 android:id="@+id/add_new_view"
-                android:layout_width="110dp"
+                android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_gravity="right"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_menu_plus"
+                android:drawablePadding="@dimen/margin_5"
                 android:text="@string/add_new_view"
                 android:textAllCaps="false"
                 android:textColor="@color/blue_1"

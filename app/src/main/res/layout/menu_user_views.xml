@@ -112,6 +112,8 @@
             android:layout_gravity="center"
             android:background="@color/dark_1"
             android:gravity="center"
+            android:paddingTop="@dimen/margin_5"
+            android:paddingBottom="@dimen/margin_5"
             android:orientation="vertical">
 
             <Button
