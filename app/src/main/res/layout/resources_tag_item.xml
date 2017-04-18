@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="5dp"
     android:weightSum="1">
 
     <LinearLayout
@@ -15,6 +18,7 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingRight="10dp"
             android:layout_weight="0.9">
 
             <TextView
@@ -26,19 +30,19 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="25dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="0.1"
-            android:gravity="right">
+            android:layout_gravity="center|right"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/button_delete_tag"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:gravity="center"
                 android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/ic_view_resource_delete"
-                android:textColor="#FFFFFF" />
+                android:drawableRight="@drawable/ic_view_resource_delete"
+                />
         </RelativeLayout>
 
     </LinearLayout>
