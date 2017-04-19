@@ -84,6 +84,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
             analytics?.metrics("ViewAdd")
             closeMenu()
         })
+        userBadge.initSignOutAction()
         menuLayout.addView(userBadge.layout)
         userBadge.display()
 
@@ -92,8 +93,6 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
 
         initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button, menuLeft.findViewById(R.id.drive_google_refresh) as TextView)
         initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView, menuCtrl)
-
-        (menuLeft.findViewById(R.id.sign_out) as Button).setOnClickListener { menuCtrl.logOut() }
     }
 
     private fun initUserViews(layout: RecyclerView, menuCtrl: UserViewsMenuCtrl) {
