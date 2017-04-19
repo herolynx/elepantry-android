@@ -21,19 +21,20 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_actio_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:backgroundTint="@color/blue_1"
+        app:srcCompat="@drawable/ic_action_bar_pencil" />
+
+    <LinearLayout
+        android:id="@+id/layout_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
 
 </android.support.design.widget.CoordinatorLayout>

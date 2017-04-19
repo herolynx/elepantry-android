@@ -20,13 +20,15 @@
     <color name="grey_2">#dedede</color>
     <color name="grey_3">#cacaca</color>
     <color name="grey_4">#f1f1f1</color>
-    <color name="grey_5">#f1faff</color>
+    <color name="grey_5">#e0e0e0</color>
 
     <color name="blue_1">#009cef</color>
     <color name="blue_2">#48b5ff</color>
     <color name="blue_3">#17a5f0</color>
     <color name="blue_4">#87d4fd</color>
     <color name="blue_5">#005C8C</color>
+    <color name="blue_6">#008ad4</color>
+    <color name="blue_7">#f1faff</color>
 
     <color name="google">#ea4235</color>
     <color name="google_hover">#D42A1E</color>
