@@ -8,37 +8,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="45dp">
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="0.8"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7">
 
             <Button
                 android:id="@+id/user_view_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_gravity="center_horizontal"
                 android:background="@android:color/transparent"
                 android:gravity="left|center"
+                android:lines="1"
                 android:textAllCaps="false" />
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal|clip_horizontal"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2">
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:gravity="center_horizontal|clip_horizontal">
 
             <Button
                 android:id="@+id/user_view_edit_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="10dp"
                 android:background="@android:color/transparent"
-                android:drawableRight="@drawable/ic_view_resource_menu_pencil"/>
+                android:drawableRight="@drawable/ic_view_resource_menu_pencil"
+                android:paddingRight="10dp" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
