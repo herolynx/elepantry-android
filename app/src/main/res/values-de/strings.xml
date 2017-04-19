@@ -27,6 +27,7 @@
 
     <!-- VIEWS -->
     <string name="add_new_view">Ansicht hinzufügen</string>
+    <string name="add_new_tag">Neues Tag hinzufügen</string>
     <string name="google_drive">Google Drive</string>
     <string name="user_views">Ihre Ansichten</string>
     <string name="resource_type_view">Ansicht</string>
