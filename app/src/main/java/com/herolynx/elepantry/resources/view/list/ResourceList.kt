@@ -88,7 +88,7 @@ internal class ResourceItemView(ctx: Context) : LinearLayout(ctx) {
     val ext = findViewById(R.id.resource_item_ext) as TextView
     var parentId: Option<String> = Option.None
     var lastSubscription: Option<Subscription> = Option.None
-    val open = findViewById(R.id.resource_open) as TextView
+    val open = findViewById(R.id.resource_open) as LinearLayout
 
 }
 

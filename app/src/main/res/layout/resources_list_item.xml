@@ -81,6 +81,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/resource_open"
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:layout_gravity="right|center"
@@ -100,16 +101,7 @@
                 android:textColor="@color/grey_1"
                 android:textSize="8dp"
                 android:visibility="gone" />
-            <!-- TODO style or remove it
-           <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:drawableRight="@drawable/ic_list_resource_google"
-                android:state_enabled="false" />
-            -->
             <TextView
-                android:id="@+id/resource_open"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center"
