@@ -22,9 +22,8 @@
         >
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.20"
             android:orientation="vertical">
 
             <LinearLayout
@@ -63,7 +62,6 @@
                 android:gravity="left|center"
                 android:lines="1"
                 android:textSize="14dp"
-                android:text="fadsfasdfasdf"
                 android:textColor="@color/dark_1" />
 
             <TextView
@@ -74,7 +72,6 @@
                 android:ellipsize="end"
                 android:gravity="left|center"
                 android:lines="2"
-                android:text="sdfdasf"
                 android:textColor="@color/grey_1"
                 android:textSize="10dp" />
 

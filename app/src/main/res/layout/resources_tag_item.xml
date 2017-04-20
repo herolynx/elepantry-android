@@ -5,20 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:paddingLeft="@dimen/margin_10"
-    android:paddingRight="@dimen/margin_10"
+    android:paddingTop="@dimen/margin_5"
+    android:paddingLeft="@dimen/margin_5"
+    android:paddingRight="@dimen/margin_5"
     android:layout_marginTop="@dimen/margin_5"
     android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:background="@drawable/resource_border_list_tag"
-        android:paddingBottom="@dimen/margin_10"
-        android:paddingTop="@dimen/margin_5"
+        android:paddingBottom="8dp"
         android:paddingLeft="@dimen/margin_5"
-        android:paddingRight="@dimen/margin_5"
         android:layout_height="wrap_content">
 
         <RelativeLayout
@@ -33,17 +30,18 @@
                 android:id="@+id/tag_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:lines="1"
                 android:gravity="left|center"
                 android:textSize="15dp" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="25dp"
+
             android:layout_height="wrap_content"
-            android:layout_gravity="center|right"
-            android:gravity="center">
-            android:layout_weight="0.1"
-            android:gravity="right">
+            android:layout_gravity="center_horizontal|right"
+            android:gravity="right"
+            >
 
             <Button
                 android:id="@+id/button_delete_tag"

@@ -13,7 +13,6 @@
     <string name="visit_our_website">visit our website</string>
     <string name="elepantry_website">elepantry.com</string>
 
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -27,7 +26,6 @@
     <string name="auth_failed">Authentication failed</string>
 
     <!-- VIEWS -->
-
     <string name="add_new_view">Add new view</string>
     <string name="add_new_tag">Add new tag:</string>
     <string name="google_drive">Google Drive</string>

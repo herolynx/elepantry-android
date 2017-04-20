@@ -1,9 +1,9 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportHeight="32.0"
-    android:viewportWidth="32.0">
-    <path
-        android:fillColor="@color/grey_3"
-        android:pathData="M4 1h16q1.242 0 2.121 0.879t0.879 2.121v16q0 1.242-0.879 2.121t-2.121 0.879h-16q-1.242 0-2.121-0.879t-0.879-2.121v-16q0-1.242 0.879-2.121t2.121-0.879zM20 3h-16q-0.414 0-0.707 0.293t-0.293 0.707v16q0 0.414 0.293 0.707t0.707 0.293h16q0.414 0 0.707-0.293t0.293-0.707v-16q0-0.414-0.293-0.707t-0.707-0.293zM14.828 8.164q0.414 0 0.711 0.297t0.297 0.711-0.297 0.711l-2.125 2.117 2.125 2.117q0.297 0.297 0.297 0.711t-0.297 0.707-0.711 0.293-0.703-0.289l-2.125-2.125-2.125 2.125q-0.281 0.289-0.703 0.289-0.43 0-0.715-0.285t-0.285-0.715q0-0.422 0.289-0.711l2.125-2.117-2.125-2.117q-0.289-0.289-0.289-0.711 0-0.414 0.293-0.711t0.707-0.297q0.422 0 0.703 0.297l2.125 2.125 2.125-2.125q0.297-0.297 0.703-0.297z" />
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:enterFadeDuration="50"
+    android:exitFadeDuration="50">
+    <item android:state_selected="true" android:state_focused="false" android:state_pressed="false" android:drawable="@drawable/ic_view_resource_delete_focused" />
+    <item android:state_selected="false" android:state_focused="false" android:state_pressed="false" android:drawable="@drawable/ic_view_resource_delete_default" />
+    <item android:state_pressed="true" android:drawable="@drawable/ic_view_resource_delete_focused" />
+    <item android:state_focused="true" android:state_selected="true" android:state_pressed="false" android:drawable="@drawable/ic_view_resource_delete_focused" />
+</selector>
