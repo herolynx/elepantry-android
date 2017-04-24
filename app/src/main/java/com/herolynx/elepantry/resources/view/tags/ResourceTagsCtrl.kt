@@ -66,7 +66,7 @@ internal class ResourceTagsCtrl<T>(
         }
     }
 
-    private fun save(changed: T, tagsChanged: Boolean = false, showConfirmation: Boolean = false): T? {
+    private fun save(changed: T, tagsChanged: Boolean = false, showConfirmation: Boolean = false, redirect: Boolean = false): T? {
         repository.save(changed)
                 .schedule()
                 .observe()
@@ -74,6 +74,9 @@ internal class ResourceTagsCtrl<T>(
                         {
                             if (showConfirmation) {
                                 view.toast(R.string.confirmation_saved)
+                            }
+                            if (redirect) {
+                                ResourcesActivity.navigate(view)
                             }
                         },
                         { ex -> error("$TAG Couldn't save changes - resource: $changed") }
@@ -106,13 +109,13 @@ internal class ResourceTagsCtrl<T>(
 
     fun canChangeName() = nameChange.isDefined()
 
-    fun changeName(name: String, showConfirmation: Boolean = false): T? {
+    fun changeName(name: String, showConfirmation: Boolean = false, redirect: Boolean = false): T? {
         return nameChange
                 .filter { logic -> isNameValid(name) }
                 .flatMap { logic -> t.toOption().map { res -> Pair(logic, res) } }
                 .map { logicAndData ->
                     debug("$TAG Changing name - resource: $t, new name: $name")
-                    save(logicAndData.first(logicAndData.second, name), showConfirmation = showConfirmation)
+                    save(logicAndData.first(logicAndData.second, name), showConfirmation = showConfirmation, redirect = redirect)
                 }
                 .getOrElse { t }
 
@@ -127,13 +130,15 @@ internal class ResourceTagsCtrl<T>(
 
     fun deleteTag(t: Tag, showConfirmation: Boolean = false): T? = changeTags(this.t, { tags -> tags.remove(t) }, showConfirmation)
 
-    private fun changeTags(r: T?, changeTags: (List<Tag>) -> List<Tag>, showConfirmation: Boolean = false): T? {
+    fun saveTags(showConfirmation: Boolean = false, redirect: Boolean = false): T? = changeTags(this.t, { tags -> tags }, showConfirmation, redirect = redirect)
+
+    private fun changeTags(r: T?, changeTags: (List<Tag>) -> List<Tag>, showConfirmation: Boolean = false, redirect: Boolean = false): T? {
         showProgress(true)
         return r.toOption()
                 .map { res ->
                     val tags = changeTags(tagsGetter(res))
                     debug("$TAG Changing tags - resource: $r, new tags: $tags")
-                    save(tagsSetter(res, tags), tagsChanged = true, showConfirmation = showConfirmation)
+                    save(tagsSetter(res, tags), tagsChanged = true, showConfirmation = showConfirmation, redirect = redirect)
                 }
                 .getOrElse { r }
     }

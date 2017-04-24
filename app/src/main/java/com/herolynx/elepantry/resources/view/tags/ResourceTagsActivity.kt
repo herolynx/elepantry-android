@@ -87,15 +87,15 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val created = super.onCreateOptionsMenu(menu)
         if (viewType == TYPE.RESOURCE || viewType == TYPE.GROUP) {
-            topMenuItems().map { i -> i.setVisible(false) }
+            topMenuItems().filter { i -> i.itemId == R.id.action_delete }.map { i -> i.setVisible(false) }
         }
         return created
     }
 
-    private fun changeResourceName(showConfirmation: Boolean = false) {
+    private fun changeResourceName(showConfirmation: Boolean = false, redirect: Boolean = false) {
         val name = resourceName?.text.toString()
         if (resourceCtrl?.isNameValid(name) ?: false) {
-            resourceCtrl?.changeName(name, showConfirmation = showConfirmation)
+            resourceCtrl?.changeName(name, showConfirmation = showConfirmation, redirect = redirect)
         } else {
             resourceName?.error = getString(R.string.resource_name_valid_length).format(ResourceTagsCtrl.MIN_LENGTH, ResourceTagsCtrl.MAX_LENGTH)
         }
@@ -163,7 +163,15 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
             R.id.action_save -> {
                 debug("[TopMenu] Saving...")
                 analytics?.metrics("${viewType.name}Save")
-                changeResourceName(showConfirmation = true)
+                when (viewType) {
+                    TYPE.VIEW -> {
+                        changeResourceName(showConfirmation = true, redirect = true)
+                    }
+
+                    else -> {
+                        resourceCtrl?.saveTags(showConfirmation = true, redirect = true)
+                    }
+                }
                 return true
             }
 
