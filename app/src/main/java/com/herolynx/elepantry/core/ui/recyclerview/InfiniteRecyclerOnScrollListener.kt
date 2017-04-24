@@ -13,9 +13,12 @@ import rx.Subscriber
  */
 fun RecyclerView.onInfiniteLoading(linearLayoutManager: LinearLayoutManager): Observable<Int> {
     val subscribers: MutableList<Subscriber<in Int>> = mutableListOf()
-    addOnScrollListener(InfiniteRecyclerOnScrollListener(linearLayoutManager, { page ->
-        subscribers.forEach { s -> s.onNext(page) }
-    }))
+    addOnScrollListener(InfiniteRecyclerOnScrollListener(
+            linearLayoutManager,
+            { page ->
+                subscribers.forEach { s -> s.onNext(page) }
+            }
+    ))
     return Observable.create({ p -> subscribers.add(p) })
 }
 
@@ -30,7 +33,7 @@ fun RecyclerView.onInfiniteLoading(linearLayoutManager: LinearLayoutManager): Ob
 class InfiniteRecyclerOnScrollListener(
         val linearLayoutManager: LinearLayoutManager,
         val onLoadMore: (Int) -> Unit,
-        val visibleThreshold: Int = 5
+        val visibleThreshold: Int = 30
 ) : RecyclerView.OnScrollListener() {
 
     private var previousTotal = 0
