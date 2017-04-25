@@ -21,3 +21,15 @@ You can display your tagged resource in variety of `views` based on chosen crite
 # Overview
 
 ![overview.png](https://github.com/herolynx/elepantry-android/blob/master/docs/elepantry-overview.png)
+
+# Release
+
+1) Check resources
+
+```
+find app/src/main/res -name *.png | xargs pngcheck
+```
+
+2) Build -> Generate Signed APK
+
+* mark V2 (Full APK Signature)

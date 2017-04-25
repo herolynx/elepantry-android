@@ -37,6 +37,7 @@ captures/
 .idea
 
 # Keystore files
+app/src/release
 .config
 *.jks
 keystore.properties

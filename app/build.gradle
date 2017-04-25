@@ -3,6 +3,18 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.google.firebase.firebase-crash'
 
 android {
+    signingConfigs {
+        prodSign {
+            File signFile = rootProject.file('release.properties')
+            Properties properties = new Properties()
+            properties.load(new FileInputStream(signFile))
+            keyAlias properties['elepantry.release.keyAlias']
+            keyPassword properties['elepantry.release.keyPassword']
+            storeFile file(properties['elepantry.release.storeFile'])
+            storePassword properties['elepantry.release.storePassword']
+        }
+    }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
 
@@ -18,8 +30,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.prodSign
         }
     }
 
@@ -34,8 +48,7 @@ android {
     dataBinding {
         enabled = true
     }
-
-
+    
 }
 
 configurations.all {
