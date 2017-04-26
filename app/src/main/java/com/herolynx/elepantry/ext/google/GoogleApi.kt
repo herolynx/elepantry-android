@@ -13,10 +13,10 @@ import com.herolynx.elepantry.core.log.error
 import rx.Observable
 
 object GoogleApi {
-    
+
     fun build(
             fragmentActivity: FragmentActivity,
-            onFailedHandler: (ConnectionResult) -> Unit = { cr -> error("[GoogleApi] Connection result error: %s", cr) }
+            onFailedHandler: (ConnectionResult) -> Unit = { cr -> error("[GoogleApi] Connection result error: $cr") }
     ): GoogleApiClient {
         return GoogleApiClient.Builder(fragmentActivity)
                 .enableAutoManage(fragmentActivity, onFailedHandler)

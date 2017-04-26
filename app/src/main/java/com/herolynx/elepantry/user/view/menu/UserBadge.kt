@@ -57,7 +57,7 @@ class UserBadge(
     }
 
     fun display(user: User) {
-        debug("[UserBadge] Displaying user info: %s", user)
+        debug("[UserBadge] Displaying user info: $user")
         userName.text = user.displayName
         userImage.download(uri = user.photoUrl, parentId = Option.Some(user.id), parentIdGetter = { Option.Some(user.id) })
     }

@@ -150,7 +150,7 @@ class ResourcesActivity : UserViewsMenu() {
     }
 
     override fun onViewChange(v: View, rv: ResourceView): Boolean {
-        debug("[onViewChange] View selected: %s", v)
+        debug("[onViewChange] View selected: $v")
         closeMenu()
         title = v.name
         clearSearchAction()

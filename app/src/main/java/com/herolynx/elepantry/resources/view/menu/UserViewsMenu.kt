@@ -115,7 +115,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
 
         menuCtrl.getUserViews()
                 .subscribe { v ->
-                    debug("[initUserViews] Adding view: %s", v)
+                    debug("[initUserViews] Adding view: $v")
                     listAdapter.add(v)
                     listAdapter.sort()
                     listAdapter.notifyDataSetChanged()

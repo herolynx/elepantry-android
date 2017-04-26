@@ -68,7 +68,7 @@ internal object SignInUseCase {
                 }
                 .toObservable()
                 .flatMap { account ->
-                    debug("[onLoginResult][FirebaseAuth] Logging in - account id: %s", account.id)
+                    debug("[onLoginResult][FirebaseAuth] Logging in - account id: ${account.id}")
                     firebaseAuth(account)
                 }
                 .map { r -> Pair(r.first, r.second.user) }
@@ -83,7 +83,7 @@ internal object SignInUseCase {
         debug("[LogOut] Logging out...")
         return GoogleAuth.logOut(api)
                 .map { status ->
-                    debug("[LogOut] Google log out: %s", status)
+                    debug("[LogOut] Google log out: $status")
                     status
                 }
                 .filter { status -> status.isSuccess }

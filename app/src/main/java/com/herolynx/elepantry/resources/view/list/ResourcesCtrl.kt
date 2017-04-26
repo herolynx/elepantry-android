@@ -39,7 +39,7 @@ internal class ResourcesCtrl {
     ) {
         loadDataSubs = pageRequests
                 .flatMap { pageNr ->
-                    debug("[PageRequest] Loading next page - number: %s", pageNr)
+                    debug("[PageRequest] Loading next page - number: $pageNr")
                     loadNextPage(search)
                 }
                 .filter { p -> p.isSuccess() }

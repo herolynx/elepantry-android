@@ -8,10 +8,9 @@ private fun <T> tag(t: T): String {
     return o.javaClass.simpleName
 }
 
-fun <T> T.debug(msg: String, vararg args: Any?) {
-    val infoMsg = msg.format(args.map { o -> o.toString() })
-    Log.d(tag(this), infoMsg)
-    FirebaseCrash.log(infoMsg)
+fun <T> T.debug(msg: String) {
+    Log.d(tag(this), msg)
+    FirebaseCrash.log(msg)
 }
 
 fun <T> T.debug(msg: String, t: Throwable) {
@@ -20,29 +19,25 @@ fun <T> T.debug(msg: String, t: Throwable) {
     FirebaseCrash.log("Debug error message: ${t.message}")
 }
 
-fun <T> T.info(msg: String, vararg args: Any?) {
-    val infoMsg = msg.format(args.map { o -> o.toString() })
-    Log.i(tag(this), infoMsg)
-    FirebaseCrash.log(infoMsg)
+fun <T> T.info(msg: String) {
+    Log.i(tag(this), msg)
+    FirebaseCrash.log(msg)
 }
 
-fun <T, E : Throwable> T.error(msg: String, t: E?) {
+fun <T, E : Throwable> T.exception(msg: String, t: E?) {
     Log.e(tag(this), msg, t)
     FirebaseCrash.log(msg)
     FirebaseCrash.report(t)
 }
 
-fun <T> T.error(msg: String, vararg args: Any?) {
-    val errMsg = msg.format(args.map { o -> o.toString() })
-    Log.e(tag(this), errMsg)
-    FirebaseCrash.report(RuntimeException(errMsg))
+fun <T, E : Throwable> T.error(msg: String, t: E?) {
+    Log.e(tag(this), msg, t)
+    FirebaseCrash.log(msg)
+    FirebaseCrash.log("Error message: ${t?.message}")
 }
 
-fun <T, E : Throwable> T.error(t: E, msg: String, vararg args: Any?) {
-    val errMsg = msg.format(args.map { o -> o.toString() })
-    Log.e(tag(this), errMsg, t)
-    FirebaseCrash.log(errMsg)
-    FirebaseCrash.report(t)
+fun <T> T.error(msg: String) {
+    Log.e(tag(this), msg)
 }
 
 fun <T, E : Throwable> T.warn(msg: String, t: E?) {
