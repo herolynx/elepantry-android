@@ -3,6 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.google.firebase.firebase-crash'
 
 android {
+
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
+
     signingConfigs {
         prodSign {
             File signFile = rootProject.file('release.properties')
@@ -15,17 +19,15 @@ android {
         }
     }
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
-
     defaultConfig {
         applicationId "com.herolynx.elepantry"
         minSdkVersion 18
         targetSdkVersion 25
-        versionCode 2
-        versionName "1.0.0-beta"
+        versionCode 3
+        versionName "1.0.1-beta"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         multiDexEnabled = true
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
