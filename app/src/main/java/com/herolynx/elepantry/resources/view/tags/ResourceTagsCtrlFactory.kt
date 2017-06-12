@@ -38,18 +38,23 @@ internal object ResourceTagsCtrlFactory {
             v: ResourceTagsActivity,
             r: Repository<Resource> = Config.repository.userResources(),
             group: List<Resource>
-    ): ResourceTagsCtrl<GroupResourcesTags> = ResourceTagsCtrl<GroupResourcesTags>(
-            view = v,
-            repository = GroupResourcesTagsRepository(r, group),
-            loadFilter = Option.Some({ v1, v2 -> true }),
-            nameGetter = Option.None,
-            nameChange = Option.None,
-            tagsGetter = GroupResourcesTags::getTags,
-            tagsSetter = { g, newTags -> g.addTags(newTags) },
-            showProgress = { show ->
-                if (show) v.runOnUiThread { v.showProgressDialog(v) }
-                else v.runOnUiThread { v.hideProgressDialog() }
-            }
-    )
+    ): ResourceTagsCtrl<GroupResourcesTags> {
+        val groupRepo = GroupResourcesTagsRepository(r, group)
+        return ResourceTagsCtrl<GroupResourcesTags>(
+                view = v,
+                repository = groupRepo,
+                loadFilter = Option.Some({ v1, v2 -> true }),
+                nameGetter = Option.None,
+                nameChange = Option.None,
+                tagsGetter = GroupResourcesTags::getTags,
+                tagsSetter = { g, newTags -> g.addTags(newTags) },
+                showProgress = { show ->
+                    if (show) v.runOnUiThread { v.showProgressDialog(v) }
+                    else v.runOnUiThread { v.hideProgressDialog() }
+                },
+                suggestionResources = { groupRepo.all() }
+        )
+    }
+
 
 }

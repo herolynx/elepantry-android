@@ -7,14 +7,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
+import android.widget.*
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.metrics
+import com.herolynx.elepantry.core.rx.observe
+import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
@@ -25,6 +25,7 @@ import com.herolynx.elepantry.resources.core.service.ResourceView
 import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 
+
 class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
 
     override val layoutId = R.layout.resource_tags
@@ -34,7 +35,7 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
     private var containerTags: LinearLayout? = null
     private var containerName: LinearLayout? = null
     private var resourceName: EditText? = null
-    private var newTag: EditText? = null
+    private var newTag: AutoCompleteTextView? = null
     private var addTag: Button? = null
     private var resourceCtrl: ResourceTagsCtrl<*>? = null
     private var tagsAdapter: ListAdapter<Tag, TagItemView>? = null
@@ -44,6 +45,7 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
         super.onCreate(savedInstanceState)
         initView()
         loadParams(intent!!.extras)
+        loadSuggestions()
     }
 
     private fun loadParams(b: Bundle) {
@@ -82,6 +84,16 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
         }
         resourceName?.isEnabled = resourceCtrl?.canChangeName() ?: false
         initActions(resourceCtrl?.canChangeName() ?: false, true)
+    }
+
+    private fun loadSuggestions() {
+        resourceCtrl?.getTagSuggestions()
+                ?.schedule()
+                ?.observe()
+                ?.subscribe({ s ->
+                    debug("[ResourceTagsActivity] Suggestions found: $s")
+                    newTag?.setAdapter(ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, s.toList()))
+                })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -128,7 +140,7 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
         containerName = findViewById(R.id.container_name) as LinearLayout
         resourceName = findViewById(R.id.resource_name) as EditText
 
-        newTag = findViewById(R.id.new_tag) as EditText
+        newTag = findViewById(R.id.new_tag) as AutoCompleteTextView
         addTag = findViewById(R.id.add_tag) as Button
 
         val tagLists = findViewById(R.id.resource_tags_list) as RecyclerView
