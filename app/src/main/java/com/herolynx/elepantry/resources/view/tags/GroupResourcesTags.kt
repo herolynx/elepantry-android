@@ -18,14 +18,12 @@ internal class GroupResourcesTagsRepository(
 
     private val ids = resources.map(Resource::id).toSet()
 
+    fun all() = repository.findAll()
+            .map { l -> l.plus(resources).toList() }
+            .map { l -> listOf(GroupResourcesTags(l)) }
+
     override fun findAll() = repository.findAll()
-            .map { l ->
-                val inGroup = l.filter { e -> ids.contains(e.id) }
-                val all: MutableSet<Resource> = mutableSetOf()
-                all.addAll(inGroup)
-                all.addAll(resources)
-                all.toList()
-            }
+            .map { l -> l.filter { e -> ids.contains(e.id) }.plus(resources).toList() }
             .map { l -> listOf(GroupResourcesTags(l)) }
 
     override fun find(id: String) = findAll().map { l -> l.firstOption() }

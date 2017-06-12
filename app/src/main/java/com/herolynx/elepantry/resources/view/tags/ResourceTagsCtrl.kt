@@ -15,6 +15,7 @@ import org.funktionale.option.Option
 import org.funktionale.option.firstOption
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
+import rx.Observable
 
 internal class ResourceTagsCtrl<T>(
         private val view: ResourceTagsActivity,
@@ -24,7 +25,8 @@ internal class ResourceTagsCtrl<T>(
         private val nameChange: Option<(T, String) -> T>,
         private val tagsGetter: (T) -> List<Tag>,
         private val tagsSetter: (T, List<Tag>) -> T,
-        private val showProgress: (Boolean) -> Unit = {}
+        private val showProgress: (Boolean) -> Unit = {},
+        private val suggestionResources: () -> Observable<List<T>> = { repository.findAll() }
 ) {
 
     private val TAG = "[TagsCtrl]"
@@ -142,6 +144,14 @@ internal class ResourceTagsCtrl<T>(
                 }
                 .getOrElse { r }
     }
+
+    fun getTagSuggestions() = suggestionResources()
+            .map { t ->
+                t.map { t -> tagsGetter(t) }
+                        .map { tags -> tags.map { t -> t.name }.toSet() }
+                        .reduceRight { set, acc -> set.plus(acc) }
+            }
+
 
     companion object {
 
