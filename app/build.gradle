@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "com.herolynx.elepantry"
-        minSdkVersion 18
+        minSdkVersion 22
         targetSdkVersion 25
         versionCode 3
         versionName "1.0.1-beta"
