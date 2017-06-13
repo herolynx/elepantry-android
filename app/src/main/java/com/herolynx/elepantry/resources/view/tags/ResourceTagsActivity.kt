@@ -17,6 +17,7 @@ import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
+import com.herolynx.elepantry.core.ui.onKeyEnter
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag
@@ -122,16 +123,19 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
             }
         }
         if (changeTags) {
-            addTag?.setOnClickListener {
-                val tagName = newTag?.text.toString()
-                if (resourceCtrl?.isNameValid(tagName) ?: false) {
-                    analytics?.metrics("tagAdd")
-                    resourceCtrl?.addTag(tagName)
-                    newTag?.text?.clear()
-                } else {
-                    newTag?.error = getString(R.string.resource_name_valid_length).format(ResourceTagsCtrl.MIN_LENGTH, ResourceTagsCtrl.MAX_LENGTH)
-                }
-            }
+            addTag?.setOnClickListener { addTagHandler() }
+            newTag?.onKeyEnter()?.subscribe { addTagHandler() }
+        }
+    }
+
+    private fun addTagHandler() {
+        val tagName = newTag?.text.toString()
+        if (resourceCtrl?.isNameValid(tagName) ?: false) {
+            analytics?.metrics("tagAdd")
+            resourceCtrl?.addTag(tagName)
+            newTag?.text?.clear()
+        } else {
+            newTag?.error = getString(R.string.resource_name_valid_length).format(ResourceTagsCtrl.MIN_LENGTH, ResourceTagsCtrl.MAX_LENGTH)
         }
     }
 
