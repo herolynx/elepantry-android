@@ -116,7 +116,7 @@ class ResourcesActivity : UserViewsMenu() {
     }
 
     private fun initEditAction() {
-        fabEditButton?.setOnClickListener { view ->
+        fabEditButton?.setOnClickListener { _ ->
             when (listAdapter?.selectedItems?.size ?: 0) {
                 0 -> {
                 }

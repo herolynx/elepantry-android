@@ -7,16 +7,14 @@ import org.funktionale.tries.Try
 import rx.Observable
 
 class DynamicResourceView(
-        v: View,
+        private val v: View,
         private val resources: () -> Observable<DataEvent<Resource>>
 ) : ResourceView {
-
-    private val tagNames = v.tags.map { t -> t.name }.toCollection(mutableSetOf()).toSet()
 
     override fun search(c: SearchCriteria) = Try {
         DynamicResourcePage(
                 resources()
-                        .filter { r -> r.data.containsAny(tagNames) }
+                        .filter { r -> r.data.containsAny(v.tags) }
                         .filter { r -> if (c.text != null) r.data.containsText(c.text) else true }
         )
     }

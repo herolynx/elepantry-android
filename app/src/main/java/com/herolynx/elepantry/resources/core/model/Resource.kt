@@ -7,7 +7,7 @@ enum class ResourceType {
 }
 
 data class Resource(
-        val id: String = newId(),
+        val id: Id = newId(),
         val type: ResourceType,
         val name: String,
         val mimeType: String? = null,
@@ -23,15 +23,15 @@ data class Resource(
 ) {
     constructor() : this(name = "", type = ResourceType.GOOGLE)
 
-    fun <C : Collection<String>> containsAny(names: C) = tags.find { t -> names.contains(t.name) }.toOption().isDefined()
+    fun <C : Collection<Tag>> containsAny(names: C) = tags.find { t -> names.contains(t) }.toOption().isDefined()
 
     fun containsText(search: String): Boolean {
         if (name.contains(search, ignoreCase = true)) {
             return true
         }
         return tags
-                .filter { t -> t.name.contains(search, ignoreCase = true) }
-                .size > 0
+                .filter { t -> t.contains(search, ignoreCase = true) }
+                .isNotEmpty()
     }
 
     override fun hashCode(): Int {
@@ -49,4 +49,4 @@ data class Resource(
 
 }
 
-fun Resource.getTagValue() = if (tags.isEmpty()) "" else tags.map { t -> "#${t.name}" }.reduce { t, s -> "$t, $s" }
+fun Resource.getTagValue() = if (tags.isEmpty()) "" else tags.map { t -> "#${t}" }.reduce { t, s -> "$t, $s" }

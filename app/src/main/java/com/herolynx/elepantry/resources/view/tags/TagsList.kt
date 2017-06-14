@@ -18,7 +18,7 @@ internal object TagsList {
             )
 
     fun display(tag: Tag?, h: ListAdapter.ViewHolder<TagItemView>, deleteHandler: (Tag) -> Unit) {
-        h.view.name.text = tag?.name
+        h.view.name.text = tag
         h.view.buttonDelete.setOnClickListener {
             deleteHandler(tag!!)
         }

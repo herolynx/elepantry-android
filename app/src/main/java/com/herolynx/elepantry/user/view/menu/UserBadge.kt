@@ -45,7 +45,7 @@ class UserBadge(
                     .flatMap { api -> SignInUseCase.logOut(api) }
                     .schedule()
                     .observe()
-                    .subscribe { s ->
+                    .subscribe { _ ->
                         api.disconnect()
                         activity.navigateTo(SignInActivity::class.java)
                     }

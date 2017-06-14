@@ -1,6 +1,11 @@
 package com.herolynx.elepantry.resources.core.model
 
-data class View(val id: String = newId(), val name: String, val tags: List<Tag> = listOf(), val type: ViewType = ViewType.DYNAMIC) {
+data class View(
+        val id: Id = newId(),
+        val name: String,
+        val tags: List<Tag> = listOf(),
+        val type: ViewType = ViewType.DYNAMIC
+) {
     constructor() : this(name = "")
 
     override fun hashCode(): Int {

@@ -116,7 +116,7 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
 
     private fun initActions(changeName: Boolean, changeTags: Boolean) {
         if (changeName) {
-            resourceName?.setOnFocusChangeListener { view, hasFocus ->
+            resourceName?.setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {
                     changeResourceName()
                 }

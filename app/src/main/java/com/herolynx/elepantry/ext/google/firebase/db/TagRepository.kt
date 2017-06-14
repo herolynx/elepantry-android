@@ -13,13 +13,10 @@ internal class TagRepository(
 ) : Repository<Tag> {
 
     override fun findAll(): Observable<List<Tag>> = resources.findAll()
-            .map { t ->
-                t.map { t -> t.tags }
-                        .reduceRight { set, acc -> set.plus(acc) }
-            }
+            .map { resources -> resources.flatMap(Resource::tags).toList() }
 
     override fun find(id: String): Observable<Option<Tag>> = findAll()
-            .map { tags -> tags.filter { t -> t.id.equals(id) } }
+            .map { tags -> tags.filter { t -> t.equals(id, ignoreCase = true) } }
             .map { tags -> tags.firstOption() }
 
     override fun asObservable(): Observable<DataEvent<Tag>> = Observable.error(UnsupportedOperationException("Tags stream not supported globally on tags"))

@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
+import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
@@ -37,7 +38,7 @@ internal object ResourceList {
             onClickHandler: (Resource) -> Unit
     ) {
         h.view.lastSubscription.filter { s -> !s.isUnsubscribed }.map { s -> s.unsubscribe() }
-        h.view.open.setOnClickListener { v ->
+        h.view.open.setOnClickListener { _ ->
             if (r != null) {
                 onClickHandler(r)
             }
@@ -69,7 +70,7 @@ internal object ResourceList {
                                         h.view.ext.text = userResource.extension
                                         h.view.tags.text = userResource.getTagValue()
                                     },
-                                    { ex -> error("[ResourceList] Couldn't display tags of resource: $r") }
+                                    { ex -> error("[ResourceList] Couldn't display tags of resource: $r", ex) }
                             )
                 }
     }

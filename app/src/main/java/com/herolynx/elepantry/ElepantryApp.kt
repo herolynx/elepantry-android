@@ -17,7 +17,7 @@ class ElepantryApp : Application(), AuthContext {
 
     override fun onCreate() {
         super.onCreate()
-        Thread.setDefaultUncaughtExceptionHandler { thread, ex -> exception("UncaughtExceptionHandler", ex) }
+        Thread.setDefaultUncaughtExceptionHandler { _, ex -> exception("UncaughtExceptionHandler", ex) }
     }
 
 }

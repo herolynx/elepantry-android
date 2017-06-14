@@ -47,7 +47,7 @@ class GoogleDriveMetaInfoSync(
                                                             .schedule()
                                                             .observeOn(Schedulers.io())
                                                             .subscribe(
-                                                                    { info -> debug("$TAG New version of resource saved: $newVersion") },
+                                                                    { _ -> debug("$TAG New version of resource saved: $newVersion") },
                                                                     { ex -> error("$TAG New version of resource not saved: $newVersion", ex) }
                                                             )
                                                 },

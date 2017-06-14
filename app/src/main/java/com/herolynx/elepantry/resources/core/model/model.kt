@@ -2,4 +2,8 @@ package com.herolynx.elepantry.resources.core.model
 
 import java.util.*
 
-internal fun newId(): String = UUID.randomUUID().toString()
+typealias Id = String
+
+typealias Tag = String
+
+internal fun newId(): Id = UUID.randomUUID().toString()

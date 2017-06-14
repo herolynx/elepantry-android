@@ -8,8 +8,6 @@ import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.resources.core.model.Tag
-import com.herolynx.elepantry.resources.core.model.add
-import com.herolynx.elepantry.resources.core.model.remove
 import com.herolynx.elepantry.resources.view.list.ResourcesActivity
 import org.funktionale.option.Option
 import org.funktionale.option.firstOption
@@ -80,7 +78,7 @@ internal class ResourceTagsCtrl<T>(
                                 ResourcesActivity.navigate(view)
                             }
                         },
-                        { ex -> error("$TAG Couldn't save changes - resource: $changed") }
+                        { ex -> error("$TAG Couldn't save changes - resource: $changed", ex) }
                 )
         t = changed
         if (tagsChanged) {
@@ -103,7 +101,7 @@ internal class ResourceTagsCtrl<T>(
                                         }
                                         ResourcesActivity.navigate(view)
                                     },
-                                    { ex -> error("$TAG Couldn't delete resource: $res") }
+                                    { ex -> error("$TAG Couldn't delete resource: $res", ex) }
                             )
                 }
     }
@@ -112,7 +110,7 @@ internal class ResourceTagsCtrl<T>(
 
     fun changeName(name: String, showConfirmation: Boolean = false, redirect: Boolean = false): T? {
         return nameChange
-                .filter { logic -> isNameValid(name) }
+                .filter { _ -> isNameValid(name) }
                 .flatMap { logic -> t.toOption().map { res -> Pair(logic, res) } }
                 .map { logicAndData ->
                     debug("$TAG Changing name - resource: $t, new name: $name")
@@ -124,12 +122,16 @@ internal class ResourceTagsCtrl<T>(
 
     fun addTag(name: String, showConfirmation: Boolean = false): T? =
             if (isNameValid(name)) {
-                changeTags(t, { tags -> tags.add(name) }, showConfirmation)
+                changeTags(t, { tags -> tags.plus(name).toSet().toList() }, showConfirmation)
             } else {
                 t
             }
 
-    fun deleteTag(t: Tag, showConfirmation: Boolean = false): T? = changeTags(this.t, { tags -> tags.remove(t) }, showConfirmation)
+    fun deleteTag(toDelete: Tag, showConfirmation: Boolean = false): T? = changeTags(
+            this.t,
+            { tags -> tags.filterNot { t -> t.equals(toDelete, ignoreCase = true) } },
+            showConfirmation
+    )
 
     fun saveTags(showConfirmation: Boolean = false, redirect: Boolean = false): T? = changeTags(this.t, { tags -> tags }, showConfirmation, redirect = redirect)
 
@@ -144,8 +146,7 @@ internal class ResourceTagsCtrl<T>(
                 .getOrElse { r }
     }
 
-    fun getTagSuggestions() = suggestionTags.findAll()
-            .map { tags -> tags.map { t -> t.name }.toSet() }
+    fun getTagSuggestions() = suggestionTags.findAll().map { tags -> tags.toSet().toList() }
 
     companion object {
 

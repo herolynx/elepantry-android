@@ -35,7 +35,7 @@ internal class GroupResourcesTagsRepository(
                     .observeOn(Schedulers.io())
                     .subscribe(
                             { r -> debug("[GroupResourcesTags] Resource deleted: $r") },
-                            { ex -> error("[GroupResourcesTags] Couldn't delete group: $t") }
+                            { ex -> error("[GroupResourcesTags] Couldn't delete group: $t", ex) }
                     )
         }
         return Observable.just(DataEvent(t))
@@ -49,7 +49,7 @@ internal class GroupResourcesTagsRepository(
                     .observeOn(Schedulers.io())
                     .subscribe(
                             { r -> debug("[GroupResourcesTags] Resource changes saved: $r") },
-                            { ex -> error("[GroupResourcesTags] Couldn't save changes - group: $t") }
+                            { ex -> error("[GroupResourcesTags] Couldn't save changes - group: $t", ex) }
                     )
 
         }
@@ -59,10 +59,11 @@ internal class GroupResourcesTagsRepository(
 
 internal class GroupResourcesTags(internal val resources: List<Resource>) {
 
-    fun getTags(): List<Tag> = resources.flatMap(Resource::tags)
-            .groupBy(Tag::name)
-            .flatMapTo(mutableListOf(), { v -> listOf(v.value[0]) })
+    fun getTags(): List<Tag> = resources.flatMap(Resource::tags).toSet().toList()
 
-    fun addTags(newTags: List<Tag>) = GroupResourcesTags(resources.map { r -> r.copy(tags = newTags.toList()) })
+    fun addTags(newTags: List<Tag>): GroupResourcesTags {
+        val tags = newTags.toSet().toList()
+        return GroupResourcesTags(resources.map { r -> r.copy(tags = tags) })
+    }
 
 }

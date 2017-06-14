@@ -1,4 +1,4 @@
-# elepantry-android [![CircleCI](https://circleci.com/gh/herolynx/elepantry-android.svg?style=svg)](https://circleci.com/gh/herolynx/elepantry-android)[![Kotlin](https://img.shields.io/badge/kotlin-1.0.6-blue.svg)](http://kotlinlang.org)
+# elepantry-android [![CircleCI](https://circleci.com/gh/herolynx/elepantry-android.svg?style=svg)](https://circleci.com/gh/herolynx/elepantry-android)[![Kotlin](https://img.shields.io/badge/kotlin-1.1.1-blue.svg)](http://kotlinlang.org)
 
 We have created `Elepantry` Tagging Space to let you easily find the files on your cloud drives.
 

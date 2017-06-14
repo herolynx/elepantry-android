@@ -47,7 +47,7 @@ internal object ResourceTagsCtrlFactory {
     ): ResourceTagsCtrl<GroupResourcesTags> = ResourceTagsCtrl<GroupResourcesTags>(
             view = v,
             repository = GroupResourcesTagsRepository(r, group),
-            loadFilter = Option.Some({ v1, v2 -> true }),
+            loadFilter = Option.Some({ _, _ -> true }),
             nameGetter = Option.None,
             nameChange = Option.None,
             tagsGetter = GroupResourcesTags::getTags,
