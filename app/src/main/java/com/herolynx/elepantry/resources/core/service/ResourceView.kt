@@ -7,6 +7,8 @@ import rx.Observable
 
 interface ResourceView {
 
+    fun suggest(text:String) : Observable<Set<String>>
+
     fun search(c: SearchCriteria = SearchCriteria()): Try<out ResourcePage>
 
 }
