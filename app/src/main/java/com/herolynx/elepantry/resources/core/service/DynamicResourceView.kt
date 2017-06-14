@@ -13,8 +13,6 @@ class DynamicResourceView(
 
     private val tagNames = v.tags.map { t -> t.name }.toCollection(mutableSetOf()).toSet()
 
-    override fun suggest(text: String): Observable<Set<String>> = Observable.empty()
-
     override fun search(c: SearchCriteria) = Try {
         DynamicResourcePage(
                 resources()

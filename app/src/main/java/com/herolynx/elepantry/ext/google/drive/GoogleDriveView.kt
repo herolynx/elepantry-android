@@ -14,14 +14,9 @@ import com.herolynx.elepantry.resources.core.service.ResourceView
 import com.herolynx.elepantry.resources.core.service.SearchCriteria
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
-import rx.Observable
 import java.util.*
 
 class GoogleDriveView(private val service: Drive) : ResourceView {
-
-    override fun suggest(text: String): Observable<Set<String>> {
-        return Observable.just(setOf("ggg1", "ggg2", "ggg3"))
-    }
 
     override fun search(c: SearchCriteria) = GoogleDrivePage.create { nextPageToken ->
         debug("[GoogleDriveView] Search - criteria: $c")

@@ -15,7 +15,6 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.rx.DataEvent
-import com.herolynx.elepantry.core.search.SearchSuggestionAdapter
 import com.herolynx.elepantry.core.ui.WebViewUtils
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
@@ -190,7 +189,6 @@ class ResourcesActivity : UserViewsMenu() {
                 return true
             }
         })
-        searchView.suggestionsAdapter = SearchSuggestionAdapter(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
