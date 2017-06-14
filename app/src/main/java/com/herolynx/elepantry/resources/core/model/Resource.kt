@@ -26,13 +26,12 @@ data class Resource(
     fun <C : Collection<String>> containsAny(names: C) = tags.find { t -> names.contains(t.name) }.toOption().isDefined()
 
     fun containsText(search: String): Boolean {
-        if (name.contains(search)) {
+        if (name.contains(search, ignoreCase = true)) {
             return true
         }
-        return !tags
-                .filter { t -> t.name.contains(search) }
-                .toOption()
-                .isDefined()
+        return tags
+                .filter { t -> t.name.contains(search, ignoreCase = true) }
+                .size > 0
     }
 
     override fun hashCode(): Int {

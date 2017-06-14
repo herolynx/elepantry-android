@@ -2,7 +2,6 @@ package com.herolynx.elepantry.resources.core.service
 
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.core.model.Resource
-import com.herolynx.elepantry.resources.core.service.SearchCriteria
 import com.herolynx.elepantry.resources.core.model.View
 import org.funktionale.tries.Try
 import rx.Observable
