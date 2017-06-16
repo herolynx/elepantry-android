@@ -8,9 +8,9 @@ import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.info
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.schedule
-import com.herolynx.elepantry.ext.google.drive.GoogleDrivePage
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.service.ResourcePage
 import org.funktionale.tries.Try
 import rx.schedulers.Schedulers
 
@@ -26,7 +26,7 @@ class GoogleDriveMetaInfoSync(
         }.start()
     }
 
-    private fun sync(page: Try<GoogleDrivePage>, res: Repository<Resource>, afterLogic: () -> Unit) {
+    private fun sync(page: Try<out ResourcePage>, res: Repository<Resource>, afterLogic: () -> Unit) {
         page.map { p ->
             p.resources()
                     .filter { e -> !e.deleted }

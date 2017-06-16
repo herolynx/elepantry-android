@@ -4,12 +4,12 @@ import com.google.api.services.drive.Drive
 import com.herolynx.elepantry.core.func.Retry
 import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.core.rx.DataEvent
-import com.herolynx.elepantry.resources.core.service.ResourcePage
 import com.herolynx.elepantry.resources.core.model.Resource
+import com.herolynx.elepantry.resources.core.service.ResourcePage
 import org.funktionale.tries.Try
 import rx.Observable
 
-class GoogleDrivePage(
+internal class GoogleDrivePage(
         private val list: (String?) -> Drive.Files.List,
         private val first: Boolean = false,
         private val nextPageToken: String? = null,

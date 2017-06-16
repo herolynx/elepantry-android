@@ -26,7 +26,7 @@ object GoogleApi {
 
     private fun getSignInOptions(c: Context): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestScopes(GoogleConfig.DRIVE_READONLY_API)
+                .requestScopes(GoogleConfig.DRIVE_READONLY_API, GoogleConfig.PHOTOS_READONLY_API)
                 .requestIdToken(c.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()

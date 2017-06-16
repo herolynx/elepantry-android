@@ -4,7 +4,7 @@ import com.google.api.services.drive.model.File
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.ResourceType
 
-fun File.toResource(): Resource {
+internal fun File.toResource(): Resource {
     val f = this
     return Resource(
             id = f.id,
