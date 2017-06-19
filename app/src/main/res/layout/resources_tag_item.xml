@@ -37,7 +37,6 @@
 
         <RelativeLayout
             android:layout_width="25dp"
-
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|right"
             android:gravity="right"
