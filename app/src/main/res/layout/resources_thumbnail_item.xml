@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.herolynx.elepantry.resources.view.list.ResourcesActivity">
+
+    <LinearLayout
+        android:id="@+id/resource_open"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/select_list_tiles_1n"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="5dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:background="@color/grey_4"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/resource_thumbnail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey_4"
+                    android:scaleType="centerCrop" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp">
+
+            <TextView
+                android:id="@+id/resource_item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="left|center"
+                android:lines="1"
+                android:textSize="14dp"
+                android:textColor="@color/dark_1" />
+
+            <TextView
+                android:id="@+id/resource_item_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:gravity="left|center"
+                android:lines="2"
+                android:textColor="@color/grey_1"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@drawable/resource_open"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/resource_item_ext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/margin_5"
+                android:background="@drawable/resource_type_border"
+                android:gravity="center_horizontal"
+                android:state_enabled="false"
+                android:textColor="@color/grey_1"
+                android:textSize="8dp"
+                android:visibility="gone" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center"
+                android:backgroundTintMode="@color/white"
+                android:drawableRight="@drawable/ic_view_resource_open"
+                android:gravity="center|center"
+                android:textColor="@color/blue_1"
+                android:state_enabled="false" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
+
