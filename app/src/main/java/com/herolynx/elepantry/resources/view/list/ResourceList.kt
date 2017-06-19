@@ -23,11 +23,12 @@ internal object ResourceList {
 
     fun adapter(
             userResourceRepository: Repository<Resource> = Config.repository.userResources(),
-            onClickHandler: (Resource) -> Unit
+            onClickHandler: (Resource) -> Unit,
+            layoutId: Int = R.layout.resources_list_item
     ):
             ListAdapter<Resource, ResourceItemView> =
             ListAdapter(
-                    { ctx -> ResourceItemView(ctx) },
+                    { ctx -> ResourceItemView(ctx, layoutId) },
                     { r, h -> display(r, h, userResourceRepository, onClickHandler) }
             )
 
@@ -77,10 +78,10 @@ internal object ResourceList {
 
 }
 
-internal class ResourceItemView(ctx: Context) : LinearLayout(ctx) {
+internal class ResourceItemView(ctx: Context, layoutId: Int = R.layout.resources_list_item) : LinearLayout(ctx) {
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.resources_list_item, this)
+        LayoutInflater.from(context).inflate(layoutId, this)
     }
 
     val name = findViewById(R.id.resource_item_name) as TextView

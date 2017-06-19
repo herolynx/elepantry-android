@@ -3,11 +3,13 @@ package com.herolynx.elepantry.resources.view.list
 import android.app.Activity
 import android.os.Bundle
 import android.support.v4.view.MenuItemCompat
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
@@ -17,6 +19,7 @@ import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.ui.WebViewUtils
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
+import com.herolynx.elepantry.core.ui.recyclerview.GridLayoutUtils
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
 import com.herolynx.elepantry.resources.core.model.Resource
@@ -28,6 +31,7 @@ import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
 import rx.Observable
+
 
 class ResourcesActivity : UserViewsMenu() {
 
@@ -43,6 +47,7 @@ class ResourcesActivity : UserViewsMenu() {
         super.onCreate(savedInstanceState)
         ctrl = ResourcesCtrl()
         initResourceView()
+        initViewTypeActions()
         initEditAction()
         if (intent.extras != null) {
             loadParams(intent.extras)
@@ -90,15 +95,24 @@ class ResourcesActivity : UserViewsMenu() {
         }
     }
 
-    private fun initResourceView() {
+    private fun initViewTypeActions() {
+        (findViewById(R.id.view_type_list) as Button).setOnClickListener { initResourceView(isListView = true) }
+        (findViewById(R.id.view_type_grid) as Button).setOnClickListener { initResourceView(isListView = false) }
+    }
+
+    private fun initResourceView(isListView: Boolean = true) {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
-        listAdapter = ResourceList.adapter(onClickHandler = { r -> WebViewUtils.openLink(this, r.downloadLink) })
+        listAdapter = ResourceList.adapter(
+                onClickHandler = { r -> WebViewUtils.openLink(this, r.downloadLink) },
+                layoutId = if (isListView) R.layout.resources_list_item else R.layout.resources_thumbnail_item
+        )
         listAdapter?.onSelectedItemsChange { selected ->
             fabEditButton?.visibility = if (selected.isEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
         }
         listView.adapter = listAdapter
         val linearLayoutManager = LinearLayoutManager(this)
-        listView.layoutManager = linearLayoutManager
+        val gridLayoutManager = GridLayoutManager(this, GridLayoutUtils.calculateNoOfColumns(this))
+        listView.layoutManager = if (isListView) linearLayoutManager else gridLayoutManager
         loadData = { searchCriteria ->
             listView.clearOnScrollListeners()
             ctrl?.loadData(
