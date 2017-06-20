@@ -31,16 +31,6 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/sort_list"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:paddingLeft="@dimen/margin_10"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_view_resource_sort_az"
-                    />
-
-                <Button
                     android:id="@+id/view_type_list"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
