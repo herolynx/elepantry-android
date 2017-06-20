@@ -9,77 +9,86 @@
     tools:context="com.herolynx.elepantry.resources.view.list.ResourcesActivity">
 
     <LinearLayout
-        android:id="@+id/resource_open"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/select_list_tiles_1n"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:background="@drawable/select_list_row"
         android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="5dp"
-        >
+        android:paddingLeft="5dp"
+        android:layout_below="@+id/view"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:background="@color/grey_4"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="center">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/resource_thumbnail"
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/resource_thumbnail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:layout_centerInParent="true"
+                        android:background="@color/grey_4"
+                        android:scaleType="fitCenter" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp">
+
+                <TextView
+                    android:id="@+id/resource_item_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/grey_4"
-                    android:scaleType="centerCrop" />
+                    android:ellipsize="end"
+                    android:gravity="left|center"
+                    android:lines="1"
+                    android:textSize="14dp"
+                    android:textColor="@color/dark_1" />
+
+                <TextView
+                    android:id="@+id/resource_item_tags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:ellipsize="end"
+                    android:gravity="left|center"
+                    android:lines="2"
+                    android:textColor="@color/grey_1"
+                    android:paddingBottom="5dp"
+                    android:textSize="10dp" />
 
             </LinearLayout>
         </LinearLayout>
 
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="5dp">
-
-            <TextView
-                android:id="@+id/resource_item_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:gravity="left|center"
-                android:lines="1"
-                android:textSize="14dp"
-                android:textColor="@color/dark_1" />
-
-            <TextView
-                android:id="@+id/resource_item_tags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:ellipsize="end"
-                android:gravity="left|center"
-                android:lines="2"
-                android:textColor="@color/grey_1"
-                android:textSize="10dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-
-            android:layout_width="35dp"
+            android:id="@+id/resource_open"
+            android:layout_width="20dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:visibility="gone"
             android:background="@drawable/resource_open"
             android:orientation="vertical">
 
@@ -106,6 +115,15 @@
                 android:state_enabled="false" />
         </LinearLayout>
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="0.5dp"
+        android:background="@color/grey_3"
+        android:layout_height="match_parent">
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey_3"
+        android:id="@+id/view" />
 </RelativeLayout>
 
