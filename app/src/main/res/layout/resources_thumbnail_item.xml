@@ -65,7 +65,7 @@
                     android:ellipsize="end"
                     android:gravity="left|center"
                     android:lines="1"
-                    android:textSize="14dp"
+                    android:textSize="10dp"
                     android:textColor="@color/dark_1" />
 
                 <TextView

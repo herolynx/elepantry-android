@@ -39,6 +39,7 @@ class ResourcesActivity : UserViewsMenu() {
     private var loadData: (String?) -> Unit = {}
     private var ctrl: ResourcesCtrl? = null
     private var clearSearchAction: () -> Unit = {}
+    private var viewType = ResourceViewType.LIST
 
     override val layoutId: Int = R.layout.resources_list
     override val topMenuId = R.menu.resources_top_menu
@@ -46,11 +47,12 @@ class ResourcesActivity : UserViewsMenu() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ctrl = ResourcesCtrl()
-        initResourceView()
         initViewTypeActions()
         initEditAction()
         if (intent.extras != null) {
             loadParams(intent.extras)
+        } else {
+            changeViewType(ResourceViewType.LIST)
         }
     }
 
@@ -81,11 +83,13 @@ class ResourcesActivity : UserViewsMenu() {
         super.onSaveInstanceState(outState)
         debug("[onSaveInstanceState] Saving state - current view: ${ctrl?.currentView}")
         outState?.putString(PARAM_VIEW, ctrl?.currentView.toJsonString().get())
+        outState?.putString(PARAM_VIEW_TYPE, viewType.toString())
     }
 
     private fun loadParams(b: Bundle) {
         val view = b.getString(PARAM_VIEW, "")
-        debug("[ResourceActivity] Loading params - view: $view")
+        val viewType = b.getString(PARAM_VIEW_TYPE, "")
+        debug("[ResourceActivity] Loading params - view: $view, view type: $viewType")
         if (!view.isEmpty()) {
             view.fromJsonString(View::class.java)
                     .map { v ->
@@ -93,11 +97,17 @@ class ResourcesActivity : UserViewsMenu() {
                         onViewChange(v)
                     }
         }
+        changeViewType(ResourceViewType.valueOf(viewType))
     }
 
     private fun initViewTypeActions() {
-        (findViewById(R.id.view_type_list) as Button).setOnClickListener { initResourceView(isListView = true) }
-        (findViewById(R.id.view_type_grid) as Button).setOnClickListener { initResourceView(isListView = false) }
+        (findViewById(R.id.view_type_list) as Button).setOnClickListener { changeViewType(ResourceViewType.LIST) }
+        (findViewById(R.id.view_type_grid) as Button).setOnClickListener { changeViewType(ResourceViewType.GRID) }
+    }
+
+    private fun changeViewType(newViewType: ResourceViewType) {
+        viewType = newViewType
+        initResourceView(isListView = (newViewType == ResourceViewType.LIST))
     }
 
     private fun initResourceView(isListView: Boolean = true) {
@@ -227,11 +237,18 @@ class ResourcesActivity : UserViewsMenu() {
     companion object {
 
         private val PARAM_VIEW = "view"
+        private val PARAM_VIEW_TYPE = "viewType"
+
+        private enum class ResourceViewType {
+            LIST,
+            GRID
+        }
 
         fun navigate(a: Activity, v: View = View(name = a.getString(R.string.google_drive), type = ViewType.GOOGLE)) {
             a.navigateTo(
                     ResourcesActivity::class.java,
-                    Pair(PARAM_VIEW, v.toJsonString().get())
+                    Pair(PARAM_VIEW, v.toJsonString().get()),
+                    Pair(PARAM_VIEW_TYPE, ResourceViewType.LIST.toString())
             )
         }
 
