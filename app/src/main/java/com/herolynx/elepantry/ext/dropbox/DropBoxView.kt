@@ -17,7 +17,7 @@ class DropBoxView(private val client: DbxClientV2) : ResourceView {
 
     override fun search(c: SearchCriteria): Try<out ResourcePage> = Try {
         client.files()
-        DropBoxPage(client.files().listFolder(ROOT_PATH), client.files())
+        DropBoxPage(client.files().listFolderBuilder(ROOT_PATH).withRecursive(true).start(), client.files())
     }
             .onFailure { ex -> warn("[DropBox] Search error - criteria: $c, path: $ROOT_PATH", ex) }
 
