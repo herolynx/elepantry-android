@@ -24,11 +24,13 @@
     <string name="sign_in_google">Zaloguj używając Google</string>
     <string name="sign_out">Wyloguj</string>
     <string name="auth_failed">Twoja tożsamość nie została potwierdzona</string>
+    <string name="auth_failed_to">Twoja tożsamość nie została potwierdzona: %s</string>
 
     <!-- VIEWS -->
     <string name="add_new_view">Nowy widok</string>
     <string name="add_new_tag">Dodaj nowy tag:</string>
     <string name="google_drive">Google Drive</string>
+    <string name="dropbox_drive">DropBox</string>
     <string name="user_views">Twoje widoki</string>
     <string name="resource_type_view">Widok</string>
     <string name="resource_type_resource">Zasób</string>

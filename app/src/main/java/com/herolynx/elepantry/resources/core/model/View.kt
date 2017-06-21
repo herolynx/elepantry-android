@@ -22,6 +22,7 @@ data class View(
 enum class ViewType {
 
     DYNAMIC,
-    GOOGLE
+    GOOGLE,
+    DROP_BOX
 
 }

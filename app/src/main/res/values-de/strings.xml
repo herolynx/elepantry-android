@@ -24,11 +24,13 @@
     <string name="sign_in_google">Melden Sie sich mit Google an</string>
     <string name="sign_out">Ausloggen</string>
     <string name="auth_failed">Ihre Identität wurde nicht bestätigt</string>
+    <string name="auth_failed_to">Ihre Identität wurde nicht bestätigt: %s</string>
 
     <!-- VIEWS -->
     <string name="add_new_view">Ansicht hinzufügen</string>
     <string name="add_new_tag">Neues Tag hinzufügen</string>
     <string name="google_drive">Google Drive</string>
+    <string name="dropbox_drive">DropBox</string>
     <string name="user_views">Ihre Ansichten</string>
     <string name="resource_type_view">Ansicht</string>
     <string name="resource_type_resource">Ressource</string>
@@ -37,4 +39,5 @@
     <string name="resource_name_placeholder">Ressource Name</string>
     <string name="tag_name_placeholder">Tag Name</string>
     <string name="resource_name_valid_length" formatted="false">Der Name muss mindestens %s und höchstens %s Zeichen haben</string>
+
 </resources>

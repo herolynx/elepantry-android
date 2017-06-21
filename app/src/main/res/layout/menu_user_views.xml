@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- view: Google Drive -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,8 +77,55 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- view: DropBox -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:background="@drawable/left_menu_item">
 
-            <!-- Views -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    >
+
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="@dimen/margin_5"
+                        android:layout_marginTop="0dp"
+                        android:drawableLeft="@drawable/ic_menu_dropbox"
+                        android:gravity="center" />
+
+                    <Button
+                        android:id="@+id/drive_dropbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@android:color/transparent"
+                        android:gravity="left|center"
+                        android:text="@string/dropbox_drive"
+                        android:textAllCaps="false"
+                        android:textColor="@color/menu_left_item" />
+
+                    <TextView
+                        android:id="@+id/drive_dropbox_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="-5dp"
+                        android:drawableLeft="@drawable/ic_menu_check"
+                        android:visibility="invisible"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <!-- User Views -->
 
             <LinearLayout
                 android:layout_width="match_parent"

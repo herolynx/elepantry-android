@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Elepantry</string>
 
+    <string name="dropbox_app_key">b5pu36dko3dg1xz</string>
+
     <!-- GENERIC -->
     <string name="loading">Loading…</string>
     <string name="edit">Edit</string>
@@ -24,11 +26,13 @@
     <string name="sign_in_google">Sign in with Google</string>
     <string name="sign_out">Sign out</string>
     <string name="auth_failed">Authentication failed</string>
+    <string name="auth_failed_to">Authentication failed: %s</string>
 
     <!-- VIEWS -->
     <string name="add_new_view">Add new view</string>
     <string name="add_new_tag">Add new tag:</string>
     <string name="google_drive">Google Drive</string>
+    <string name="dropbox_drive">DropBox</string>
     <string name="user_views">Your views</string>
     <string name="resource_type_view">View</string>
     <string name="resource_type_resource">Resource</string>

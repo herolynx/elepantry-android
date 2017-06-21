@@ -20,9 +20,14 @@ import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.log.viewVisit
+import com.herolynx.elepantry.core.rx.observe
+import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
+import com.herolynx.elepantry.core.ui.notification.toast
+import com.herolynx.elepantry.ext.dropbox.DropBoxAuth
 import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
@@ -92,6 +97,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         menuLayout.addView(menuLeft)
 
         initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button, menuLeft.findViewById(R.id.drive_google_refresh) as TextView)
+        initDropBoxView(menuLeft.findViewById(R.id.drive_dropbox) as Button, menuLeft.findViewById(R.id.drive_dropbox_status) as TextView)
         initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView, menuCtrl)
     }
 
@@ -141,6 +147,27 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
                         }
                     }
             )
+        }
+    }
+
+    private fun initDropBoxView(b: Button, dropBoxStatus: TextView) {
+        debug("[initUserViews] Creating DropBox Drive view")
+        val name = getString(R.string.dropbox_drive)
+        val v = View(name = name, type = ViewType.DROP_BOX)
+        b.setOnClickListener {
+            DropBoxAuth.getToken(this)
+                    .schedule()
+                    .observe()
+                    .subscribe(
+                            { token ->
+                                debug("[initUserViews] DropBox login ok - token: $token")
+                                findViewById(R.id.drive_dropbox_status).visibility = android.view.View.VISIBLE
+                            },
+                            { ex ->
+                                error("[DropBox][Auth] Couldn't login", ex)
+                                toast(R.string.auth_failed_to, name)
+                            }
+                    )
         }
     }
 
