@@ -162,6 +162,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
                             { token ->
                                 debug("[initUserViews] DropBox login ok - token: $token")
                                 findViewById(R.id.drive_dropbox_status).visibility = android.view.View.VISIBLE
+
                             },
                             { ex ->
                                 error("[DropBox][Auth] Couldn't login", ex)

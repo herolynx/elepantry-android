@@ -38,7 +38,7 @@ object DropBoxAuth {
             SystemClock.sleep(waitTime.millis)
         }
         debug("$TAG Log-in finished - token: $dropBoxToken")
-        if (dropBoxToken != null) Observable.just(dropBoxToken) else Observable.error(RuntimeException(""))
+        if (dropBoxToken != null) Observable.just(dropBoxToken) else Observable.error(RuntimeException("DropBox login failed due to missing token - login could be cancelled by the user"))
     }
 
 
