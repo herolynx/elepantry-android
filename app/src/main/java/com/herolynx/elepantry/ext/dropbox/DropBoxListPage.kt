@@ -10,7 +10,7 @@ import com.herolynx.elepantry.resources.core.service.ResourcePage
 import org.funktionale.tries.Try
 import rx.Observable
 
-internal class DropBoxPage(
+internal class DropBoxListPage(
         private val folder: ListFolderResult,
         private val files: DbxUserFilesRequests
 ) : ResourcePage {
@@ -22,7 +22,7 @@ internal class DropBoxPage(
             .map { r -> DataEvent(r, deleted = false) }
 
     override fun next(): Try<out ResourcePage> = Try {
-        DropBoxPage(files.listFolderContinue(folder.cursor), files)
+        DropBoxListPage(files.listFolderContinue(folder.cursor), files)
     }
             .onFailure { ex -> warn("[DropBox] Getting page data error", ex) }
 
