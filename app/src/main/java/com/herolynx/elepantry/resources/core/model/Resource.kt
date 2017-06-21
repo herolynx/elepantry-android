@@ -3,7 +3,7 @@ package com.herolynx.elepantry.resources.core.model
 import org.funktionale.option.toOption
 
 enum class ResourceType {
-    GOOGLE
+    GOOGLE, DROP_BOX
 }
 
 data class Resource(

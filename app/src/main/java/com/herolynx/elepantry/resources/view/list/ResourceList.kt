@@ -48,11 +48,16 @@ internal object ResourceList {
         h.view.ext.text = r?.extension
         h.view.parentId = r.toOption().map(Resource::id)
         displayTags(r, h, userResourceRepository)
-        h.view.lastSubscription = h.view.thumbnail.download(
-                h.view.parentId,
-                { h.view.parentId },
-                r?.thumbnailLink, r?.iconLink
-        )
+        if (r?.thumbnailLink != null && r?.iconLink != null) {
+            h.view.lastSubscription = h.view.thumbnail.download(
+                    h.view.parentId,
+                    { h.view.parentId },
+                    r?.thumbnailLink, r?.iconLink
+            )
+        } else {
+            h.view.lastSubscription = Option.None
+            h.view.thumbnail.setImageBitmap(null)
+        }
     }
 
     private fun displayTags(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>, userResourceRepository: Repository<Resource>) {
