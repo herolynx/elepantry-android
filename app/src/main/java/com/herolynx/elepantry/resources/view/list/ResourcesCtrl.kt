@@ -35,12 +35,17 @@ internal class ResourcesCtrl {
     fun loadData(
             pageRequests: Observable<Int>,
             search: String? = null,
-            viewDisplay: (pageResources: Observable<DataEvent<Resource>>) -> Unit
+            viewDisplay: (pageResources: Observable<DataEvent<Resource>>) -> Unit,
+            showProgress: (Boolean) -> Unit
     ) {
         loadDataSubs = pageRequests
                 .flatMap { pageNr ->
                     debug("[PageRequest] Loading next page - number: $pageNr")
-                    loadNextPage(search)
+                    showProgress(true)
+                    loadNextPage(search).map { r ->
+                        showProgress(false)
+                        r
+                    }
                 }
                 .filter { p -> p.isSuccess() }
                 .map { p -> p.get().resources() }

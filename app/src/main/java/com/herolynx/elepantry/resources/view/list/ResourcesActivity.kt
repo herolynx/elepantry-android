@@ -133,7 +133,8 @@ class ResourcesActivity : UserViewsMenu() {
                             listView.onInfiniteLoading(linearLayoutManager)
                     ),
                     search = searchCriteria,
-                    viewDisplay = { page -> displayPage(page) }
+                    viewDisplay = { page -> displayPage(page) },
+                    showProgress = { show -> runOnUiThread { if (show) showProgressDialog(this) else hideProgressDialog() } }
             )
         }
         loadDefaultItem()
