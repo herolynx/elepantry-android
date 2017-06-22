@@ -8,6 +8,7 @@ interface AuthContext {
 
     var googleAccount: GoogleSignInAccount?
     var user: User?
+    var dropBoxToken: Token?
 
     fun setMainAccount(account: GoogleSignInAccount?) {
         info("[AppContext] Google account set")
@@ -17,6 +18,11 @@ interface AuthContext {
                 googleAccount?.displayName!!,
                 googleAccount?.photoUrl!!
         )
+    }
+
+    fun setDropBoxAccount(token: Token) {
+        info("[AppContext] DropBox account set")
+        dropBoxToken = token
     }
 
 }

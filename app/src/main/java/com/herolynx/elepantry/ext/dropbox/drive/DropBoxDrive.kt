@@ -5,8 +5,13 @@ import com.herolynx.elepantry.auth.Token
 import com.herolynx.elepantry.drive.CloudDrive
 import com.herolynx.elepantry.drive.CloudResource
 import com.herolynx.elepantry.drive.DriveType
+import com.herolynx.elepantry.ext.dropbox.auth.DropBoxAuth
+import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.core.model.Resource
+import org.funktionale.option.getOrElse
+import org.funktionale.option.toOption
 import org.funktionale.tries.Try
+import rx.Observable
 
 class DropBoxDrive(private val client: DbxClientV2) : CloudDrive {
 
@@ -31,11 +36,11 @@ class DropBoxDrive(private val client: DbxClientV2) : CloudDrive {
             return com.herolynx.elepantry.ext.dropbox.drive.DropBoxDrive(com.dropbox.core.v2.DbxClientV2(requestConfig, token))
         }
 
-        fun create(a: android.app.Activity): rx.Observable<DropBoxDrive> = com.herolynx.elepantry.ext.dropbox.auth.DropBoxAuth.getToken(a)
-                .map { token ->
-                    com.herolynx.elepantry.ext.dropbox.drive.DropBoxDrive.Companion.create(token)
-                }
-
+        fun create(a: android.app.Activity): rx.Observable<DropBoxDrive> = a.getAuthContext()
+                .flatMap { c -> c.dropBoxToken.toOption() }
+                .map { t -> Observable.just(t) }
+                .getOrElse { DropBoxAuth.getToken(a) }
+                .map { token -> DropBoxDrive.create(token) }
 
     }
 
