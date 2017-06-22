@@ -9,8 +9,8 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.repository.Repository
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
@@ -69,8 +69,8 @@ internal object ResourceList {
                     userResourceRepository.find(id)
                             .filter { ur -> ur.isDefined() }
                             .map { ur -> ur.get() }
-                            .schedule()
-                            .observe()
+                            .subscribeOnDefault()
+                            .observeOnDefault()
                             .subscribe(
                                     { userResource ->
                                         h.view.ext.text = userResource.extension

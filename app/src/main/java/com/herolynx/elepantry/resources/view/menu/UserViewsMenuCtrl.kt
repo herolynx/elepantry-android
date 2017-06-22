@@ -2,8 +2,8 @@ package com.herolynx.elepantry.resources.view.menu
 
 import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.repository.Repository
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
@@ -27,8 +27,8 @@ internal class UserViewsMenuCtrl(
 
     fun getUserViews() = userViews
             .asObservable()
-            .schedule()
-            .observe()
+            .subscribeOnDefault()
+            .observeOnDefault()
 
 
 }

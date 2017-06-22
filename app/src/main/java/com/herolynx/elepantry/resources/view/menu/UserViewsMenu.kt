@@ -23,8 +23,8 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.log.viewVisit
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.dropbox.DropBoxAuth
@@ -157,8 +157,8 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         val v = View(name = name, type = ViewType.DROP_BOX)
         b.setOnClickListener {
             DropBoxAuth.getToken(this)
-                    .schedule()
-                    .observe()
+                    .subscribeOnDefault()
+                    .observeOnDefault()
                     .subscribe(
                             { token ->
                                 debug("[initUserViews] DropBox login ok - token: $token")

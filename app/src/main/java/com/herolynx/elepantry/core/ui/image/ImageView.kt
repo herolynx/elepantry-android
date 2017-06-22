@@ -5,8 +5,8 @@ import android.view.View
 import android.widget.ImageView
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.net.download
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
 import rx.Subscription
@@ -22,8 +22,8 @@ internal object ImageViewUtils {
         img.visibility = View.INVISIBLE
         return uri
                 .download()
-                .schedule()
-                .observe()
+                .subscribeOnDefault()
+                .observeOnDefault()
                 .subscribe(
                         { bitmap ->
                             if (parentId.equals(parentIdGetter())) {

@@ -4,8 +4,8 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.repository.Repository
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.resources.core.model.Tag
 import com.herolynx.elepantry.resources.view.list.ResourcesActivity
@@ -36,8 +36,8 @@ internal class ResourceTagsCtrl<T>(
         refresh(data)
         loadFilter.map { f ->
             repository.findAll()
-                    .schedule()
-                    .observe()
+                    .subscribeOnDefault()
+                    .observeOnDefault()
                     .map { l -> l.filter { e -> f(t!!, e) }.firstOption() }
                     .filter { o -> o.isDefined() }
                     .map { o -> o.get() }
@@ -67,8 +67,8 @@ internal class ResourceTagsCtrl<T>(
 
     private fun save(changed: T, tagsChanged: Boolean = false, showConfirmation: Boolean = false, redirect: Boolean = false): T? {
         repository.save(changed)
-                .schedule()
-                .observe()
+                .subscribeOnDefault()
+                .observeOnDefault()
                 .subscribe(
                         {
                             if (showConfirmation) {
@@ -92,8 +92,8 @@ internal class ResourceTagsCtrl<T>(
         t.toOption()
                 .map { res ->
                     repository.delete(res)
-                            .schedule()
-                            .observe()
+                            .subscribeOnDefault()
+                            .observeOnDefault()
                             .subscribe(
                                     {
                                         if (showConfirmation) {

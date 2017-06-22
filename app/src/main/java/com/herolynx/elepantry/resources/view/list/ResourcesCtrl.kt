@@ -3,8 +3,8 @@ package com.herolynx.elepantry.resources.view.list
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.rx.DataEvent
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.service.ResourcePage
@@ -49,8 +49,8 @@ internal class ResourcesCtrl {
                 }
                 .filter { p -> p.isSuccess() }
                 .map { p -> p.get().resources() }
-                .schedule()
-                .observe()
+                .subscribeOnDefault()
+                .observeOnDefault()
                 .subscribe(
                         { pageResources -> viewDisplay(pageResources) },
                         { ex -> error("[PageRequest] Loading error", ex) }
@@ -63,6 +63,6 @@ internal class ResourcesCtrl {
         else resourcePage!!.get().next()
         Observable.just(resourcePage!!)
     }
-            .schedule()
+            .subscribeOnDefault()
 
 }

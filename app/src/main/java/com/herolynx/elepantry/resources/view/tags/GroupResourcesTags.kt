@@ -4,7 +4,7 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.DataEvent
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag
 import org.funktionale.option.firstOption
@@ -31,7 +31,7 @@ internal class GroupResourcesTagsRepository(
         t.resources.forEach { r ->
             repository
                     .delete(r)
-                    .schedule()
+                    .subscribeOnDefault()
                     .observeOn(Schedulers.io())
                     .subscribe(
                             { r -> debug("[GroupResourcesTags] Resource deleted: $r") },
@@ -45,7 +45,7 @@ internal class GroupResourcesTagsRepository(
         t.resources.forEach { r ->
             repository
                     .save(r)
-                    .schedule()
+                    .subscribeOnDefault()
                     .observeOn(Schedulers.io())
                     .subscribe(
                             { r -> debug("[GroupResourcesTags] Resource changes saved: $r") },

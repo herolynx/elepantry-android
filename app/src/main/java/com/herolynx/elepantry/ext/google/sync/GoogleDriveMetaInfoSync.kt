@@ -7,7 +7,7 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.info
 import com.herolynx.elepantry.core.repository.Repository
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.service.ResourcePage
@@ -37,14 +37,14 @@ class GoogleDriveMetaInfoSync(
                                         .filter { r -> r.isDefined() }
                                         .map { r -> r.get() }
                                         .filter { f -> !f.isTheSame(r) }
-                                        .schedule()
+                                        .subscribeOnDefault()
                                         .observeOn(Schedulers.io())
                                         .subscribe(
                                                 { f ->
                                                     val newVersion = r.merge(f)
                                                     debug("$TAG Saving changed resource -  new: $newVersion, old: $f")
                                                     res.save(newVersion)
-                                                            .schedule()
+                                                            .subscribeOnDefault()
                                                             .observeOn(Schedulers.io())
                                                             .subscribe(
                                                                     { _ -> debug("$TAG New version of resource saved: $newVersion") },

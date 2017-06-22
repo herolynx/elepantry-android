@@ -11,8 +11,8 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.auth.SignInUseCase
 import com.herolynx.elepantry.auth.view.SignInActivity
 import com.herolynx.elepantry.core.log.debug
-import com.herolynx.elepantry.core.rx.observe
-import com.herolynx.elepantry.core.rx.schedule
+import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.ext.google.GoogleApi
@@ -43,8 +43,8 @@ class UserBadge(
         signOutButton.setOnClickListener {
             api.asyncConnect()
                     .flatMap { api -> SignInUseCase.logOut(api) }
-                    .schedule()
-                    .observe()
+                    .subscribeOnDefault()
+                    .observeOnDefault()
                     .subscribe { _ ->
                         api.disconnect()
                         activity.navigateTo(SignInActivity::class.java)
