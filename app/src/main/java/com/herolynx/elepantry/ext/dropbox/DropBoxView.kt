@@ -23,14 +23,16 @@ class DropBoxView(private val client: DbxClientV2) : ResourceView {
             .start()
 
     override fun search(c: SearchCriteria): Try<out ResourcePage> = Try {
-        debug("[DropBox] Search - criteria: $c")
-        if (c.text != null) {
+        debug("[DropBox] Running search - criteria: $c")
+        if (!c.text.isNullOrEmpty()) {
+            debug("[DropBox] Search API - criteria: $c")
             DropBoxSearchPage(
                     nextSearch(c),
                     client.files(),
                     { from -> nextSearch(c, from) }
             )
         } else {
+            debug("[DropBox] Search - using list API to list all files...")
             DropBoxListPage(
                     client.files()
                             .listFolderBuilder(ROOT_PATH)
