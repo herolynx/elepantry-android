@@ -8,6 +8,7 @@ import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.info
 import com.herolynx.elepantry.repository.Repository
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
+import com.herolynx.elepantry.ext.google.drive.GoogleDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.service.ResourcePage
@@ -73,7 +74,7 @@ class GoogleDriveMetaInfoSync(
 
         fun create(
                 a: Activity,
-                gDrive: GoogleDriveView = GoogleDriveView.Factory.create(a).get(),
+                gDrive: GoogleDriveView = GoogleDrive.create(a).get().driveView(),
                 resRep: Repository<Resource> = Config.repository.userResources()
         ): GoogleDriveMetaInfoSync = GoogleDriveMetaInfoSync(
                 gDrive,

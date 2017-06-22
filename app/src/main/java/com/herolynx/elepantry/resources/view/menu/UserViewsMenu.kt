@@ -28,7 +28,6 @@ import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.dropbox.auth.DropBoxAuth
-import com.herolynx.elepantry.ext.dropbox.drive.DropBoxView
 import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
@@ -162,8 +161,8 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
                     .subscribe(
                             { token ->
                                 debug("[initUserViews] DropBox login ok - token: $token")
-                                findViewById(R.id.drive_dropbox_status).visibility = android.view.View.VISIBLE
-                                onViewChange(v, DropBoxView.create(token))
+                                dropBoxStatus.visibility = android.view.View.VISIBLE
+                                onViewChange(v, menuCtrl!!.getResourceView(v))
                             },
                             { ex ->
                                 error("[DropBox][Auth] Couldn't login", ex)

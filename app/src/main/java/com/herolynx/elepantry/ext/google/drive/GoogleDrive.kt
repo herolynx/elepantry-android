@@ -20,7 +20,7 @@ import org.funktionale.tries.Try
 
 class GoogleDrive(private val drive: Drive) : CloudDrive {
 
-    override fun driveView(): ResourceView = GoogleDriveView(drive)
+    override fun driveView(): GoogleDriveView = GoogleDriveView(drive)
 
     override fun type(): DriveType = DriveType.GOOGLE_DRIVE
 

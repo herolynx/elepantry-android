@@ -20,7 +20,7 @@ internal fun FileMetadata.toResource(): Resource {
             id = f.id,
             name = f.name,
             type = DriveType.DROP_BOX,
-            extension = "",
+            extension = getExtension(),
             mimeType = "",
             tags = listOf(),
             createdTime = f.serverModified.toISO8601().getOrElse { "" },
@@ -34,3 +34,11 @@ internal fun FileMetadata.toResource(): Resource {
 }
 
 internal fun SearchMatch.toResource(): Option<Resource> = metadata.toResource()
+
+internal fun FileMetadata.getExtension(): String? {
+    val nameExtIdx = name.lastIndexOf('.')
+    if (nameExtIdx > 0) {
+        return name.substring(nameExtIdx + 1)
+    }
+    return null
+}

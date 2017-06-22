@@ -6,12 +6,11 @@ import com.herolynx.elepantry.drive.CloudDrive
 import com.herolynx.elepantry.drive.CloudResource
 import com.herolynx.elepantry.drive.DriveType
 import com.herolynx.elepantry.resources.core.model.Resource
-import com.herolynx.elepantry.resources.core.service.ResourceView
 import org.funktionale.tries.Try
 
 class DropBoxDrive(private val client: DbxClientV2) : CloudDrive {
 
-    override fun driveView(): ResourceView = DropBoxView(client)
+    override fun driveView(): DropBoxView = DropBoxView(client)
 
     override fun type(): DriveType = DriveType.DROP_BOX
 

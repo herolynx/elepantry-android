@@ -46,6 +46,8 @@ data class Resource(
 
     fun hasThumbnails() = !thumbnailLink.isNullOrEmpty() || !iconLink.isNullOrEmpty()
 
+    fun isImageType() = setOf("png", "jpg", "jpeg", "gif").contains(extension)
+
 }
 
 fun Resource.getTagValue() = if (tags.isEmpty()) "" else tags.map { t -> "#${t}" }.reduce { t, s -> "$t, $s" }

@@ -22,6 +22,7 @@ import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import com.herolynx.elepantry.user.model.User
 import org.funktionale.option.Option
+import org.funktionale.option.toOption
 
 class UserBadge(
         val layout: LinearLayout,
@@ -54,7 +55,7 @@ class UserBadge(
     }
 
     fun display() {
-        activity.getAuthContext().map { c -> display(c.user!!) }
+        activity.getAuthContext().map { c -> c.user.toOption().map { u -> display(u) } }
     }
 
     fun display(user: User) {
