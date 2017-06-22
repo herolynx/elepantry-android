@@ -55,7 +55,7 @@ internal object ResourceList {
         h.view.ext.text = r?.extension
         h.view.parentId = r.toOption().map(Resource::id)
         displayTags(r, h, userResourceRepository)
-        if (r?.thumbnailLink != null && r?.iconLink != null) {
+        if (r?.hasThumbnails() ?: false) {
             h.view.lastSubscription = Option.Some(h.view.thumbnail.download(
                     cloudResource.map { cr -> cr.thumbnail() }.getOrElse { Observable.empty() },
                     h.view.parentId,

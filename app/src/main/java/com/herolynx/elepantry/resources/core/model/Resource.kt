@@ -44,6 +44,8 @@ data class Resource(
 
     fun merge(r2: Resource): Resource = this.copy(tags = r2.tags)
 
+    fun hasThumbnails() = !thumbnailLink.isNullOrEmpty() || !iconLink.isNullOrEmpty()
+
 }
 
 fun Resource.getTagValue() = if (tags.isEmpty()) "" else tags.map { t -> "#${t}" }.reduce { t, s -> "$t, $s" }
