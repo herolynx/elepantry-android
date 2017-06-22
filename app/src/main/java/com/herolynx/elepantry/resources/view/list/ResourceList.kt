@@ -54,6 +54,11 @@ internal object ResourceList {
         h.view.name.text = r?.name
         h.view.ext.text = r?.extension
         h.view.parentId = r.toOption().map(Resource::id)
+        val driveTypeIcon = if (r?.type?.equals(DriveType.DROP_BOX) ?: false)
+            R.drawable.ic_list_resource_dropbox
+        else
+            R.drawable.ic_list_resource_google
+        h.view.drive.setCompoundDrawablesWithIntrinsicBounds(0, 0, driveTypeIcon, 0)
         displayTags(r, h, userResourceRepository)
         if (r?.hasThumbnails() ?: false) {
             h.view.lastSubscription = Option.Some(h.view.thumbnail.download(
@@ -103,6 +108,7 @@ internal class ResourceItemView(ctx: Context, layoutId: Int = R.layout.resources
     var parentId: Option<String> = Option.None
     var lastSubscription: Option<Subscription> = Option.None
     val open = findViewById(R.id.resource_open) as LinearLayout
+    val drive = findViewById(R.id.resource_item_drive) as TextView
 
 }
 
