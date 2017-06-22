@@ -23,6 +23,7 @@ import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.GridLayoutUtils
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
+import com.herolynx.elepantry.drive.Drives
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
@@ -114,6 +115,7 @@ class ResourcesActivity : UserViewsMenu() {
     private fun initResourceView(isListView: Boolean = true) {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
         listAdapter = ResourceList.adapter(
+                driveFactory = { t -> Drives.drive(this, t) },
                 onClickHandler = { r -> WebViewUtils.openLink(this, r.downloadLink) },
                 layoutId = if (isListView) R.layout.resources_list_item else R.layout.resources_thumbnail_item
         )

@@ -1,6 +1,5 @@
 package com.herolynx.elepantry.core.ui.image
 
-import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import com.herolynx.elepantry.core.log.debug
@@ -8,20 +7,21 @@ import com.herolynx.elepantry.core.net.download
 import com.herolynx.elepantry.core.rx.observeOnDefault
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import org.funktionale.option.Option
-import org.funktionale.option.toOption
+import rx.Observable
 import rx.Subscription
+import java.io.InputStream
 
 internal object ImageViewUtils {
 
     fun <T> download(
             img: ImageView,
-            uri: Uri,
+            inStream: Observable<InputStream>,
             parentId: Option<T> = Option.None,
             parentIdGetter: () -> Option<T> = { Option.None }
     ): Subscription {
         img.visibility = View.INVISIBLE
-        return uri
-                .download()
+        return inStream
+                .flatMap { s -> s.download() }
                 .subscribeOnDefault()
                 .observeOnDefault()
                 .subscribe(
@@ -40,18 +40,7 @@ internal object ImageViewUtils {
 }
 
 fun <T> ImageView.download(
-        uri: Uri,
+        inStream: Observable<InputStream>,
         parentId: Option<T> = Option.None,
         parentIdGetter: () -> Option<T> = { Option.None }
-): Subscription = ImageViewUtils.download(this, uri, parentId, parentIdGetter)
-
-fun <T> ImageView.download(
-        parentId: Option<T> = Option.None,
-        parentIdGetter: () -> Option<T> = { Option.None },
-        vararg urls: String?
-): Option<Subscription> = urls
-        .filter { url -> url != null }
-        .get(0)
-        .toOption()
-        .map { url -> Uri.parse(url) }
-        .map { uri -> download(uri, parentId, parentIdGetter) }
+): Subscription = ImageViewUtils.download(this, inStream, parentId, parentIdGetter)

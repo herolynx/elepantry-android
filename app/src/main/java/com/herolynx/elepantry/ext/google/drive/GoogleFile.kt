@@ -1,15 +1,15 @@
 package com.herolynx.elepantry.ext.google.drive
 
 import com.google.api.services.drive.model.File
+import com.herolynx.elepantry.drive.DriveType
 import com.herolynx.elepantry.resources.core.model.Resource
-import com.herolynx.elepantry.resources.core.model.ResourceType
 
 internal fun File.toResource(): Resource {
     val f = this
     return Resource(
             id = f.id,
             name = f.name,
-            type = ResourceType.GOOGLE,
+            type = DriveType.GOOGLE_DRIVE,
             extension = getExtension(),
             mimeType = f.mimeType,
             tags = listOf(),

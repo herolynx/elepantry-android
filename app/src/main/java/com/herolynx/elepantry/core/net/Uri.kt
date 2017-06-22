@@ -4,15 +4,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import rx.Observable
+import java.io.InputStream
 import java.net.URL
 
-fun Uri.download(): Observable<Bitmap> {
-    return Observable.defer {
-        try {
-            val bitMap = BitmapFactory.decodeStream(URL(toString()).openConnection().getInputStream())
-            Observable.just(bitMap)
-        } catch (t: Throwable) {
-            Observable.error<Bitmap>(t)
-        }
+fun Uri.asInputStream(): Observable<InputStream> = Observable.defer { Observable.just(URL(toString()).openConnection().getInputStream()) }
+
+fun InputStream.download(): Observable<Bitmap> = Observable.defer {
+    try {
+        val bitMap = BitmapFactory.decodeStream(this)
+        Observable.just(bitMap)
+    } catch (t: Throwable) {
+        Observable.error<Bitmap>(t)
     }
 }

@@ -1,6 +1,6 @@
-package com.herolynx.elepantry.config
+package com.herolynx.elepantry.repository
 
-import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.repository.Repository
 import com.herolynx.elepantry.ext.google.firebase.db.FirebaseDb
 import com.herolynx.elepantry.ext.google.firebase.db.TagRepository
 import com.herolynx.elepantry.resources.core.model.Resource

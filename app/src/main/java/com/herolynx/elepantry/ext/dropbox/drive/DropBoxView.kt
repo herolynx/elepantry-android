@@ -1,28 +1,21 @@
-package com.herolynx.elepantry.ext.dropbox
+package com.herolynx.elepantry.ext.dropbox.drive
 
-import android.app.Activity
-import com.dropbox.core.DbxRequestConfig
-import com.dropbox.core.http.OkHttp3Requestor
 import com.dropbox.core.v2.DbxClientV2
-import com.herolynx.elepantry.auth.Token
-import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.resources.core.service.ResourcePage
 import com.herolynx.elepantry.resources.core.service.ResourceView
 import com.herolynx.elepantry.resources.core.service.SearchCriteria
-import org.funktionale.tries.Try
-import rx.Observable
 
 class DropBoxView(private val client: DbxClientV2) : ResourceView {
 
-    private fun nextSearch(c: SearchCriteria, start: Long = 0) = client.files()
-            .searchBuilder(ROOT_PATH, c.text)
+    private fun nextSearch(c: com.herolynx.elepantry.resources.core.service.SearchCriteria, start: Long = 0) = client.files()
+            .searchBuilder(com.herolynx.elepantry.ext.dropbox.drive.DropBoxView.Companion.ROOT_PATH, c.text)
             .withMaxResults(c.pageSize.toLong())
             .withStart(start)
             .start()
 
-    override fun search(c: SearchCriteria): Try<out ResourcePage> = Try {
+    override fun search(c: SearchCriteria): org.funktionale.tries.Try<out ResourcePage> = org.funktionale.tries.Try {
         debug("[DropBox] Running search - criteria: $c")
         if (!c.text.isNullOrEmpty()) {
             debug("[DropBox] Search API - criteria: $c")
@@ -42,22 +35,22 @@ class DropBoxView(private val client: DbxClientV2) : ResourceView {
             )
         }
     }
-            .onFailure { ex -> warn("[DropBox] Search error - criteria: $c, path: $ROOT_PATH", ex) }
+            .onFailure { ex -> warn("[DropBox] Search error - criteria: $c, path: ${DropBoxView.ROOT_PATH}", ex) }
 
     companion object {
 
         private val ROOT_PATH = ""
 
-        fun create(token: Token): DropBoxView {
-            val requestConfig = DbxRequestConfig.newBuilder(Config.elepantryUrl)
-                    .withHttpRequestor(OkHttp3Requestor(OkHttp3Requestor.defaultOkHttpClient()))
+        fun create(token: com.herolynx.elepantry.auth.Token): com.herolynx.elepantry.ext.dropbox.drive.DropBoxView {
+            val requestConfig = com.dropbox.core.DbxRequestConfig.newBuilder(com.herolynx.elepantry.config.Config.elepantryUrl)
+                    .withHttpRequestor(com.dropbox.core.http.OkHttp3Requestor(com.dropbox.core.http.OkHttp3Requestor.defaultOkHttpClient()))
                     .build()
-            return DropBoxView(DbxClientV2(requestConfig, token))
+            return com.herolynx.elepantry.ext.dropbox.drive.DropBoxView(com.dropbox.core.v2.DbxClientV2(requestConfig, token))
         }
 
-        fun create(a: Activity): Observable<DropBoxView> = DropBoxAuth.getToken(a)
+        fun create(a: android.app.Activity): rx.Observable<DropBoxView> = com.herolynx.elepantry.ext.dropbox.auth.DropBoxAuth.getToken(a)
                 .map { token ->
-                    create(token)
+                    com.herolynx.elepantry.ext.dropbox.drive.DropBoxView.Companion.create(token)
                 }
 
     }

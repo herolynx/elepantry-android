@@ -11,6 +11,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.auth.SignInUseCase
 import com.herolynx.elepantry.auth.view.SignInActivity
 import com.herolynx.elepantry.core.log.debug
+import com.herolynx.elepantry.core.net.asInputStream
 import com.herolynx.elepantry.core.rx.observeOnDefault
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.image.download
@@ -59,7 +60,11 @@ class UserBadge(
     fun display(user: User) {
         debug("[UserBadge] Displaying user info: $user")
         userName.text = user.displayName
-        userImage.download(uri = user.photoUrl, parentId = Option.Some(user.id), parentIdGetter = { Option.Some(user.id) })
+        userImage.download(
+                inStream = user.photoUrl.asInputStream(),
+                parentId = Option.Some(user.id),
+                parentIdGetter = { Option.Some(user.id) }
+        )
     }
 
     companion object {

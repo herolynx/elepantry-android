@@ -1,6 +1,6 @@
 package com.herolynx.elepantry.ext.google.firebase.db
 
-import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.repository.Repository
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag

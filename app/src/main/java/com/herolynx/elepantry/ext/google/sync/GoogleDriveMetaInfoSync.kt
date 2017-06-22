@@ -6,7 +6,7 @@ import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.info
-import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.repository.Repository
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.ext.google.drive.GoogleDriveView
 import com.herolynx.elepantry.resources.core.model.Resource

@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.core.repository
+package com.herolynx.elepantry.repository
 
 import com.herolynx.elepantry.core.rx.DataEvent
 import org.funktionale.option.Option

@@ -1,12 +1,12 @@
-package com.herolynx.elepantry.ext.dropbox
+package com.herolynx.elepantry.ext.dropbox.drive
 
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.FolderMetadata
 import com.dropbox.core.v2.files.Metadata
 import com.dropbox.core.v2.files.SearchMatch
 import com.herolynx.elepantry.core.generic.toISO8601
+import com.herolynx.elepantry.drive.DriveType
 import com.herolynx.elepantry.resources.core.model.Resource
-import com.herolynx.elepantry.resources.core.model.ResourceType
 import org.funktionale.option.Option
 
 internal fun Metadata.toResource(): Option<Resource> {
@@ -19,7 +19,7 @@ internal fun FileMetadata.toResource(): Resource {
     return Resource(
             id = f.id,
             name = f.name,
-            type = ResourceType.DROP_BOX,
+            type = DriveType.DROP_BOX,
             extension = "",
             mimeType = "",
             tags = listOf(),
@@ -27,7 +27,7 @@ internal fun FileMetadata.toResource(): Resource {
             lastModifiedDate = f.clientModified.toISO8601().getOrElse { "" },
             webViewLink = f.pathLower,
             downloadLink = f.pathDisplay,
-            thumbnailLink = null,
+            thumbnailLink = f.pathLower,
             iconLink = null,
             version = f.rev
     )

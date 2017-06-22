@@ -1,14 +1,11 @@
 package com.herolynx.elepantry.resources.core.model
 
+import com.herolynx.elepantry.drive.DriveType
 import org.funktionale.option.toOption
-
-enum class ResourceType {
-    GOOGLE, DROP_BOX
-}
 
 data class Resource(
         val id: Id = newId(),
-        val type: ResourceType,
+        val type: DriveType,
         val name: String,
         val mimeType: String? = null,
         val tags: List<Tag> = listOf(),
@@ -21,7 +18,7 @@ data class Resource(
         val iconLink: String? = null,
         val extension: String? = null
 ) {
-    constructor() : this(name = "", type = ResourceType.GOOGLE)
+    constructor() : this(name = "", type = DriveType.GOOGLE_DRIVE)
 
     fun <C : Collection<Tag>> containsAny(names: C) = tags.find { t -> names.contains(t) }.toOption().isDefined()
 

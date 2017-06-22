@@ -3,7 +3,7 @@ package com.herolynx.elepantry.resources.view.tags
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
-import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.repository.Repository
 import com.herolynx.elepantry.core.rx.observeOnDefault
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.toast

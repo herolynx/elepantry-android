@@ -1,5 +1,7 @@
 package com.herolynx.elepantry.config
 
+import com.herolynx.elepantry.repository.RepoConfig
+
 object Config {
 
     val repository = RepoConfig()

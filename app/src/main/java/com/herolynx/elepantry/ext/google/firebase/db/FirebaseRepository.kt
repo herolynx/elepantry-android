@@ -2,7 +2,7 @@ package com.herolynx.elepantry.ext.google.firebase.db
 
 import android.os.SystemClock
 import com.google.firebase.database.DatabaseReference
-import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.repository.Repository
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.ext.google.firebase.db.listener.CompletionListener
 import com.herolynx.elepantry.ext.google.firebase.db.listener.DeltaChangeListener

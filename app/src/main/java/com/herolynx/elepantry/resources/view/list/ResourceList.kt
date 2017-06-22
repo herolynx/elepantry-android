@@ -8,20 +8,26 @@ import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.log.error
-import com.herolynx.elepantry.core.repository.Repository
 import com.herolynx.elepantry.core.rx.observeOnDefault
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
+import com.herolynx.elepantry.drive.CloudDrive
+import com.herolynx.elepantry.drive.CloudResource
+import com.herolynx.elepantry.drive.DriveType
+import com.herolynx.elepantry.repository.Repository
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.getTagValue
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
+import org.funktionale.tries.Try
+import rx.Observable
 import rx.Subscription
 
 internal object ResourceList {
 
     fun adapter(
+            driveFactory: (DriveType) -> CloudDrive,
             userResourceRepository: Repository<Resource> = Config.repository.userResources(),
             onClickHandler: (Resource) -> Unit,
             layoutId: Int = R.layout.resources_list_item
@@ -29,11 +35,12 @@ internal object ResourceList {
             ListAdapter<Resource, ResourceItemView> =
             ListAdapter(
                     { ctx -> ResourceItemView(ctx, layoutId) },
-                    { r, h -> display(r, h, userResourceRepository, onClickHandler) }
+                    { r, h -> display(r, driveFactory(r!!.type).cloudResource(r!!), h, userResourceRepository, onClickHandler) }
             )
 
-    fun display(
+    private fun display(
             r: Resource?,
+            cloudResource: Try<CloudResource>,
             h: ListAdapter.ViewHolder<ResourceItemView>,
             userResourceRepository: Repository<Resource>,
             onClickHandler: (Resource) -> Unit
@@ -49,11 +56,11 @@ internal object ResourceList {
         h.view.parentId = r.toOption().map(Resource::id)
         displayTags(r, h, userResourceRepository)
         if (r?.thumbnailLink != null && r?.iconLink != null) {
-            h.view.lastSubscription = h.view.thumbnail.download(
+            h.view.lastSubscription = Option.Some(h.view.thumbnail.download(
+                    cloudResource.map { cr -> cr.thumbnail() }.getOrElse { Observable.empty() },
                     h.view.parentId,
-                    { h.view.parentId },
-                    r?.thumbnailLink, r?.iconLink
-            )
+                    { h.view.parentId }
+            ))
         } else {
             h.view.lastSubscription = Option.None
             h.view.thumbnail.setImageBitmap(null)

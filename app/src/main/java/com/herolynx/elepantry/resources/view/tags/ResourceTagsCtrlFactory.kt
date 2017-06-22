@@ -1,7 +1,7 @@
 package com.herolynx.elepantry.resources.view.tags
 
 import com.herolynx.elepantry.config.Config
-import com.herolynx.elepantry.core.repository.Repository
+import com.herolynx.elepantry.repository.Repository
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag
 import com.herolynx.elepantry.resources.core.model.View
