@@ -30,7 +30,9 @@ import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
+import org.joda.time.Duration
 import rx.Observable
+import java.util.*
 
 
 class ResourcesActivity : UserViewsMenu() {
@@ -195,22 +197,30 @@ class ResourcesActivity : UserViewsMenu() {
         clearSearchAction = {
             searchView.onActionViewCollapsed()
         }
+        var timer: Timer? = null
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(word: String): Boolean {
                 debug("[Search] onQueryTextSubmit: $word")
-                analytics?.metrics("SearchPhraseChosen")
-                clearLoadStatus()
-                loadData(word)
                 searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(text: String): Boolean {
-                debug("[Search] onQueryTextChange: $text")
-                analytics?.metrics("SearchPhraseChange")
-                clearLoadStatus()
-                loadData(text)
+                if (timer != null) {
+                    timer?.cancel()
+                }
+                timer = Timer()
+                timer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        runOnUiThread {
+                            debug("[Search] onQueryTextChange: $text")
+                            analytics?.metrics("SearchPhraseChange")
+                            clearLoadStatus()
+                            loadData(text)
+                        }
+                    }
+                }, Duration.standardSeconds(1).millis)
                 return true
             }
         })

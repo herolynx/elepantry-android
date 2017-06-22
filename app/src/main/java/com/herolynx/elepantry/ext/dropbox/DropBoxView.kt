@@ -6,6 +6,7 @@ import com.dropbox.core.http.OkHttp3Requestor
 import com.dropbox.core.v2.DbxClientV2
 import com.herolynx.elepantry.auth.Token
 import com.herolynx.elepantry.config.Config
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.resources.core.service.ResourcePage
 import com.herolynx.elepantry.resources.core.service.ResourceView
@@ -22,6 +23,7 @@ class DropBoxView(private val client: DbxClientV2) : ResourceView {
             .start()
 
     override fun search(c: SearchCriteria): Try<out ResourcePage> = Try {
+        debug("[DropBox] Search - criteria: $c")
         if (c.text != null) {
             DropBoxSearchPage(
                     nextSearch(c),

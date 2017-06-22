@@ -1,7 +1,6 @@
 package com.herolynx.elepantry.ext.dropbox
 
 import com.dropbox.core.v2.files.DbxUserFilesRequests
-import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.ListFolderResult
 import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.core.rx.DataEvent
@@ -16,10 +15,9 @@ internal class DropBoxListPage(
 ) : ResourcePage {
 
     override fun resources(): Observable<DataEvent<Resource>> = Observable.from(folder.entries)
-            .filter { m -> m is FileMetadata }
-            .map { m -> m as FileMetadata }
             .map { m -> m.toResource() }
-            .map { r -> DataEvent(r, deleted = false) }
+            .filter { m -> m.isDefined() }
+            .map { r -> DataEvent(r.get(), deleted = false) }
 
     override fun next(): Try<out ResourcePage> = Try {
         DropBoxListPage(files.listFolderContinue(folder.cursor), files)
