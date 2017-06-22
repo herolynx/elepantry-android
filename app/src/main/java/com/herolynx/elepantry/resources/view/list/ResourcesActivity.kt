@@ -18,6 +18,7 @@ import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.rx.DataEvent
 import com.herolynx.elepantry.core.ui.WebViewUtils
+import com.herolynx.elepantry.core.ui.event.EventDelay
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.recyclerview.GridLayoutUtils
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
@@ -30,9 +31,7 @@ import com.herolynx.elepantry.resources.view.menu.UserViewsMenu
 import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import org.funktionale.option.getOrElse
 import org.funktionale.option.toOption
-import org.joda.time.Duration
 import rx.Observable
-import java.util.*
 
 
 class ResourcesActivity : UserViewsMenu() {
@@ -197,7 +196,7 @@ class ResourcesActivity : UserViewsMenu() {
         clearSearchAction = {
             searchView.onActionViewCollapsed()
         }
-        var timer: Timer? = null
+        val eventDelay = EventDelay()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(word: String): Boolean {
@@ -207,20 +206,14 @@ class ResourcesActivity : UserViewsMenu() {
             }
 
             override fun onQueryTextChange(text: String): Boolean {
-                if (timer != null) {
-                    timer?.cancel()
-                }
-                timer = Timer()
-                timer?.schedule(object : TimerTask() {
-                    override fun run() {
-                        runOnUiThread {
-                            debug("[Search] onQueryTextChange: $text")
-                            analytics?.metrics("SearchPhraseChange")
-                            clearLoadStatus()
-                            loadData(text)
-                        }
+                eventDelay.execute {
+                    runOnUiThread {
+                        debug("[Search] onQueryTextChange: $text")
+                        analytics?.metrics("SearchPhraseChange")
+                        clearLoadStatus()
+                        loadData(text)
                     }
-                }, Duration.standardSeconds(1).millis)
+                }
                 return true
             }
         })

@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.core.ui
+package com.herolynx.elepantry.core.ui.event
 
 import android.view.KeyEvent
 import android.view.View

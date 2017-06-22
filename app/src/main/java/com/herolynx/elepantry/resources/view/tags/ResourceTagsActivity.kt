@@ -17,7 +17,7 @@ import com.herolynx.elepantry.core.rx.observe
 import com.herolynx.elepantry.core.rx.schedule
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
-import com.herolynx.elepantry.core.ui.onKeyEnter
+import com.herolynx.elepantry.core.ui.event.onKeyEnter
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.Tag
