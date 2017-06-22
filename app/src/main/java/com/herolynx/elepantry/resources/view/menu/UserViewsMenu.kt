@@ -29,11 +29,15 @@ import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.dropbox.auth.DropBoxAuth
 import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
+import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.core.model.View
 import com.herolynx.elepantry.resources.core.model.ViewType
 import com.herolynx.elepantry.resources.core.service.ResourceView
 import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import com.herolynx.elepantry.user.view.menu.UserBadge
+import org.funktionale.option.getOrElse
+import org.funktionale.option.toOption
+import rx.Observable
 
 
 abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
@@ -155,7 +159,10 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         val name = getString(R.string.dropbox_drive)
         val v = View(name = name, type = ViewType.DROP_BOX)
         b.setOnClickListener {
-            DropBoxAuth.getToken(this)
+            getAuthContext().
+                    flatMap { c -> c.dropBoxToken.toOption() }
+                    .map { token -> Observable.just(token) }
+                    .getOrElse { DropBoxAuth.getToken(this) }
                     .subscribeOnDefault()
                     .observeOnDefault()
                     .subscribe(
