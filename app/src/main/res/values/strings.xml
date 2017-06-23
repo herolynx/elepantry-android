@@ -42,4 +42,7 @@
     <string name="tag_name_placeholder">Tag name</string>
     <string name="resource_name_valid_length" formatted="false">Name length must be between %s and %s characters</string>
 
+    <!-- INTENTS -->
+    <string name="error_web_view_open_link">Couldn\'t open given file</string>
+
 </resources>
