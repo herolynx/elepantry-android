@@ -4,6 +4,7 @@
     <string name="dropbox_app_key">b5pu36dko3dg1xz</string>
 
     <!-- GENERIC -->
+    <string name="ok">OK</string>
     <string name="loading">Loading…</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
@@ -41,6 +42,11 @@
     <string name="resource_name_placeholder">Resource name</string>
     <string name="tag_name_placeholder">Tag name</string>
     <string name="resource_name_valid_length" formatted="false">Name length must be between %s and %s characters</string>
+
+    <!-- PERMISSIONS -->
+    <string name="per_no_ext_storage_access">Access to external storage has not been granted</string>
+    <string name="per_ext_storage_title">Access to external storage</string>
+    <string name="per_ext_storage_desc">Access to external storage is required in order to see content of some files from cloud storage</string>
 
     <!-- INTENTS -->
     <string name="error_dropbox_no_app">DropBox app is not installed</string>

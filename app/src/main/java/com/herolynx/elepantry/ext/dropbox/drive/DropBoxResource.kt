@@ -6,13 +6,18 @@ import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.ThumbnailSize
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.Result
+import com.herolynx.elepantry.core.android.Storage
 import com.herolynx.elepantry.core.func.Retry
 import com.herolynx.elepantry.core.log.warn
+import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.drive.CloudResource
 import com.herolynx.elepantry.ext.dropbox.auth.DropBoxSession
 import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.tries.Try
 import rx.Observable
+import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 
 class DropBoxResource(
@@ -21,14 +26,60 @@ class DropBoxResource(
         private val session: DropBoxSession
 ) : CloudResource {
 
-    override fun preview(a: Activity): Try<Result> = Try {
+    private fun download(a: Activity): Observable<File> = Observable.defer {
+        Storage.downloadDirectory(a)
+                .map { downloadDir ->
+                    val file = File(downloadDir, "${metaInfo.id}_${metaInfo.version}.${metaInfo.extension}")
+                    if (!file.exists()) {
+                        FileOutputStream(file)
+                                .use { outputStream ->
+                                    client.files()
+                                            .download(metaInfo.downloadLink, metaInfo.version)
+                                            .download(outputStream)
+                                }
+                    }
+                    file
+                }
+                .map { file ->
+                    Storage.notifyAboutNewFile(a, file)
+                    Observable.just(file)
+                }
+                .onFailure { ex -> warn("[DropBox] Download error", ex) }
+                .getOrElse { Observable.error(RuntimeException("Couldn't download file: $metaInfo")) }
+    }
+
+    private fun downloadAndOpen(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit) {
+        beforeAction()
+        download(activity)
+                .subscribeOnDefault()
+                .observeOnDefault()
+                .subscribe(
+                        { f ->
+                            activity.runOnUiThread {
+                                afterAction()
+                                Storage.viewFileInExternalApp(activity, f)
+                            }
+                        },
+                        { ex ->
+                            warn("[DropBox][File] Preview error - $metaInfo", ex)
+                            afterAction()
+                        }
+                )
+    }
+
+    override fun preview(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit): Try<Result> = Try {
         val dropBox = DbxOfficialAppConnector(session.uid)
-        val openIntent = dropBox.getPreviewFileIntent(a, metaInfo.downloadLink, metaInfo.version)
-        if (openIntent != null) {
-            a.startActivity(openIntent)
+        val openIntent = dropBox.getPreviewFileIntent(activity, metaInfo.downloadLink, metaInfo.version)
+        if (!SUPPORTED_PREVIEW_FILE_EXT.contains(metaInfo.extension)) {
+            //TODO remove when DropBox app can handle all contents
+            downloadAndOpen(activity, beforeAction, afterAction)
+            Result(true)
+        } else if (openIntent != null) {
+            //start preview directly in DropBox app
+            activity.startActivity(openIntent)
             Result(true)
         } else {
-            Result(success = false, errMsg = a.getString(R.string.error_dropbox_no_app))
+            Result(success = false, errMsg = activity.getString(R.string.error_dropbox_no_app))
         }
     }
 
@@ -52,4 +103,15 @@ class DropBoxResource(
     }
 
     override fun metaInfo(): Resource = metaInfo
+
+    companion object {
+
+        private val SUPPORTED_PREVIEW_FILE_EXT = setOf(
+                "pdf", "ai", "doc", "docm", "docx", "eps", "odp", "odt",
+                "pps", "ppsm", "ppsx", "ppt", "pptm", "pptx", "rtf",
+                "csv", "ods", "xls", "xlsm", "xlsx"
+        )
+
+    }
+
 }

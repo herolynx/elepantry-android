@@ -24,6 +24,7 @@ import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.core.ui.recyclerview.GridLayoutUtils
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
+import com.herolynx.elepantry.drive.CloudResource
 import com.herolynx.elepantry.drive.Drives
 import com.herolynx.elepantry.resources.core.model.Resource
 import com.herolynx.elepantry.resources.core.model.View
@@ -113,23 +114,27 @@ class ResourcesActivity : UserViewsMenu() {
         initResourceView(isListView = (newViewType == ResourceViewType.LIST))
     }
 
+    private fun showResourceContent(r: CloudResource) = r.preview(
+            activity = this,
+            beforeAction = { showProgressDialog(this) },
+            afterAction = { hideProgressDialog() }
+    )
+            .map { opStatus ->
+                if (!opStatus.success) {
+                    debug("Couldn't open file - resource: ${r.metaInfo()}, error message: ${opStatus.errMsg}")
+                    toast(opStatus.errMsg ?: getString(R.string.error_file_open))
+                }
+            }
+            .onFailure { ex ->
+                warn("Couldn't open file - resource: ${r.metaInfo()}", ex)
+                toast(R.string.error_file_open)
+            }
+
     private fun initResourceView(isListView: Boolean = true) {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
         listAdapter = ResourceList.adapter(
                 driveFactory = { t -> Drives.drive(this, t) },
-                onClickHandler = { r ->
-                    r.preview(this)
-                            .map { opStatus ->
-                                if (!opStatus.success) {
-                                    debug("Couldn't open file - resource: ${r.metaInfo()}, error message: ${opStatus.errMsg}")
-                                    toast(opStatus.errMsg ?: getString(R.string.error_file_open))
-                                }
-                            }
-                            .onFailure { ex ->
-                                warn("Couldn't open file - resource: ${r.metaInfo()}", ex)
-                                toast(R.string.error_file_open)
-                            }
-                },
+                onClickHandler = { r -> showResourceContent(r) },
                 layoutId = if (isListView) R.layout.resources_list_item else R.layout.resources_thumbnail_item
         )
         listAdapter?.onSelectedItemsChange { selected ->

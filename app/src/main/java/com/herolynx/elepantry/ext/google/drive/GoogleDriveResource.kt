@@ -13,7 +13,7 @@ import java.io.InputStream
 
 class GoogleDriveResource(private val metaInfo: Resource) : CloudResource {
 
-    override fun preview(a: Activity): Try<Result> = WebViewUtils.openLink(a, metaInfo.downloadLink)
+    override fun preview(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit): Try<Result> = WebViewUtils.openLink(activity, metaInfo.downloadLink)
 
     override fun thumbnail(): Observable<InputStream> = Uri.parse(metaInfo.thumbnailLink)
             .asInputStream()

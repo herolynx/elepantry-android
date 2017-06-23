@@ -13,6 +13,6 @@ interface CloudResource {
 
     fun metaInfo(): Resource
 
-    fun preview(a:Activity) : Try<Result>
+    fun preview(activity: Activity, beforeAction: () -> Unit = {}, afterAction: () -> Unit = {}): Try<Result>
 
 }
