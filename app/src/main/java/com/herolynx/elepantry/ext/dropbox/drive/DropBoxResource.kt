@@ -4,7 +4,6 @@ import android.app.Activity
 import com.dropbox.core.android.DbxOfficialAppConnector
 import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.ThumbnailSize
-import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.Result
 import com.herolynx.elepantry.core.android.Storage
 import com.herolynx.elepantry.core.func.Retry
@@ -70,16 +69,14 @@ class DropBoxResource(
     override fun preview(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit): Try<Result> = Try {
         val dropBox = DbxOfficialAppConnector(session.uid)
         val openIntent = dropBox.getPreviewFileIntent(activity, metaInfo.downloadLink, metaInfo.version)
-        if (!SUPPORTED_PREVIEW_FILE_EXT.contains(metaInfo.extension)) {
-            //TODO remove when DropBox app can handle all contents
-            downloadAndOpen(activity, beforeAction, afterAction)
-            Result(true)
-        } else if (openIntent != null) {
+        if (SUPPORTED_PREVIEW_FILE_EXT.contains(metaInfo.extension) && openIntent != null) {
             //start preview directly in DropBox app
             activity.startActivity(openIntent)
             Result(true)
         } else {
-            Result(success = false, errMsg = activity.getString(R.string.error_dropbox_no_app))
+            //TODO remove when DropBox app can handle all contents
+            downloadAndOpen(activity, beforeAction, afterAction)
+            Result(true)
         }
     }
 
