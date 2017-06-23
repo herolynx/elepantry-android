@@ -26,7 +26,7 @@ internal fun FileMetadata.toResource(): Resource {
             createdTime = f.serverModified.toISO8601().getOrElse { "" },
             lastModifiedDate = f.clientModified.toISO8601().getOrElse { "" },
             webViewLink = f.pathLower,
-            downloadLink = f.pathDisplay,
+            downloadLink = f.pathLower,
             thumbnailLink = f.pathLower,
             iconLink = null,
             version = f.rev

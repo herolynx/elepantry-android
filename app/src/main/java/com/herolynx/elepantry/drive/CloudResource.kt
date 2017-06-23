@@ -1,6 +1,7 @@
 package com.herolynx.elepantry.drive
 
 import android.app.Activity
+import com.herolynx.elepantry.core.Result
 import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.tries.Try
 import rx.Observable
@@ -12,6 +13,6 @@ interface CloudResource {
 
     fun metaInfo(): Resource
 
-    fun preview(a:Activity) : Try<Boolean>
+    fun preview(a:Activity) : Try<Result>
 
 }

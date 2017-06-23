@@ -4,6 +4,8 @@ import android.app.Activity
 import com.dropbox.core.android.DbxOfficialAppConnector
 import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.ThumbnailSize
+import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.Result
 import com.herolynx.elepantry.core.func.Retry
 import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.drive.CloudResource
@@ -19,11 +21,15 @@ class DropBoxResource(
         private val session: DropBoxSession
 ) : CloudResource {
 
-    override fun preview(a: Activity): Try<Boolean> = Try {
+    override fun preview(a: Activity): Try<Result> = Try {
         val dropBox = DbxOfficialAppConnector(session.uid)
         val openIntent = dropBox.getPreviewFileIntent(a, metaInfo.downloadLink, metaInfo.version)
-        a.startActivity(openIntent)
-        true
+        if (openIntent != null) {
+            a.startActivity(openIntent)
+            Result(true)
+        } else {
+            Result(success = false, errMsg = a.getString(R.string.error_dropbox_no_app))
+        }
     }
 
     override fun thumbnail(): rx.Observable<InputStream> = Observable.defer {

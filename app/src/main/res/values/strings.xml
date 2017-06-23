@@ -43,6 +43,7 @@
     <string name="resource_name_valid_length" formatted="false">Name length must be between %s and %s characters</string>
 
     <!-- INTENTS -->
+    <string name="error_dropbox_no_app">DropBox app is not installed</string>
     <string name="error_file_open">Couldn\'t open given file</string>
 
 </resources>

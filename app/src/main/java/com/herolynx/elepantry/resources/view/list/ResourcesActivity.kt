@@ -119,6 +119,12 @@ class ResourcesActivity : UserViewsMenu() {
                 driveFactory = { t -> Drives.drive(this, t) },
                 onClickHandler = { r ->
                     r.preview(this)
+                            .map { opStatus ->
+                                if (!opStatus.success) {
+                                    debug("Couldn't open file - resource: ${r.metaInfo()}, error message: ${opStatus.errMsg}")
+                                    toast(opStatus.errMsg ?: getString(R.string.error_file_open))
+                                }
+                            }
                             .onFailure { ex ->
                                 warn("Couldn't open file - resource: ${r.metaInfo()}", ex)
                                 toast(R.string.error_file_open)
