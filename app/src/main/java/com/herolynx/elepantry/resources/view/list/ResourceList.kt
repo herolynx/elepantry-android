@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.log.error
+import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.core.rx.observeOnDefault
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.image.download
@@ -29,7 +30,7 @@ internal object ResourceList {
     fun adapter(
             driveFactory: (DriveType) -> CloudDrive,
             userResourceRepository: Repository<Resource> = Config.repository.userResources(),
-            onClickHandler: (Resource) -> Unit,
+            onClickHandler: (CloudResource) -> Unit,
             layoutId: Int = R.layout.resources_list_item
     ):
             ListAdapter<Resource, ResourceItemView> =
@@ -43,12 +44,15 @@ internal object ResourceList {
             cloudResource: Try<CloudResource>,
             h: ListAdapter.ViewHolder<ResourceItemView>,
             userResourceRepository: Repository<Resource>,
-            onClickHandler: (Resource) -> Unit
+            onClickHandler: (CloudResource) -> Unit
     ) {
         h.view.lastSubscription.filter { s -> !s.isUnsubscribed }.map { s -> s.unsubscribe() }
         h.view.open.setOnClickListener { _ ->
             if (r != null) {
-                onClickHandler(r)
+                cloudResource.map { cr -> onClickHandler(cr) }
+                        .onFailure { ex ->
+                            warn("[ResourceList] Couldn't handle click for resource: $r", ex)
+                        }
             }
         }
         h.view.name.text = r?.name

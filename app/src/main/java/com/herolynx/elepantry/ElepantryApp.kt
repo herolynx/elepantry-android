@@ -4,8 +4,8 @@ import android.app.Activity
 import android.app.Application
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.herolynx.elepantry.auth.AuthContext
-import com.herolynx.elepantry.auth.Token
 import com.herolynx.elepantry.core.log.exception
+import com.herolynx.elepantry.ext.dropbox.auth.DropBoxSession
 import com.herolynx.elepantry.user.model.User
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
@@ -13,9 +13,9 @@ import org.funktionale.option.toOption
 
 class ElepantryApp : Application(), AuthContext {
 
-    override var googleAccount: GoogleSignInAccount? = null
     override var user: User? = null
-    override var dropBoxToken: Token? = null
+    override var googleAccount: GoogleSignInAccount? = null
+    override var dropBoxSession: DropBoxSession? = null
 
     override fun onCreate() {
         super.onCreate()

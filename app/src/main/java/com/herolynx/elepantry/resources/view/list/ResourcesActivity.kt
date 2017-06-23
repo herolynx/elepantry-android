@@ -16,10 +16,11 @@ import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
+import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.core.rx.DataEvent
-import com.herolynx.elepantry.core.ui.WebViewUtils
 import com.herolynx.elepantry.core.ui.event.EventDelay
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
+import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.core.ui.recyclerview.GridLayoutUtils
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
 import com.herolynx.elepantry.core.ui.recyclerview.onInfiniteLoading
@@ -116,7 +117,13 @@ class ResourcesActivity : UserViewsMenu() {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
         listAdapter = ResourceList.adapter(
                 driveFactory = { t -> Drives.drive(this, t) },
-                onClickHandler = { r -> WebViewUtils.openLink(this, r.downloadLink) },
+                onClickHandler = { r ->
+                    r.preview(this)
+                            .onFailure { ex ->
+                                warn("Couldn't open file - resource: ${r.metaInfo()}", ex)
+                                toast(R.string.error_file_open)
+                            }
+                },
                 layoutId = if (isListView) R.layout.resources_list_item else R.layout.resources_thumbnail_item
         )
         listAdapter?.onSelectedItemsChange { selected ->

@@ -1,6 +1,5 @@
 package com.herolynx.elepantry.ext.dropbox.drive
 
-import android.os.Environment
 import com.dropbox.core.v2.files.FileMetadata
 import com.dropbox.core.v2.files.FolderMetadata
 import com.dropbox.core.v2.files.Metadata
@@ -27,7 +26,7 @@ internal fun FileMetadata.toResource(): Resource {
             createdTime = f.serverModified.toISO8601().getOrElse { "" },
             lastModifiedDate = f.clientModified.toISO8601().getOrElse { "" },
             webViewLink = f.pathLower,
-            downloadLink = Environment.getExternalStorageDirectory().getPath() + f.pathDisplay,
+            downloadLink = f.pathDisplay,
             thumbnailLink = f.pathLower,
             iconLink = null,
             version = f.rev

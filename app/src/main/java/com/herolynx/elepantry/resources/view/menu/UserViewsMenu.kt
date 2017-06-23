@@ -160,14 +160,14 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         val v = View(name = name, type = ViewType.DROP_BOX)
         b.setOnClickListener {
             getAuthContext().
-                    flatMap { c -> c.dropBoxToken.toOption() }
-                    .map { token -> Observable.just(token) }
-                    .getOrElse { DropBoxAuth.getToken(this) }
+                    flatMap { c -> c.dropBoxSession.toOption() }
+                    .map { s -> Observable.just(s) }
+                    .getOrElse { DropBoxAuth.getSession(this) }
                     .subscribeOnDefault()
                     .observeOnDefault()
                     .subscribe(
-                            { token ->
-                                debug("[initUserViews] DropBox login ok - token: $token")
+                            { session ->
+                                debug("[initUserViews] DropBox login ok - uid: ${session.uid}")
                                 dropBoxStatus.visibility = android.view.View.VISIBLE
                                 onViewChange(v, menuCtrl!!.getResourceView(v))
                             },
