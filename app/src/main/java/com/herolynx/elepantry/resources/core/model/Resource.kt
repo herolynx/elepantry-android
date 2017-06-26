@@ -48,6 +48,15 @@ data class Resource(
 
     fun isImageType() = setOf("png", "jpg", "jpeg", "gif").contains(extension)
 
+    fun uuid(): String {
+        val normalizeName: (String) -> String = { name -> name.replace(':', '-') }
+        if (version.isNullOrEmpty()) {
+            return "${normalizeName(id)}.${extension}"
+        } else {
+            return "${normalizeName(id)}-${normalizeName(version!!)}.${extension}"
+        }
+    }
+
 }
 
 fun Resource.getTagValue() = if (tags.isEmpty()) "" else tags.map { t -> "#${t}" }.reduce { t, s -> "$t, $s" }

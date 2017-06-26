@@ -5,11 +5,58 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.webkit.MimeTypeMap
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.warn
+import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import org.funktionale.tries.Try
+import rx.Observable
+import rx.schedulers.Schedulers
 import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 object Storage {
+
+    private fun download(a: Activity, fileName: String, download: (OutputStream) -> Long): Observable<File> = Observable.defer {
+        Storage.downloadDirectory(a)
+                .map { downloadDir ->
+                    val file = File(downloadDir, fileName)
+                    if (file.exists()) {
+                        Observable.just(file)
+                    } else {
+                        Observable.defer {
+                            val bytes = FileOutputStream(file).use { outputStream -> download(outputStream) }
+                            debug("[Storage][Download] Download status - file: $file, bytes: $bytes")
+                            Observable.just(file)
+                        }
+                    }
+                }
+                .rescue { ex -> Try.Success(Observable.error(ex)) }
+                .get()
+                .map { file ->
+                    Storage.notifyAboutNewFile(a, file)
+                    file
+                }
+    }
+
+    fun downloadAndOpen(activity: Activity, fileName: String, download: (OutputStream) -> Long, beforeAction: () -> Unit, afterAction: () -> Unit) {
+        beforeAction()
+        download(activity, fileName, download)
+                .subscribeOnDefault()
+                .observeOn(Schedulers.io())
+                .subscribe(
+                        { f ->
+                            activity.runOnUiThread {
+                                afterAction()
+                                Storage.viewFileInExternalApp(activity, f)
+                            }
+                        },
+                        { ex ->
+                            warn("[Storage][File] Download & open error - $fileName", ex)
+                            afterAction()
+                        }
+                )
+    }
 
     fun viewFileInExternalApp(a: Activity, f: File): Try<Boolean> = Try {
         val intent = Intent(Intent.ACTION_VIEW)

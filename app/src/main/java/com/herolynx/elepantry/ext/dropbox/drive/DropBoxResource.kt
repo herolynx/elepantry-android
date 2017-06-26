@@ -7,16 +7,12 @@ import com.dropbox.core.v2.files.ThumbnailSize
 import com.herolynx.elepantry.core.Result
 import com.herolynx.elepantry.core.func.Retry
 import com.herolynx.elepantry.core.log.warn
-import com.herolynx.elepantry.core.rx.observeOnDefault
-import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.drive.CloudResource
 import com.herolynx.elepantry.ext.android.Storage
 import com.herolynx.elepantry.ext.dropbox.auth.DropBoxSession
 import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.tries.Try
 import rx.Observable
-import java.io.File
-import java.io.FileOutputStream
 import java.io.InputStream
 
 class DropBoxResource(
@@ -24,48 +20,6 @@ class DropBoxResource(
         private val client: DbxClientV2,
         private val session: DropBoxSession
 ) : CloudResource {
-
-    private fun download(a: Activity): Observable<File> = Observable.defer {
-        Storage.downloadDirectory(a)
-                .map { downloadDir ->
-                    val normalizeName: (String) -> String = { name -> name.replace(':', '-') }
-                    val file = File(downloadDir, "${normalizeName(metaInfo.id)}-${normalizeName(metaInfo.version ?: "na")}.${metaInfo.extension}")
-                    if (!file.exists()) {
-                        FileOutputStream(file)
-                                .use { outputStream ->
-                                    client.files()
-                                            .download(metaInfo.downloadLink, metaInfo.version)
-                                            .download(outputStream)
-                                }
-                    }
-                    file
-                }
-                .map { file ->
-                    Storage.notifyAboutNewFile(a, file)
-                    Observable.just(file)
-                }
-                .onFailure { ex -> warn("[DropBox] Download error", ex) }
-                .getOrElse { Observable.error(RuntimeException("Couldn't download file: $metaInfo")) }
-    }
-
-    private fun downloadAndOpen(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit) {
-        beforeAction()
-        download(activity)
-                .subscribeOnDefault()
-                .observeOnDefault()
-                .subscribe(
-                        { f ->
-                            activity.runOnUiThread {
-                                afterAction()
-                                Storage.viewFileInExternalApp(activity, f)
-                            }
-                        },
-                        { ex ->
-                            warn("[DropBox][File] Preview error - $metaInfo", ex)
-                            afterAction()
-                        }
-                )
-    }
 
     override fun preview(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit): Try<Result> = Try {
         val dropBox = DbxOfficialAppConnector(session.uid)
@@ -76,7 +30,18 @@ class DropBoxResource(
             Result(true)
         } else {
             //TODO remove when DropBox app can handle all contents
-            downloadAndOpen(activity, beforeAction, afterAction)
+            Storage.downloadAndOpen(
+                    activity = activity,
+                    fileName = metaInfo.uuid(),
+                    download = { outputStream ->
+                        client.files()
+                                .download(metaInfo.downloadLink, metaInfo.version)
+                                .download(outputStream)
+                                .size
+                    },
+                    beforeAction = beforeAction,
+                    afterAction = afterAction
+            )
             Result(true)
         }
     }

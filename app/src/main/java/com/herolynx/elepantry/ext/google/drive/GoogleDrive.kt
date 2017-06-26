@@ -13,7 +13,6 @@ import com.herolynx.elepantry.drive.DriveType
 import com.herolynx.elepantry.ext.google.GoogleConfig
 import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.core.model.Resource
-import com.herolynx.elepantry.resources.core.service.ResourceView
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
 import org.funktionale.tries.Try
@@ -26,7 +25,7 @@ class GoogleDrive(private val drive: Drive) : CloudDrive {
 
     override fun cloudResource(r: Resource): Try<CloudResource> = when (r.type) {
 
-        DriveType.GOOGLE_DRIVE -> Try.Success(GoogleDriveResource(metaInfo = r))
+        DriveType.GOOGLE_DRIVE -> Try.Success(GoogleDriveResource(metaInfo = r, drive = drive))
 
         else -> Try.Failure(IllegalArgumentException("Not Google drive resource: $r"))
 
@@ -34,6 +33,7 @@ class GoogleDrive(private val drive: Drive) : CloudDrive {
 
     companion object {
 
+        internal val APP_PACKAGE_NAME = "com.google.android.apps.docs"
         private val HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport()
         private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
 
