@@ -43,7 +43,9 @@ class GoogleDrive(private val drive: Drive) : CloudDrive {
                     setOf(GoogleConfig.DRIVE_READONLY_API_URL, GoogleConfig.PHOTOS_READONLY_API_URL)
             )
             credential.setSelectedAccount(account.account)
-            return GoogleDrive(Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).build())
+            val drive = Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+            drive.applicationName = "elepantry"
+            return GoogleDrive(drive.build())
         }
 
         fun create(activity: Activity): Option<GoogleDrive> {
