@@ -19,7 +19,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.R
-import com.herolynx.elepantry.core.android.Permissions
+import com.herolynx.elepantry.ext.android.Permissions
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics

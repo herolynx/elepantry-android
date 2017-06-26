@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.core.android
+package com.herolynx.elepantry.ext.android
 
 import android.Manifest
 import android.app.Activity
@@ -13,7 +13,7 @@ object Permissions {
     val RC_PERMISSION_WRITE_EXTERNAL_STORAGE = 20001
 
     fun assertExternalStoragePermission(a: Activity) {
-        if (!Environment.getExternalStorageDirectory().canWrite() && !Environment.getExternalStorageDirectory().canRead()) {
+        if (!Environment.getExternalStorageDirectory().canWrite() || !Environment.getExternalStorageDirectory().canRead()) {
             a.toast(R.string.per_no_ext_storage_access)
             throw RuntimeException("Access not granted to external storage")
         }

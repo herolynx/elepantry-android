@@ -5,12 +5,12 @@ import com.dropbox.core.android.DbxOfficialAppConnector
 import com.dropbox.core.v2.DbxClientV2
 import com.dropbox.core.v2.files.ThumbnailSize
 import com.herolynx.elepantry.core.Result
-import com.herolynx.elepantry.core.android.Storage
 import com.herolynx.elepantry.core.func.Retry
 import com.herolynx.elepantry.core.log.warn
 import com.herolynx.elepantry.core.rx.observeOnDefault
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.drive.CloudResource
+import com.herolynx.elepantry.ext.android.Storage
 import com.herolynx.elepantry.ext.dropbox.auth.DropBoxSession
 import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.tries.Try
@@ -28,7 +28,8 @@ class DropBoxResource(
     private fun download(a: Activity): Observable<File> = Observable.defer {
         Storage.downloadDirectory(a)
                 .map { downloadDir ->
-                    val file = File(downloadDir, "${metaInfo.id}_${metaInfo.version}.${metaInfo.extension}")
+                    val normalizeName: (String) -> String = { name -> name.replace(':', '-') }
+                    val file = File(downloadDir, "${normalizeName(metaInfo.id)}-${normalizeName(metaInfo.version ?: "na")}.${metaInfo.extension}")
                     if (!file.exists()) {
                         FileOutputStream(file)
                                 .use { outputStream ->

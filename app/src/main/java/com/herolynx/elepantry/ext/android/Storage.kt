@@ -1,4 +1,4 @@
-package com.herolynx.elepantry.core.android
+package com.herolynx.elepantry.ext.android
 
 import android.app.Activity
 import android.content.Intent
