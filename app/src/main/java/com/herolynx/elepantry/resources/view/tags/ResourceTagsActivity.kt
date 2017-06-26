@@ -13,7 +13,7 @@ import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.metrics
-import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
@@ -90,7 +90,7 @@ class ResourceTagsActivity : UserViewsMenu(), WithProgressDialog {
     private fun loadSuggestions() {
         resourceCtrl?.getTagSuggestions()
                 ?.subscribeOnDefault()
-                ?.observeOnDefault()
+                ?.observeOnUi()
                 ?.subscribe({ s ->
                     debug("[ResourceTagsActivity] Suggestions found: $s")
                     newTag?.setAdapter(ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, s.toList()))

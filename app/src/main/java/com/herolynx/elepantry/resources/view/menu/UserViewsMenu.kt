@@ -24,7 +24,7 @@ import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.log.viewVisit
-import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 import com.herolynx.elepantry.core.ui.notification.toast
@@ -166,7 +166,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
                     .map { s -> Observable.just(s) }
                     .getOrElse { DropBoxAuth.getSession(this) }
                     .subscribeOnDefault()
-                    .observeOnDefault()
+                    .observeOnUi()
                     .subscribe(
                             { session ->
                                 debug("[initUserViews] DropBox login ok - uid: ${session.uid}")

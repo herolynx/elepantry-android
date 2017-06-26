@@ -8,6 +8,6 @@ fun <T> Observable<T>.subscribeOnDefault(): Observable<T> {
     return subscribeOn(Schedulers.io())
 }
 
-fun <T> Observable<T>.observeOnDefault(): Observable<T> {
+fun <T> Observable<T>.observeOnUi(): Observable<T> {
     return observeOn(AndroidSchedulers.mainThread())
 }

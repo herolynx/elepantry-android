@@ -4,7 +4,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.repository.Repository
-import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.resources.core.model.Tag
@@ -37,7 +37,7 @@ internal class ResourceTagsCtrl<T>(
         loadFilter.map { f ->
             repository.findAll()
                     .subscribeOnDefault()
-                    .observeOnDefault()
+                    .observeOnUi()
                     .map { l -> l.filter { e -> f(t!!, e) }.firstOption() }
                     .filter { o -> o.isDefined() }
                     .map { o -> o.get() }
@@ -68,7 +68,7 @@ internal class ResourceTagsCtrl<T>(
     private fun save(changed: T, tagsChanged: Boolean = false, showConfirmation: Boolean = false, redirect: Boolean = false): T? {
         repository.save(changed)
                 .subscribeOnDefault()
-                .observeOnDefault()
+                .observeOnUi()
                 .subscribe(
                         {
                             if (showConfirmation) {
@@ -93,7 +93,7 @@ internal class ResourceTagsCtrl<T>(
                 .map { res ->
                     repository.delete(res)
                             .subscribeOnDefault()
-                            .observeOnDefault()
+                            .observeOnUi()
                             .subscribe(
                                     {
                                         if (showConfirmation) {

@@ -9,7 +9,7 @@ import com.herolynx.elepantry.auth.SignInUseCase
 import com.herolynx.elepantry.config.Intents
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
-import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.toast
 import com.herolynx.elepantry.ext.google.GoogleApi
@@ -40,7 +40,7 @@ internal class SignInCtrl(
 
     private fun handleAuthResults(o: Observable<Pair<GoogleSignInAccount?, FirebaseUser?>>, showErrorToast: Boolean) {
         o.subscribeOnDefault()
-                .observeOnDefault()
+                .observeOnUi()
                 .subscribe(
                         { auth -> onAuthResult(auth, showErrorToast) },
                         { ex -> onAuthError(ex, showErrorToast) }

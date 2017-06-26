@@ -9,7 +9,7 @@ import com.herolynx.elepantry.R
 import com.herolynx.elepantry.config.Config
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.warn
-import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.core.ui.recyclerview.ListAdapter
@@ -64,6 +64,10 @@ internal object ResourceList {
             R.drawable.ic_list_resource_google
         h.view.drive.setCompoundDrawablesWithIntrinsicBounds(0, 0, driveTypeIcon, 0)
         displayTags(r, h, userResourceRepository)
+        displayThumbail(r, h, cloudResource)
+    }
+
+    private fun displayThumbail(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>, cloudResource: Try<CloudResource>) {
         if (r?.hasThumbnails() ?: false) {
             h.view.lastSubscription = Option.Some(h.view.thumbnail.download(
                     cloudResource.map { cr -> cr.thumbnail() }.getOrElse { Observable.empty() },
@@ -86,7 +90,7 @@ internal object ResourceList {
                             .filter { ur -> ur.isDefined() }
                             .map { ur -> ur.get() }
                             .subscribeOnDefault()
-                            .observeOnDefault()
+                            .observeOnUi()
                             .subscribe(
                                     { userResource ->
                                         h.view.ext.text = userResource.extension

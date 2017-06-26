@@ -12,7 +12,7 @@ import com.herolynx.elepantry.auth.SignInUseCase
 import com.herolynx.elepantry.auth.view.SignInActivity
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.net.asInputStream
-import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.image.download
 import com.herolynx.elepantry.core.ui.navigation.navigateTo
@@ -46,7 +46,7 @@ class UserBadge(
             api.asyncConnect()
                     .flatMap { api -> SignInUseCase.logOut(api) }
                     .subscribeOnDefault()
-                    .observeOnDefault()
+                    .observeOnUi()
                     .subscribe { _ ->
                         api.disconnect()
                         activity.navigateTo(SignInActivity::class.java)

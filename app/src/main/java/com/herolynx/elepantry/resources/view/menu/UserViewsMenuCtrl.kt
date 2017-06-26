@@ -1,7 +1,7 @@
 package com.herolynx.elepantry.resources.view.menu
 
 import com.herolynx.elepantry.config.Config
-import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.drive.Drives
 import com.herolynx.elepantry.repository.Repository
@@ -26,7 +26,7 @@ internal class UserViewsMenuCtrl(
     fun getUserViews() = userViews
             .asObservable()
             .subscribeOnDefault()
-            .observeOnDefault()
+            .observeOnUi()
 
 
 }

@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.net.download
-import com.herolynx.elepantry.core.rx.observeOnDefault
+import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import org.funktionale.option.Option
 import rx.Observable
@@ -23,7 +23,7 @@ internal object ImageViewUtils {
         return inStream
                 .flatMap { s -> s.download() }
                 .subscribeOnDefault()
-                .observeOnDefault()
+                .observeOnUi()
                 .subscribe(
                         { bitmap ->
                             if (parentId.equals(parentIdGetter())) {
