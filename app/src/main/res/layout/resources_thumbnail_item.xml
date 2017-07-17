@@ -12,128 +12,190 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
         android:background="@drawable/select_list_row"
         android:gravity="center_vertical"
-        android:paddingLeft="5dp"
-        android:layout_below="@+id/view"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:layout_margin="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="0.9"
+            android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_marginBottom="5dp"
+            android:paddingRight="10dp"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top">
 
                     <ImageView
                         android:id="@+id/resource_thumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:background="@color/resource_list_image_backgroud"
+                        android:scaleType="centerCrop" />
+
+                    <FrameLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:layout_centerInParent="true"
-                        android:background="@color/grey_4"
-                        android:scaleType="fitCenter" />
+                        android:layout_gravity="top"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginTop="1dp">
 
-                </LinearLayout>
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/resource_cloud_border" />
+
+                        <TextView
+                            android:id="@+id/resource_item_drive"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:drawableRight="@drawable/ic_list_resource_google"
+                            android:gravity="center_horizontal"
+                            android:state_enabled="false" />
+                    </FrameLayout>
+                </FrameLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center"
+                android:gravity="center"
+                android:layout_marginTop="-8dp"
+                android:layout_gravity="center_horizontal|center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/resource_view_border"
+                    android:ellipsize="end"
+                    android:gravity="left|center"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="@dimen/margin_5"
+                    android:paddingTop="2dp"
+                    android:text="view name"
+                    android:textColor="@color/white"
+                    android:textSize="8dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="5dp">
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp">
 
                 <TextView
                     android:id="@+id/resource_item_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:ellipsize="end"
+                    android:gravity="left"
+                    android:lines="1"
+                    android:text="Sample file name"
+                    android:textColor="@color/resource_list_file_name"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:ellipsize="end"
                     android:gravity="left|center"
-                    android:lines="1"
-                    android:textSize="10dp"
-                    android:textColor="@color/dark_1" />
+                    android:text="@string/resource_add_tag"
+                    android:textColor="@color/resource_list_label_tag"
+                    android:textSize="8dp" />
 
                 <TextView
                     android:id="@+id/resource_item_tags"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
                     android:ellipsize="end"
                     android:gravity="left|center"
-                    android:lines="2"
-                    android:textColor="@color/grey_1"
-                    android:paddingBottom="5dp"
-                    android:textSize="10dp" />
-
-                <TextView
-                    android:id="@+id/resource_item_drive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="@dimen/margin_5"
-                    android:gravity="center_horizontal"
-                    android:drawableRight="@drawable/ic_list_resource_google"
-                    android:state_enabled="false" />
+                    android:lines="1"
+                    android:text="#sample tag"
+                    android:textColor="@color/resource_list_tag_name"
+                    android:textSize="14dp" />
 
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/resource_open"
-            android:layout_width="20dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:background="@drawable/resource_open"
-            android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/menu_left_item_border" />
 
-            <TextView
-                android:id="@+id/resource_item_ext"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/resource_download"
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center"
+                    android:backgroundTintMode="@color/white"
+                    android:drawableRight="@drawable/ic_view_resource_download"
+                    android:gravity="center|center"
+                    android:state_enabled="false"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/resource_open"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="@dimen/margin_5"
-                android:background="@drawable/resource_type_border"
-                android:gravity="center_horizontal"
-                android:state_enabled="false"
-                android:textColor="@color/grey_1"
-                android:textSize="8dp"
-                android:visibility="gone" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center"
-                android:backgroundTintMode="@color/white"
-                android:drawableRight="@drawable/ic_view_resource_open"
-                android:gravity="center|center"
-                android:textColor="@color/blue_1"
-                android:state_enabled="false" />
+                android:gravity="right">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTintMode="@color/white"
+                    android:drawableRight="@drawable/ic_view_resource_open"
+                    android:state_enabled="false" />
+
+                <TextView
+                    android:id="@+id/resource_item_ext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="@dimen/margin_5"
+                    android:background="@drawable/resource_type_border"
+                    android:gravity="center_horizontal"
+                    android:state_enabled="false"
+                    android:textSize="8dp"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="0.5dp"
-        android:background="@color/grey_3"
-        android:layout_height="match_parent">
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/grey_3"
-        android:id="@+id/view" />
 </RelativeLayout>
 

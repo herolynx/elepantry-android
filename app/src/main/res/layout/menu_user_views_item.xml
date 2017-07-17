@@ -3,37 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
     android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7">
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:drawableLeft="@drawable/ic_menu_bookmark"
+            android:gravity="center" />
 
-            <Button
-                android:id="@+id/user_view_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center_horizontal"
-                android:background="@android:color/transparent"
-                android:gravity="left|center"
-                android:lines="1"
-                android:textAllCaps="false" />
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:layout_weight="0.7">
 
-        </RelativeLayout>
+                <Button
+                    android:id="@+id/user_view_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/transparent"
+                    android:gravity="left|center"
+                    android:lines="1"
+                    android:text="Sample view"
+                    android:textAllCaps="false" />
+            </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.1"
+            android:layout_weight="0.12"
             android:gravity="center_horizontal|clip_horizontal">
 
             <Button
@@ -41,8 +49,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:drawableRight="@drawable/ic_view_resource_menu_pencil"
-                android:paddingRight="10dp" />
+                android:drawableRight="@drawable/ic_menu_edit"
+                android:paddingRight="10dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center|center_horizontal"/>
         </RelativeLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/menu_left_item_border"/>
+
 </LinearLayout>

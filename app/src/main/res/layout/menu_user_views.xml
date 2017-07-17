@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="2"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="1.75">
+
 
         <!-- view: Google Drive -->
         <LinearLayout
@@ -18,121 +21,219 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/menu_left_item_border" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="1"
-                android:background="@drawable/left_menu_item">
+                android:background="@drawable/left_menu_cloud"
+                android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    >
+                    android:layout_weight="0.9">
 
-                    <TextView
-                        android:layout_width="20dp"
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:background="@color/google" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="@dimen/margin_5"
-                        android:layout_marginTop="0dp"
-                        android:drawableLeft="@drawable/ic_menu_google"
-                        android:gravity="center" />
+                        android:layout_marginBottom="@dimen/margin_5"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/drive_google"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@android:color/transparent"
-                        android:gravity="left|center"
-                        android:text="@string/google_drive"
-                        android:textAllCaps="false"
-                        android:textColor="@color/menu_left_item" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="-5dp"
-                        android:drawableLeft="@drawable/ic_menu_check"
-                        android:gravity="center" />
+                            <Button
+                                android:id="@+id/drive_google"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:background="@android:color/transparent"
+                                android:gravity="left|center"
+                                android:text="@string/google_drive"
+                                android:textAllCaps="false"
+                                android:textColor="@color/menu_left_name_cloud" />
+                        </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-3dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawableLeft="@drawable/ic_menu_online"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="3dp"
+                                android:gravity="center"
+                                android:text="@string/online"
+                                android:textColor="@color/menu_left_online_status"
+                                android:textSize="8dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    >
+                    android:layout_weight="0.12">
 
                     <TextView
                         android:id="@+id/drive_google_refresh"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="0dp"
+                        android:layout_height="match_parent"
                         android:background="@android:color/transparent"
                         android:drawableRight="@drawable/ic_menu_refresh"/>
 
                 </LinearLayout>
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/menu_left_item_border" />
+
             <!-- view: DropBox -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="1"
-                android:background="@drawable/left_menu_item">
+                android:background="@drawable/left_menu_cloud"
+                android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
-                    >
+                    android:layout_weight="0.9">
 
-                    <TextView
-                        android:layout_width="20dp"
+                    <View
+                        android:layout_width="5dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/margin_10"
+                        android:background="@color/dropbox" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="@dimen/margin_5"
-                        android:layout_marginTop="0dp"
-                        android:drawableLeft="@drawable/ic_menu_dropbox"
-                        android:gravity="center" />
+                        android:layout_marginBottom="@dimen/margin_5"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/drive_dropbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@android:color/transparent"
-                        android:gravity="left|center"
-                        android:text="@string/dropbox_drive"
-                        android:textAllCaps="false"
-                        android:textColor="@color/menu_left_item" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:id="@+id/drive_dropbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:background="@android:color/transparent"
+                                android:gravity="left|center"
+                                android:text="@string/dropbox_drive"
+                                android:textAllCaps="false"
+                                android:textColor="@color/menu_left_name_cloud" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-3dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawableLeft="@drawable/ic_menu_offline"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="3dp"
+                                android:gravity="center"
+                                android:text="@string/offline"
+                                android:textColor="@color/menu_left_offline_status"
+                                android:textSize="8dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.12">
 
                     <TextView
                         android:id="@+id/drive_dropbox_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="-5dp"
-                        android:drawableLeft="@drawable/ic_menu_check"
-                        android:visibility="invisible"
-                        android:gravity="center" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:drawableRight="@drawable/ic_menu_refresh"/>
 
                 </LinearLayout>
-
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/menu_left_item_border" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/left_menu_item"
+                android:gravity="right|center"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/margin_10">
+
+                <!-- add ID  android:id="@+id/add_new_view"-->
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_menu_plus"
+                    android:drawablePadding="@dimen/margin_5"
+                    android:text="@string/add_new_view"
+                    android:textAllCaps="false"
+                    android:textColor="@color/menu_left_new_view_button"
+                    android:textStyle="normal" />
+            </LinearLayout>
 
             <!-- User Views -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="0dp"
+                android:orientation="vertical"
                 android:paddingBottom="0dp"
-                android:orientation="vertical">
+                android:paddingTop="0dp">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/user_views"
@@ -145,4 +246,25 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Add ID  android:id="@+id/sign_out" -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.25"
+        android:background="@color/menu_left_background_logout"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:drawablePadding="@dimen/margin_5"
+            android:text="@string/sign_out"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="normal" />
+    </LinearLayout>
 </LinearLayout>

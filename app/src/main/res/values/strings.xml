@@ -30,6 +30,8 @@
     <string name="auth_failed_to">Authentication failed: %s</string>
 
     <!-- VIEWS -->
+    <string name="online">online</string>
+    <string name="offline">offline</string>
     <string name="add_new_view">Add new view</string>
     <string name="add_new_tag">Add new tag:</string>
     <string name="google_drive">Google Drive</string>
@@ -41,6 +43,7 @@
     <string name="resource_name">Name: </string>
     <string name="resource_name_placeholder">Resource name</string>
     <string name="tag_name_placeholder">Tag name</string>
+    <string name="resource_add_tag">Added tags:</string>
     <string name="resource_name_valid_length" formatted="false">Name length must be between %s and %s characters</string>
 
     <!-- PERMISSIONS -->

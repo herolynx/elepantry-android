@@ -4,7 +4,7 @@
         android:radius="100dp"
         />
     <solid
-        android:color="@color/blue_4"
+        android:color="@color/resource_tags_add_tag_button_hover"
         />
     <padding
         android:left="8dp"

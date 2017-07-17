@@ -8,14 +8,14 @@
         <shape android:shape="rectangle" >
             <stroke
                 android:width="0.5dp"
-                android:color="@color/grey_2" />
+                android:color="@color/menu_left_item_border" />
 
             <solid android:color="@android:color/transparent" />
 
-            <padding android:left="10dp"
+            <padding android:left="0dp"
                 android:right="10dp"
-                android:top="15dp"
-                android:bottom="15dp" />
+                android:top="10dp"
+                android:bottom="10dp" />
         </shape>
     </item>
 
