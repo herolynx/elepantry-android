@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -105,8 +104,15 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         }
         menuLayout.addView(menuLeft)
 
-        initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button, menuLeft.findViewById(R.id.drive_google_refresh) as TextView)
-        initDropBoxView(menuLeft.findViewById(R.id.drive_dropbox) as Button, menuLeft.findViewById(R.id.drive_dropbox_status) as TextView)
+        initGoogleDriveView(
+                menuLeft.findViewById(R.id.drive_google),
+                menuLeft.findViewById(R.id.drive_google_refresh) as TextView
+        )
+        initDropBoxView(
+                menuLeft.findViewById(R.id.drive_dropbox),
+                menuLeft.findViewById(R.id.drive_dropbox_status_icon) as TextView,
+                menuLeft.findViewById(R.id.drive_dropbox_status_desc) as TextView
+        )
         initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView, menuCtrl)
     }
 
@@ -137,7 +143,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
                 }
     }
 
-    private fun initGoogleDriveView(b: Button, refresh: TextView) {
+    private fun initGoogleDriveView(b: android.view.View, refresh: TextView) {
         debug("[initUserViews] Creating Google Drive view")
         val name = getString(R.string.google_drive)
         val v = View(name = name, type = ViewType.GOOGLE)
@@ -159,7 +165,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         }
     }
 
-    private fun initDropBoxView(b: Button, dropBoxStatus: TextView) {
+    private fun initDropBoxView(b: android.view.View, dropBoxStatusIcon: TextView, dropBoxStatusDesc: TextView) {
         debug("[initUserViews] Creating DropBox Drive view")
         val name = getString(R.string.dropbox_drive)
         val v = View(name = name, type = ViewType.DROP_BOX)
@@ -173,7 +179,9 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
                     .subscribe(
                             { session ->
                                 debug("[initUserViews] DropBox login ok - uid: ${session.uid}")
-                                dropBoxStatus.visibility = android.view.View.VISIBLE
+                                dropBoxStatusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_online, 0)
+                                dropBoxStatusDesc.setTextColor(R.color.menu_left_online_status)
+                                dropBoxStatusDesc.text = getText(R.string.online)
                                 onViewChange(v, menuCtrl!!.getResourceView(v))
                             },
                             { ex ->
