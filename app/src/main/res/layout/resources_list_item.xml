@@ -84,13 +84,15 @@
                 android:textColor="@color/resource_list_file_name" />
 
             <TextView
+                android:id="@+id/resource_added_tag_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="left|center"
                 android:layout_marginTop="2dp"
-                android:text="@string/resource_add_tag"
+                android:text="@string/resource_added_tag"
                 android:textSize="8dp"
+                android:visibility="gone"
                 android:textColor="@color/resource_list_label_tag" />
 
             <TextView
@@ -104,22 +106,6 @@
                 android:textColor="@color/resource_list_tag_name"
                 android:textSize="14dp" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/resource_view_border"
-                android:ellipsize="end"
-                android:gravity="left|center"
-                android:paddingBottom="2dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="@dimen/margin_5"
-                android:paddingTop="2dp"
-                android:text="view name"
-                android:textColor="@color/white"
-                android:textSize="8dp" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -131,7 +117,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center"

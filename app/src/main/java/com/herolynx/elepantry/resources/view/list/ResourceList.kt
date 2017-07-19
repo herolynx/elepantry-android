@@ -2,6 +2,7 @@ package com.herolynx.elepantry.resources.view.list
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -82,6 +83,7 @@ internal object ResourceList {
 
     private fun displayTags(r: Resource?, h: ListAdapter.ViewHolder<ResourceItemView>, userResourceRepository: Repository<Resource>) {
         h.view.tags.text = ""
+        h.view.tags_indicator.visibility = View.GONE
         h.view.ext.text = ""
         r.toOption()
                 .map(Resource::id)
@@ -94,6 +96,7 @@ internal object ResourceList {
                             .subscribe(
                                     { userResource ->
                                         h.view.ext.text = userResource.extension
+                                        h.view.tags_indicator.visibility = View.VISIBLE
                                         h.view.tags.text = userResource.getTagValue()
                                     },
                                     { ex -> error("[ResourceList] Couldn't display tags of resource: $r", ex) }
@@ -111,6 +114,7 @@ internal class ResourceItemView(ctx: Context, layoutId: Int = R.layout.resources
 
     val name = findViewById(R.id.resource_item_name) as TextView
     val tags = findViewById(R.id.resource_item_tags) as TextView
+    val tags_indicator = findViewById(R.id.resource_added_tag_indicator) as TextView
     val thumbnail = findViewById(R.id.resource_thumbnail) as ImageView
     val ext = findViewById(R.id.resource_item_ext) as TextView
     var parentId: Option<String> = Option.None

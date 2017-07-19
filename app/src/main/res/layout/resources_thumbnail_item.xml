@@ -121,7 +121,7 @@
                     android:layout_marginTop="2dp"
                     android:ellipsize="end"
                     android:gravity="left|center"
-                    android:text="@string/resource_add_tag"
+                    android:text="@string/resource_added_tag"
                     android:textColor="@color/resource_list_label_tag"
                     android:textSize="8dp" />
 

@@ -40,7 +40,7 @@
     <string name="resource_name">Name:</string>
     <string name="resource_name_placeholder">Ressource Name</string>
     <string name="tag_name_placeholder">Tag Name</string>
-    <string name="resource_add_tag">Hinzugefügt tags:</string>
+    <string name="resource_added_tag">Hinzugefügt tags:</string>
     <string name="resource_name_valid_length" formatted="false">Der Name muss mindestens %s und höchstens %s Zeichen haben</string>
 
 </resources>
