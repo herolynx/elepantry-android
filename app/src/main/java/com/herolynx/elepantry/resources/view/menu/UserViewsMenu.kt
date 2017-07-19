@@ -19,7 +19,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.R
-import com.herolynx.elepantry.ext.android.Permissions
 import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
@@ -28,6 +27,7 @@ import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
 import com.herolynx.elepantry.core.ui.notification.toast
+import com.herolynx.elepantry.ext.android.Permissions
 import com.herolynx.elepantry.ext.dropbox.auth.DropBoxAuth
 import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
 import com.herolynx.elepantry.getAuthContext
@@ -91,15 +91,18 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         val menuLayout = findViewById(R.id.left_menu_layout) as LinearLayout
 
         val userBadge = UserBadge.create(this, navigationView)
-        userBadge.initAddNewViewAction({
-            analytics?.metrics("ViewAdd")
-            closeMenu()
-        })
-        userBadge.initSignOutAction()
         menuLayout.addView(userBadge.layout)
         userBadge.display()
 
         val menuLeft = layoutInflater.inflate(R.layout.menu_user_views, navigationView, false)
+        menuLeft.findViewById(R.id.add_new_view).setOnClickListener {
+            analytics?.metrics("ViewAdd")
+            menuCtrl?.handleAddNewView()
+            closeMenu()
+        }
+        menuLeft.findViewById(R.id.sign_out).setOnClickListener {
+            menuCtrl.handleSignOutAction()
+        }
         menuLayout.addView(menuLeft)
 
         initGoogleDriveView(menuLeft.findViewById(R.id.drive_google) as Button, menuLeft.findViewById(R.id.drive_google_refresh) as TextView)
