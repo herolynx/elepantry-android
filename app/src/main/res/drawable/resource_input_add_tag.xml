@@ -4,7 +4,7 @@
         android:radius="0dp"
         />
     <solid
-        android:color="@color/blue_1"
+        android:color="@color/resource_tags_add_tag_background_input"
         />
     <padding
         android:left="0dp"
@@ -14,6 +14,6 @@
         />
     <stroke
         android:width="0.5dp"
-        android:color="@color/blue_4"
+        android:color="@color/resource_tags_add_tag_border_input"
         />
 </shape>

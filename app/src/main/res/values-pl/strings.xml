@@ -27,6 +27,8 @@
     <string name="auth_failed_to">Twoja tożsamość nie została potwierdzona: %s</string>
 
     <!-- VIEWS -->
+    <string name="online">zalogowany</string>
+    <string name="offline">wylogowany</string>
     <string name="add_new_view">Nowy widok</string>
     <string name="add_new_tag">Dodaj nowy tag:</string>
     <string name="google_drive">Google Drive</string>
@@ -38,6 +40,7 @@
     <string name="resource_name">Nazwa: </string>
     <string name="resource_name_placeholder">Nazwa zasobu</string>
     <string name="tag_name_placeholder">Nazwa tagu</string>
+    <string name="resource_add_tag">Dodane tagi:</string>
     <string name="resource_name_valid_length" formatted="false">Nazwa musi mieć przynajmniej %s i maksymalnie %s znaków</string>
 
 </resources>

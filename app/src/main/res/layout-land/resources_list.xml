@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingTop="?android:attr/actionBarSize"
     android:fitsSystemWindows="false"
-    android:background="@color/grey_4"
+    android:background="@color/backgroundPage"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.herolynx.elepantry.resources.view.list.ResourcesActivity"
 >
@@ -26,47 +26,38 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:gravity="right"
-                android:layout_marginTop="3dp"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:background="@color/resource_list_sort_background"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/sort_list"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:paddingLeft="@dimen/margin_10"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_view_resource_sort_az"
-                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:gravity="right">
 
-                <Button
-                    android:id="@+id/view_type_list"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:paddingLeft="@dimen/margin_10"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_view_resource_list"
-                />
+                    <Button
+                        android:id="@+id/view_type_list"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@android:color/transparent"
+                        android:drawableLeft="@drawable/ic_view_resource_list"
+                        android:paddingLeft="@dimen/margin_10" />
 
-                <Button
-                    android:id="@+id/view_type_grid"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:paddingTop="1dp"
-                    android:paddingLeft="@dimen/margin_10"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@android:color/transparent"
-                    android:drawableLeft="@drawable/ic_view_resource_tiles"
-                    />
+                    <Button
+                        android:id="@+id/view_type_grid"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@android:color/transparent"
+                        android:drawableLeft="@drawable/ic_view_resource_tiles"
+                        android:paddingLeft="@dimen/margin_10"
+                        android:paddingTop="1dp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/grey_3" />
 
         <LinearLayout
             android:layout_width="match_parent"

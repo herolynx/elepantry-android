@@ -11,7 +11,7 @@
 
             <stroke
                 android:width="0.5dp"
-                android:color="@color/grey_4" />
+                android:color="@color/resource_tags_border_line_add_tags" />
         </shape>
     </item>
 

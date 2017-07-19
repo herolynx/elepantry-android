@@ -11,30 +11,57 @@
 
     <color name="backgroundPage">#f4f4f4</color>
 
-    <color name="menu_left_item">#484848</color>
-
-    <color name="white">#FFFFFF</color>
-    <color name="dark_1">#464646</color>
-
-    <color name="grey_1">#adadad</color>
-    <color name="grey_2">#dedede</color>
-    <color name="grey_3">#cacaca</color>
-    <color name="grey_4">#f1f1f1</color>
-    <color name="grey_5">#e0e0e0</color>
-
-    <color name="blue_1">#009cef</color>
-    <color name="blue_2">#48b5ff</color>
-    <color name="blue_3">#17a5f0</color>
-    <color name="blue_4">#87d4fd</color>
-    <color name="blue_5">#005C8C</color>
-    <color name="blue_6">#008ad4</color>
-    <color name="blue_7">#f1faff</color>
-
     <color name="google">#ea4235</color>
     <color name="google_hover">#D42A1E</color>
     <color name="dropbox">#007ee6</color>
 
-    <color name="black_overlay">#66000000</color>
+    <color name="sign_in_view_text">#005C8C</color>
 
+    <color name="action_bar_edit">#009cef</color>
+    <color name="action_bar_action_hover">#87d4fd</color>
+
+    <color name="resource_list_sort_background">#00a2f1</color>
+    <color name="resource_list_sort_border">#0091d7</color>
+    <color name="resource_list_sort_action_hover">#464646</color>
+
+    <color name="resource_list_cell_border">#cecece</color>
+    <color name="resource_list_cell_backgroud_hover">#f6fcff</color>
+    <color name="resource_list_file_name">#333333</color>
+    <color name="resource_list_label_tag">#c7c7c7</color>
+    <color name="resource_list_tag_name">#616161</color>
+    <color name="resource_list_view">#00a2f1</color>
+    <color name="resource_list_action">#c7c7c7</color>
+    <color name="resource_list_action_hover">#009cef</color>
+    <color name="resource_list_image_backgroud">#f8f8f8</color>
+    <color name="resource_list_type_border">#dedede</color>
+    <color name="resource_list_tag_delete">#c7c7c7</color>
+    <color name="resource_list_tag_delete_hover">#464646</color>
+
+    <color name="menu_left_online_status">#00d256</color>
+    <color name="menu_left_offline_status">#d21400</color>
+    <color name="menu_left_user_name">#767676</color>
+    <color name="menu_left_cloud_background">#f6f6f6</color>
+    <color name="menu_left_new_view_button">#009cef</color>
+    <color name="menu_left_name_cloud">#484848</color>
+    <color name="menu_left_item_border">#c0c0c0</color>
+    <color name="menu_left_background_logout">#009cef</color>
+    <color name="menu_left_mark_view">#7f7f7f</color>
+    <color name="menu_left_action">#009cef</color>
+    <color name="menu_left_action_hover">#464646</color>
+
+    <color name="resource_tags_background_border_add_tag">#008ad4</color>
+    <color name="resource_tags_name_view">#464646</color>
+    <color name="resource_tags_name_view_border">#cacaca</color>
+    <color name="resource_tags_label">#009cef</color>
+    <color name="resource_tags_input_new_tag">#87d4fd</color>
+    <color name="resource_tags_background_add_tag">#009cef</color>
+    <color name="resource_tags_add_tag_button_icon">#009cef</color>
+    <color name="resource_tags_add_tag_button_hover">#87d4fd</color>
+    <color name="resource_tags_add_tag_background_input">#009cef</color>
+    <color name="resource_tags_add_tag_border_input">#87d4fd</color>
+    <color name="resource_tags_border_line_add_tags">#f1f1f1</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>
