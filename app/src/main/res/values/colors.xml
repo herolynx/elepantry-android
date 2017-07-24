@@ -32,10 +32,12 @@
     <color name="resource_list_view">#00a2f1</color>
     <color name="resource_list_action">#c7c7c7</color>
     <color name="resource_list_action_hover">#009cef</color>
-    <color name="resource_list_image_backgroud">#f8f8f8</color>
     <color name="resource_list_type_border">#dedede</color>
     <color name="resource_list_tag_delete">#c7c7c7</color>
     <color name="resource_list_tag_delete_hover">#464646</color>
+    <color name="resource_list_background_empty_images">#dbdbdb</color>
+    <color name="resource_list_icon_empty_images">#afafaf</color>
+
 
     <color name="menu_left_online_status">#00d256</color>
     <color name="menu_left_offline_status">#d21400</color>

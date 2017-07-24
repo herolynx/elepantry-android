@@ -36,13 +36,36 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top">
 
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10"
+                        android:layout_marginTop="@dimen/margin_10">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:background="@color/resource_list_background_empty_images"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:drawableLeft="@drawable/ic_login_google"
+                            android:layout_marginLeft="10dp">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center_horizontal|center_vertical"
+                                android:src="@drawable/ic_view_resource_empty_image_camera"/>
+
+                        </LinearLayout>
+                    </FrameLayout>
+
                     <ImageView
                         android:id="@+id/resource_thumbnail"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:layout_marginLeft="@dimen/margin_10"
                         android:layout_marginTop="@dimen/margin_10"
-                        android:background="@color/resource_list_image_backgroud"
+                        android:background="@color/white"
                         android:scaleType="centerCrop" />
 
                     <FrameLayout
