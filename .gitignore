@@ -35,6 +35,11 @@ captures/
 # Intellij
 *.iml
 .idea
+.project
+.settings/
+app/.classpath
+app/.project
+app/.settings/
 
 # Keystore files
 app/src/release
