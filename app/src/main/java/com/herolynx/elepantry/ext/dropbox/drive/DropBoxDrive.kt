@@ -6,11 +6,10 @@ import com.dropbox.core.v2.DbxClientV2
 import com.herolynx.elepantry.drive.CloudDrive
 import com.herolynx.elepantry.drive.CloudResource
 import com.herolynx.elepantry.drive.DriveType
-import com.herolynx.elepantry.ext.dropbox.auth.DropBoxAuth
 import com.herolynx.elepantry.ext.dropbox.auth.DropBoxSession
 import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.core.model.Resource
-import org.funktionale.option.getOrElse
+import org.funktionale.option.Option
 import org.funktionale.option.toOption
 import org.funktionale.tries.Try
 import rx.Observable
@@ -38,11 +37,9 @@ class DropBoxDrive(private val client: DbxClientV2, private val session: DropBox
             return DropBoxDrive(DbxClientV2(requestConfig, session.token), session)
         }
 
-        fun create(a: android.app.Activity): rx.Observable<DropBoxDrive> = a.getAuthContext()
+        fun create(a: android.app.Activity): Option<rx.Observable<DropBoxDrive>> = a.getAuthContext()
                 .flatMap { c -> c.dropBoxSession.toOption() }
-                .map { s -> Observable.just(s) }
-                .getOrElse { DropBoxAuth.getSession(a) }
-                .map { s -> DropBoxDrive.create(s) }
+                .map { s -> Observable.just(DropBoxDrive.create(s)) }
 
     }
 

@@ -3,6 +3,7 @@ package com.herolynx.elepantry.drive
 import android.app.Activity
 import com.herolynx.elepantry.ext.dropbox.drive.DropBoxDrive
 import com.herolynx.elepantry.ext.google.drive.GoogleDrive
+import org.funktionale.option.getOrElse
 
 object Drives {
 
@@ -14,7 +15,9 @@ object Drives {
 
         DriveType.GOOGLE_DRIVE -> GoogleDrive.create(a).get()
 
-        DriveType.DROP_BOX -> DropBoxDrive.create(a).toBlocking().first()
+        DriveType.DROP_BOX -> DropBoxDrive.create(a)
+                .map { d -> d.toBlocking().first() }
+                .getOrElse { NotConnectedDrive }
 
         else -> throw UnsupportedOperationException("Unsupported drive: $type")
 

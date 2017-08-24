@@ -52,6 +52,7 @@
     <string name="per_ext_storage_desc">Access to external storage is required in order to see content of some files from cloud storage</string>
 
     <!-- INTENTS -->
+    <string name="error_drive_not_connected">Drive is not connected</string>
     <string name="error_dropbox_no_app">DropBox app is not installed</string>
     <string name="error_file_open">Couldn\'t open given file</string>
 
