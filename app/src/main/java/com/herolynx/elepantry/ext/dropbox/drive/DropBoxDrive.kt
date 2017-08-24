@@ -12,7 +12,6 @@ import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.option.Option
 import org.funktionale.option.toOption
 import org.funktionale.tries.Try
-import rx.Observable
 
 class DropBoxDrive(private val client: DbxClientV2, private val session: DropBoxSession) : CloudDrive {
 
@@ -37,9 +36,9 @@ class DropBoxDrive(private val client: DbxClientV2, private val session: DropBox
             return DropBoxDrive(DbxClientV2(requestConfig, session.token), session)
         }
 
-        fun create(a: android.app.Activity): Option<rx.Observable<DropBoxDrive>> = a.getAuthContext()
+        fun create(a: android.app.Activity): Option<DropBoxDrive> = a.getAuthContext()
                 .flatMap { c -> c.dropBoxSession.toOption() }
-                .map { s -> Observable.just(DropBoxDrive.create(s)) }
+                .map { s -> create(s) }
 
     }
 

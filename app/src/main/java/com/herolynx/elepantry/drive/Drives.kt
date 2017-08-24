@@ -16,7 +16,6 @@ object Drives {
         DriveType.GOOGLE_DRIVE -> GoogleDrive.create(a).get()
 
         DriveType.DROP_BOX -> DropBoxDrive.create(a)
-                .map { d -> d.toBlocking().first() }
                 .getOrElse { NotConnectedDrive }
 
         else -> throw UnsupportedOperationException("Unsupported drive: $type")
