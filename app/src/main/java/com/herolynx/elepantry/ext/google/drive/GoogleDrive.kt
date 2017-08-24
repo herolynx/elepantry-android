@@ -11,6 +11,7 @@ import com.herolynx.elepantry.drive.CloudDrive
 import com.herolynx.elepantry.drive.CloudResource
 import com.herolynx.elepantry.drive.DriveType
 import com.herolynx.elepantry.ext.google.GoogleConfig
+import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
 import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.core.model.Resource
 import org.funktionale.option.Option
@@ -18,6 +19,11 @@ import org.funktionale.option.toOption
 import org.funktionale.tries.Try
 
 class GoogleDrive(private val drive: Drive) : CloudDrive {
+
+    override fun refresh(jobStatus: (Boolean) -> Unit): Option<() -> Unit> = Option.Some {
+        val syncJob = GoogleDriveMetaInfoSync.create(driveView())
+        syncJob.sync(jobStatus)
+    }
 
     override fun driveView(): GoogleDriveView = GoogleDriveView(drive)
 
