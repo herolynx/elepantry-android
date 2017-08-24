@@ -14,7 +14,7 @@ import org.funktionale.option.toOption
 import org.funktionale.tries.Try
 
 class DropBoxDrive(private val client: DbxClientV2, private val session: DropBoxSession) : CloudDrive {
-
+    
     override fun driveView(): DropBoxView = DropBoxView(client)
 
     override fun type(): DriveType = DriveType.DROP_BOX

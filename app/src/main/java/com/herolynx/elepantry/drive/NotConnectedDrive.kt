@@ -11,11 +11,11 @@ import org.funktionale.tries.Try
 import rx.Observable
 import java.io.InputStream
 
-internal object NotConnectedDrive : CloudDrive {
+internal class NotConnectedDrive(private val driveType: DriveType) : CloudDrive {
 
     override fun driveView(): ResourceView = NotConnectedResourceView
 
-    override fun type(): DriveType = DriveType.NOT_CONNECTED
+    override fun type(): DriveType = driveType
 
     override fun cloudResource(r: Resource): Try<CloudResource> = Try { NotConnectedResource(r) }
 }

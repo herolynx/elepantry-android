@@ -15,29 +15,19 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
-import android.widget.TextView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
-import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.log.metrics
 import com.herolynx.elepantry.core.log.viewVisit
-import com.herolynx.elepantry.core.rx.observeOnUi
-import com.herolynx.elepantry.core.rx.subscribeOnDefault
 import com.herolynx.elepantry.core.ui.notification.WithProgressDialog
-import com.herolynx.elepantry.core.ui.notification.toast
+import com.herolynx.elepantry.drive.Drives
 import com.herolynx.elepantry.ext.android.Permissions
-import com.herolynx.elepantry.ext.dropbox.auth.DropBoxAuth
-import com.herolynx.elepantry.ext.google.sync.GoogleDriveMetaInfoSync
-import com.herolynx.elepantry.getAuthContext
 import com.herolynx.elepantry.resources.core.model.View
-import com.herolynx.elepantry.resources.core.model.ViewType
 import com.herolynx.elepantry.resources.core.service.ResourceView
+import com.herolynx.elepantry.resources.view.list.DriveList
 import com.herolynx.elepantry.resources.view.tags.ResourceTagsActivity
 import com.herolynx.elepantry.user.view.menu.UserBadge
-import org.funktionale.option.getOrElse
-import org.funktionale.option.toOption
-import rx.Observable
 
 
 abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
@@ -104,16 +94,37 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
         }
         menuLayout.addView(menuLeft)
 
-        initGoogleDriveView(
-                menuLeft.findViewById(R.id.drive_google),
-                menuLeft.findViewById(R.id.drive_google_refresh) as TextView
-        )
-        initDropBoxView(
-                menuLeft.findViewById(R.id.drive_dropbox),
-                menuLeft.findViewById(R.id.drive_dropbox_status_icon) as TextView,
-                menuLeft.findViewById(R.id.drive_dropbox_status_desc) as TextView
-        )
+        initDriveViews(menuLeft.findViewById(R.id.drive_views) as RecyclerView)
         initUserViews(menuLeft.findViewById(R.id.user_views) as RecyclerView, menuCtrl)
+    }
+
+    private fun initDriveViews(layout: RecyclerView) {
+        debug("[initDriveViews] Creating...")
+        val listAdapter = DriveList.adapter(
+                activity = this,
+                onClickHandler = { driveItem ->
+                    onViewChange(driveItem.asView())
+                },
+                refreshClickHandler = { start ->
+                    showProgressBar(start)
+                    if (!start) {
+                        runOnUiThread {
+                            closeMenu()
+                            refreshView()
+                        }
+                    }
+                }
+        )
+        layout.adapter = listAdapter
+        val linearLayoutManager = LinearLayoutManager(this)
+        layout.layoutManager = linearLayoutManager
+
+        Drives.drives(this)
+                .map { drive ->
+                    listAdapter.add(drive)
+                    listAdapter.sort()
+                    listAdapter.notifyDataSetChanged()
+                }
     }
 
     private fun initUserViews(layout: RecyclerView, menuCtrl: UserViewsMenuCtrl) {
@@ -141,55 +152,6 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
                     listAdapter.sort()
                     listAdapter.notifyDataSetChanged()
                 }
-    }
-
-    private fun initGoogleDriveView(b: android.view.View, refresh: TextView) {
-        debug("[initUserViews] Creating Google Drive view")
-        val name = getString(R.string.google_drive)
-        val v = View(name = name, type = ViewType.GOOGLE)
-        b.setOnClickListener { onViewChange(v) }
-        loadDefaultItem = { onViewChange(v) }
-        refresh.setOnClickListener {
-            val syncJob = GoogleDriveMetaInfoSync.create(this)
-            syncJob.sync(
-                    jobStatus = { start ->
-                        showProgressBar(start)
-                        if (!start) {
-                            runOnUiThread {
-                                closeMenu()
-                                refreshView()
-                            }
-                        }
-                    }
-            )
-        }
-    }
-
-    private fun initDropBoxView(b: android.view.View, dropBoxStatusIcon: TextView, dropBoxStatusDesc: TextView) {
-        debug("[initUserViews] Creating DropBox Drive view")
-        val name = getString(R.string.dropbox_drive)
-        val v = View(name = name, type = ViewType.DROP_BOX)
-        b.setOnClickListener {
-            getAuthContext().
-                    flatMap { c -> c.dropBoxSession.toOption() }
-                    .map { s -> Observable.just(s) }
-                    .getOrElse { DropBoxAuth.getSession(this) }
-                    .subscribeOnDefault()
-                    .observeOnUi()
-                    .subscribe(
-                            { session ->
-                                debug("[initUserViews] DropBox login ok - uid: ${session.uid}")
-                                dropBoxStatusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_online, 0)
-                                dropBoxStatusDesc.setTextColor(R.color.menu_left_online_status)
-                                dropBoxStatusDesc.text = getText(R.string.online)
-                                onViewChange(v, menuCtrl!!.getResourceView(v))
-                            },
-                            { ex ->
-                                error("[DropBox][Auth] Couldn't login", ex)
-                                toast(R.string.auth_failed_to, name)
-                            }
-                    )
-        }
     }
 
     private fun showProgressBar(start: Boolean) {
