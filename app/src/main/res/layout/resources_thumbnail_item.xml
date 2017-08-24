@@ -101,20 +101,6 @@
                 android:layout_gravity="center_horizontal|center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/resource_view_border"
-                    android:ellipsize="end"
-                    android:gravity="left|center"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="@dimen/margin_5"
-                    android:paddingTop="2dp"
-                    android:text="view name"
-                    android:textColor="@color/white"
-                    android:textSize="8dp" />
-
             </LinearLayout>
 
             <LinearLayout
