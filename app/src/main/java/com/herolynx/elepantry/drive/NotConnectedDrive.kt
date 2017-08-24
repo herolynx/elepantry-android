@@ -17,20 +17,21 @@ internal object NotConnectedDrive : CloudDrive {
 
     override fun type(): DriveType = DriveType.NOT_CONNECTED
 
-    override fun cloudResource(r: Resource): Try<CloudResource> = Try { NotConnectedResource }
+    override fun cloudResource(r: Resource): Try<CloudResource> = Try { NotConnectedResource(r) }
 }
 
-private object NotConnectedResource : CloudResource {
+private class NotConnectedResource(private val r: Resource) : CloudResource {
 
     override fun thumbnail(): Observable<InputStream> = Observable.empty()
 
-    override fun metaInfo(): Resource = Resource()
+    override fun metaInfo(): Resource = r
 
-    override fun preview(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit): Try<Result> =
+    private fun notSupportedOperation(activity: Activity): Try<Result> =
             Try { Result(false, activity.getString(R.string.error_drive_not_connected)) }
 
-    override fun download(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit): Try<Result> =
-            Try { Result(false, activity.getString(R.string.error_drive_not_connected)) }
+    override fun preview(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit) = notSupportedOperation(activity)
+
+    override fun download(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit) = notSupportedOperation(activity)
 
 }
 
