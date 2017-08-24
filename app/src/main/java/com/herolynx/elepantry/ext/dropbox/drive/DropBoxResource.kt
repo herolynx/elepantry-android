@@ -29,21 +29,24 @@ class DropBoxResource(
             activity.startActivity(openIntent)
             Result(true)
         } else {
-            //TODO remove when DropBox app can handle all contents
-            Storage.downloadAndOpen(
-                    activity = activity,
-                    fileName = metaInfo.uuid(),
-                    download = { outputStream ->
-                        client.files()
-                                .download(metaInfo.downloadLink, metaInfo.version)
-                                .download(outputStream)
-                                .size
-                    },
-                    beforeAction = beforeAction,
-                    afterAction = afterAction
-            )
-            Result(true)
+            download(activity, beforeAction, afterAction).get()
         }
+    }
+
+    override fun download(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit): Try<Result> = Try {
+        Storage.downloadAndOpen(
+                activity = activity,
+                fileName = metaInfo.uuid(),
+                download = { outputStream ->
+                    client.files()
+                            .download(metaInfo.downloadLink, metaInfo.version)
+                            .download(outputStream)
+                            .size
+                },
+                beforeAction = beforeAction,
+                afterAction = afterAction
+        )
+        Result(true)
     }
 
     override fun thumbnail(): rx.Observable<InputStream> = Observable.defer {

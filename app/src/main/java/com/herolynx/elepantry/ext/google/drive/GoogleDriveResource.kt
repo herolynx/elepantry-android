@@ -24,19 +24,23 @@ class GoogleDriveResource(
         if (AppManager.isAppInstalled(activity, GoogleDrive.APP_PACKAGE_NAME)) {
             return WebViewUtils.openLink(activity, metaInfo.downloadLink)
         } else {
-            Storage.downloadAndOpen(
-                    activity = activity,
-                    fileName = metaInfo.uuid(),
-                    download = { outputStream ->
-                        debug("[GoogleDrive][Download] Downloading - resource: $metaInfo")
-                        drive.files().get(metaInfo.id).executeMediaAndDownloadTo(outputStream)
-                        -1L
-                    },
-                    beforeAction = beforeAction,
-                    afterAction = afterAction
-            )
-            return Try.Success(Result(true))
+            return download(activity, beforeAction, afterAction)
         }
+    }
+
+    override fun download(activity: Activity, beforeAction: () -> Unit, afterAction: () -> Unit): Try<Result> = Try {
+        Storage.downloadAndOpen(
+                activity = activity,
+                fileName = metaInfo.uuid(),
+                download = { outputStream ->
+                    debug("[GoogleDrive][Download] Downloading - resource: $metaInfo")
+                    drive.files().get(metaInfo.id).executeMediaAndDownloadTo(outputStream)
+                    -1L
+                },
+                beforeAction = beforeAction,
+                afterAction = afterAction
+        )
+        Result(true)
     }
 
     override fun thumbnail(): Observable<InputStream> = Uri.parse(metaInfo.thumbnailLink)

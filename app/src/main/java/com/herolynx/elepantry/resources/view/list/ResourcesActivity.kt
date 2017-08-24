@@ -130,11 +130,28 @@ class ResourcesActivity : UserViewsMenu() {
                 toast(R.string.error_file_open)
             }
 
+    private fun downloadResourceContent(r: CloudResource) = r.download(
+            activity = this,
+            beforeAction = { showProgressDialog(this) },
+            afterAction = { hideProgressDialog() }
+    )
+            .map { opStatus ->
+                if (!opStatus.success) {
+                    debug("Couldn't download file - resource: ${r.metaInfo()}, error message: ${opStatus.errMsg}")
+                    toast(opStatus.errMsg ?: getString(R.string.error_file_open))
+                }
+            }
+            .onFailure { ex ->
+                warn("Couldn't download file - resource: ${r.metaInfo()}", ex)
+                toast(R.string.error_file_open)
+            }
+
     private fun initResourceView(isListView: Boolean = true) {
         val listView: RecyclerView = findViewById(R.id.resource_list) as RecyclerView
         listAdapter = ResourceList.adapter(
                 driveFactory = { t -> Drives.drive(this, t) },
-                onClickHandler = { r -> showResourceContent(r) },
+                onOpenClickHandler = { r -> showResourceContent(r) },
+                onDownloadClickHandler = { r -> downloadResourceContent(r) },
                 layoutId = if (isListView) R.layout.resources_list_item else R.layout.resources_thumbnail_item
         )
         listAdapter?.onSelectedItemsChange { selected ->

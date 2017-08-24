@@ -15,4 +15,6 @@ interface CloudResource {
 
     fun preview(activity: Activity, beforeAction: () -> Unit = {}, afterAction: () -> Unit = {}): Try<Result>
 
+    fun download(activity: Activity, beforeAction: () -> Unit = {}, afterAction: () -> Unit = {}): Try<Result>
+
 }

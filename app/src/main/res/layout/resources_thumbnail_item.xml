@@ -102,7 +102,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/resource_view_border"
@@ -181,7 +180,6 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center"
@@ -199,7 +197,6 @@
                 android:gravity="right">
 
                 <TextView
-                    android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTintMode="@color/white"

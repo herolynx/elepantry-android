@@ -31,13 +31,23 @@ internal object ResourceList {
     fun adapter(
             driveFactory: (DriveType) -> CloudDrive,
             userResourceRepository: Repository<Resource> = Config.repository.userResources(),
-            onClickHandler: (CloudResource) -> Unit,
+            onOpenClickHandler: (CloudResource) -> Unit,
+            onDownloadClickHandler: (CloudResource) -> Unit,
             layoutId: Int = R.layout.resources_list_item
     ):
             ListAdapter<Resource, ResourceItemView> =
             ListAdapter(
                     { ctx -> ResourceItemView(ctx, layoutId) },
-                    { r, h -> display(r, driveFactory(r!!.type).cloudResource(r!!), h, userResourceRepository, onClickHandler) }
+                    { r, h ->
+                        display(
+                                r,
+                                driveFactory(r!!.type).cloudResource(r!!),
+                                h,
+                                userResourceRepository,
+                                onOpenClickHandler,
+                                onDownloadClickHandler
+                        )
+                    }
             )
 
     private fun display(
@@ -45,14 +55,23 @@ internal object ResourceList {
             cloudResource: Try<CloudResource>,
             h: ListAdapter.ViewHolder<ResourceItemView>,
             userResourceRepository: Repository<Resource>,
-            onClickHandler: (CloudResource) -> Unit
+            onOpenClickHandler: (CloudResource) -> Unit,
+            onDownloadClickHandler: (CloudResource) -> Unit
     ) {
         h.view.lastSubscription.filter { s -> !s.isUnsubscribed }.map { s -> s.unsubscribe() }
         h.view.open.setOnClickListener { _ ->
             if (r != null) {
-                cloudResource.map { cr -> onClickHandler(cr) }
+                cloudResource.map { cr -> onOpenClickHandler(cr) }
                         .onFailure { ex ->
-                            warn("[ResourceList] Couldn't handle click for resource: $r", ex)
+                            warn("[ResourceList] Couldn't open resource: $r", ex)
+                        }
+            }
+        }
+        h.view.download.setOnClickListener { _ ->
+            if (r != null) {
+                cloudResource.map { cr -> onDownloadClickHandler(cr) }
+                        .onFailure { ex ->
+                            warn("[ResourceList] Couldn't download resource: $r", ex)
                         }
             }
         }
@@ -120,6 +139,7 @@ internal class ResourceItemView(ctx: Context, layoutId: Int = R.layout.resources
     var parentId: Option<String> = Option.None
     var lastSubscription: Option<Subscription> = Option.None
     val open = findViewById(R.id.resource_open) as LinearLayout
+    val download = findViewById(R.id.resource_download) as LinearLayout
     val drive = findViewById(R.id.resource_item_drive) as TextView
 
 }
