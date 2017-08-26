@@ -18,6 +18,8 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:paddingLeft="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
