@@ -159,9 +159,8 @@ class ResourcesActivity : UserViewsMenu() {
             fabEditButton?.visibility = if (selected.isEmpty()) android.view.View.INVISIBLE else android.view.View.VISIBLE
         }
         listView.adapter = listAdapter
-        val linearLayoutManager = LinearLayoutManager(this)
-        val gridLayoutManager = GridLayoutManager(this, GridLayoutUtils.calculateNoOfColumns(this))
-        listView.layoutManager = if (isListView) linearLayoutManager else gridLayoutManager
+        val linearLayoutManager = if (isListView) LinearLayoutManager(this) else GridLayoutManager(this, GridLayoutUtils.calculateNoOfColumns(this))
+        listView.layoutManager = linearLayoutManager
         loadData = { searchCriteria ->
             listView.clearOnScrollListeners()
             ctrl?.loadData(
@@ -198,7 +197,7 @@ class ResourcesActivity : UserViewsMenu() {
         }
     }
 
-    internal fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
+    private fun displayPage(pageResources: Observable<DataEvent<Resource>>) {
         pageResources.subscribe(
                 { r ->
                     if (!blockScreen) {
