@@ -70,7 +70,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="3dp"
                         android:gravity="center"
-                        android:text="@string/online"
+                        android:text="@string/offline"
                         android:textColor="@color/menu_left_offline_status"
                         android:textSize="8dp" />
 

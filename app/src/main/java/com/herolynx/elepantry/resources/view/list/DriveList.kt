@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.herolynx.elepantry.R
+import com.herolynx.elepantry.core.log.debug
 import com.herolynx.elepantry.core.log.error
 import com.herolynx.elepantry.core.rx.observeOnUi
 import com.herolynx.elepantry.core.rx.subscribeOnDefault
@@ -73,12 +74,15 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
     fun asView() = com.herolynx.elepantry.resources.core.model.View(name = name.text.toString(), type = viewType)
 
     internal fun setStatus(available: Boolean) {
+        debug("[DriveListItem] Marking drive $viewType as available: $available")
         if (available) {
             statusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_online, 0)
             statusDesc.setTextColor(R.color.menu_left_online_status)
+            statusDesc.text = context.getString(R.string.online)
         } else {
             statusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_offline, 0)
             statusDesc.setTextColor(R.color.menu_left_offline_status)
+            statusDesc.text = context.getString(R.string.offline)
         }
     }
 
