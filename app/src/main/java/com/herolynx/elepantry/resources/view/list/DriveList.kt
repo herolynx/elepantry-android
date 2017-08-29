@@ -2,6 +2,7 @@ package com.herolynx.elepantry.resources.view.list
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -67,7 +68,7 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
     private val name = findViewById(R.id.drive_name) as TextView
     private val statusIcon = findViewById(R.id.drive_status_icon) as TextView
     private val statusDesc = findViewById(R.id.drive_status_desc) as TextView
-    internal val refresh = findViewById(R.id.drive_refresh) as TextView
+    private val refresh = findViewById(R.id.drive_refresh) as TextView
     private val color = findViewById(R.id.drive_color)
     private var viewType: ViewType = ViewType.GOOGLE
 
@@ -96,13 +97,13 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
         when (type) {
             DriveType.GOOGLE_DRIVE -> {
                 name.text = context.getText(R.string.google_drive)
-                color.setBackgroundColor(R.color.google)
+                color.setBackgroundColor(Color.RED)
                 viewType = ViewType.GOOGLE
             }
 
             DriveType.DROP_BOX -> {
                 name.text = context.getText(R.string.dropbox_drive)
-                color.setBackgroundColor(R.color.dropbox)
+                color.setBackgroundColor(Color.BLUE)
                 viewType = ViewType.DROP_BOX
             }
 
