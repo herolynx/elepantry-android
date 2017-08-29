@@ -107,7 +107,7 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
                 viewType = ViewType.DROP_BOX
             }
 
-            else -> throw  UnsupportedOperationException("Uknown drive type: $type")
+            else -> throw  UnsupportedOperationException("Unknown drive type: $type")
         }
     }
 
