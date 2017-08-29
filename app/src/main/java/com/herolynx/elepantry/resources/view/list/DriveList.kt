@@ -78,11 +78,11 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
         debug("[DriveListItem] Marking drive $viewType as available: $available")
         if (available) {
             statusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_online, 0)
-            statusDesc.setTextColor(Color.GREEN)
+            statusDesc.setTextColor(Color.parseColor("#00d256"));
             statusDesc.text = context.getString(R.string.online)
         } else {
             statusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_offline, 0)
-            statusDesc.setTextColor(Color.RED)
+            statusDesc.setTextColor(Color.parseColor("#d21400"));
             statusDesc.text = context.getString(R.string.offline)
         }
     }
@@ -97,13 +97,13 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
         when (type) {
             DriveType.GOOGLE_DRIVE -> {
                 name.text = context.getText(R.string.google_drive)
-                color.setBackgroundColor(Color.RED)
+                color.setBackgroundColor(Color.parseColor("#ea4235"));
                 viewType = ViewType.GOOGLE
             }
 
             DriveType.DROP_BOX -> {
                 name.text = context.getText(R.string.dropbox_drive)
-                color.setBackgroundColor(Color.BLUE)
+                color.setBackgroundColor(Color.parseColor("#007ee6"));
                 viewType = ViewType.DROP_BOX
             }
 

@@ -44,6 +44,7 @@
                         android:layout_height="20dp"
                         android:background="@android:color/transparent"
                         android:gravity="left|center"
+                        android:textSize="13dp"
                         android:text="@string/google_drive"
                         android:textAllCaps="false"
                         android:textColor="@color/menu_left_name_cloud" />
@@ -68,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="3dp"
+                        android:layout_marginLeft="2dp"
                         android:gravity="center"
                         android:text="@string/offline"
                         android:textColor="@color/menu_left_offline_status"
