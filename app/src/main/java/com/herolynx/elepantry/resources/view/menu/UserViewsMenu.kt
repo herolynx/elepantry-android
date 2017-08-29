@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
+import butterknife.ButterKnife
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.log.debug
@@ -47,6 +48,7 @@ abstract class UserViewsMenu : AppCompatActivity(), WithProgressDialog {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         Permissions.requestWriteExternalStoragePermission(this)
         analytics = FirebaseAnalytics.getInstance(this)
         analytics?.viewVisit(this)

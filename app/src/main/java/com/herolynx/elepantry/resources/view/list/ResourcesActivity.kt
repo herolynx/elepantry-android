@@ -9,7 +9,8 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
+import butterknife.ButterKnife
+import butterknife.OnClick
 import com.herolynx.elepantry.R
 import com.herolynx.elepantry.core.conversion.fromJsonString
 import com.herolynx.elepantry.core.conversion.toJsonString
@@ -50,8 +51,8 @@ class ResourcesActivity : UserViewsMenu() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ButterKnife.bind(this)
         ctrl = ResourcesCtrl()
-        initViewTypeActions()
         initEditAction()
         if (intent.extras != null) {
             loadParams(intent.extras)
@@ -68,7 +69,7 @@ class ResourcesActivity : UserViewsMenu() {
     }
 
     override fun refreshView() {
-        debug("[ResourceActivity] Refreshing view")
+        debug("$TAG Refreshing view")
         ctrl.toOption()
                 .flatMap { c -> c.currentView.toOption() }
                 .map { v -> onViewChange(v) }
@@ -93,20 +94,25 @@ class ResourcesActivity : UserViewsMenu() {
     private fun loadParams(b: Bundle) {
         val view = b.getString(PARAM_VIEW, "")
         val viewType = b.getString(PARAM_VIEW_TYPE, "")
-        debug("[ResourceActivity] Loading params - view: $view, view type: $viewType")
+        debug("$TAG Loading params - view: $view, view type: $viewType")
         if (!view.isEmpty()) {
             view.fromJsonString(View::class.java)
                     .map { v ->
-                        debug("[ResourceActivity] Loading params - displaying view: $v")
+                        debug("$TAG Loading params - displaying view: $v")
                         onViewChange(v)
                     }
         }
         changeViewType(ResourceViewType.valueOf(viewType))
     }
 
-    private fun initViewTypeActions() {
-        (findViewById(R.id.view_type_list) as Button).setOnClickListener { changeViewType(ResourceViewType.LIST) }
-        (findViewById(R.id.view_type_grid) as Button).setOnClickListener { changeViewType(ResourceViewType.GRID) }
+    @OnClick(R.id.view_type_list)
+    fun onShowViewTypeList() {
+        changeViewType(ResourceViewType.LIST)
+    }
+
+    @OnClick(R.id.view_type_grid)
+    fun onShowViewTypeGrid() {
+        changeViewType(ResourceViewType.GRID)
     }
 
     private fun changeViewType(newViewType: ResourceViewType) {
@@ -278,6 +284,7 @@ class ResourcesActivity : UserViewsMenu() {
 
     companion object {
 
+        private val TAG = "[ResourceActivity]"
         private val PARAM_VIEW = "view"
         private val PARAM_VIEW_TYPE = "viewType"
 
