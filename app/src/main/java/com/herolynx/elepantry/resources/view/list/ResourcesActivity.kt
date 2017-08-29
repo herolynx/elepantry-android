@@ -110,6 +110,7 @@ class ResourcesActivity : UserViewsMenu() {
     }
 
     private fun changeViewType(newViewType: ResourceViewType) {
+        analytics?.metrics("DisplayResourcesAs$newViewType")
         viewType = newViewType
         initResourceView(isListView = (newViewType == ResourceViewType.LIST))
     }
@@ -176,6 +177,7 @@ class ResourcesActivity : UserViewsMenu() {
             )
         }
         loadDefaultItem()
+        refreshView()
     }
 
     private fun initEditAction() {
