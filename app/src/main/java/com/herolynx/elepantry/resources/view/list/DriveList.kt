@@ -78,11 +78,11 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
         debug("[DriveListItem] Marking drive $viewType as available: $available")
         if (available) {
             statusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_online, 0)
-            statusDesc.setTextColor(R.color.menu_left_online_status)
+            statusDesc.setTextColor(Color.GREEN)
             statusDesc.text = context.getString(R.string.online)
         } else {
             statusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_offline, 0)
-            statusDesc.setTextColor(R.color.menu_left_offline_status)
+            statusDesc.setTextColor(Color.RED)
             statusDesc.text = context.getString(R.string.offline)
         }
     }
