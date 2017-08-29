@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:enterFadeDuration="100"
-    android:exitFadeDuration="100">
+    android:enterFadeDuration="250"
+    android:exitFadeDuration="250">
     <item android:state_selected="true" android:state_focused="false" android:state_pressed="false" android:drawable="@drawable/ic_view_resource_open_focused" />
     <item android:state_selected="false" android:state_focused="false" android:state_pressed="false" android:drawable="@drawable/ic_view_resource_open_default" />
     <item android:state_pressed="true" android:drawable="@drawable/ic_view_resource_open_focused" />

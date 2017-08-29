@@ -13,7 +13,7 @@
             <solid android:color="@color/menu_left_cloud_background" />
 
             <padding android:left="0dp"
-                android:right="10dp"
+                android:right="0dp"
                 android:top="0dp"
                 android:bottom="0dp" />
         </shape>

@@ -78,11 +78,13 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.12">
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:paddingRight="@dimen/margin_10"
+            android:layout_weight="0.1">
 
             <TextView
                 android:id="@+id/drive_refresh"
@@ -91,12 +93,10 @@
                 android:background="@android:color/transparent"
                 android:drawableRight="@drawable/ic_menu_refresh" />
 
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/menu_left_item_border" />
+       </RelativeLayout>
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/menu_left_item_border" />
 </RelativeLayout>
