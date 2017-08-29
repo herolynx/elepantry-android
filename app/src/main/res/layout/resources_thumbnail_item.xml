@@ -16,14 +16,13 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:layout_margin="2dp"
+       android:layout_margin="2dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentEnd="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_marginBottom="5dp"
             android:paddingRight="10dp"
             android:layout_height="wrap_content">
 
@@ -48,7 +47,7 @@
                             android:background="@color/resource_list_background_empty_images"
                             android:gravity="center_horizontal|center_vertical"
                             android:drawableLeft="@drawable/ic_login_google"
-                            android:layout_marginLeft="10dp">
+                            android:layout_marginLeft="0dp">
 
                             <ImageView
                                 android:layout_width="50dp"
@@ -105,10 +104,11 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:layout_gravity="center_horizontal|center"
                 android:orientation="vertical"
-                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp"
                 android:paddingLeft="10dp">
 
                 <TextView
@@ -117,7 +117,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-2dp"
                     android:ellipsize="end"
-                    android:gravity="left"
+                    android:gravity="left|center"
+                    android:layout_gravity="center_vertical"
                     android:lines="1"
                     android:text="Sample file name"
                     android:textColor="@color/resource_list_file_name"
