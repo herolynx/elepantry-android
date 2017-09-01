@@ -48,3 +48,4 @@ app/src/release
 keystore.properties
 *.properties
 build.gradle
+.DS_STORE
