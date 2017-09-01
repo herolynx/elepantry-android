@@ -2,7 +2,7 @@ package com.herolynx.elepantry.resources.view.list
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
+import android.support.v4.content.res.ResourcesCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -74,15 +74,17 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
 
     fun asView() = com.herolynx.elepantry.resources.core.model.View(name = name.text.toString(), type = viewType)
 
+    private fun getColor(colorId: Int) = ResourcesCompat.getColor(resources, colorId, null)
+
     internal fun setStatus(available: Boolean) {
         debug("[DriveListItem] Marking drive $viewType as available: $available")
         if (available) {
             statusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_online, 0)
-            statusDesc.setTextColor(Color.parseColor("#00d256"));
+            statusDesc.setTextColor(getColor(R.color.menu_left_online_status))
             statusDesc.text = context.getString(R.string.online)
         } else {
             statusIcon.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_menu_offline, 0)
-            statusDesc.setTextColor(Color.parseColor("#d21400"));
+            statusDesc.setTextColor(getColor(R.color.menu_left_offline_status))
             statusDesc.text = context.getString(R.string.offline)
         }
     }
@@ -97,13 +99,13 @@ internal class DriveItemView(ctx: Context) : LinearLayout(ctx) {
         when (type) {
             DriveType.GOOGLE_DRIVE -> {
                 name.text = context.getText(R.string.google_drive)
-                color.setBackgroundColor(Color.parseColor("#ea4235"));
+                color.setBackgroundColor(getColor(R.color.google))
                 viewType = ViewType.GOOGLE
             }
 
             DriveType.DROP_BOX -> {
                 name.text = context.getText(R.string.dropbox_drive)
-                color.setBackgroundColor(Color.parseColor("#007ee6"));
+                color.setBackgroundColor(getColor(R.color.dropbox))
                 viewType = ViewType.DROP_BOX
             }
 
